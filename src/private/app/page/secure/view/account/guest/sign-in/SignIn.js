@@ -26,7 +26,7 @@ import {PaperContentCenter as LayoutPaperContentCenter} from "../../../../layout
 import {PaperTitle as LayoutPaperTitle} from "../../../../layout/main/paper/PaperTitle"
 import {PaperTitleLeft as LayoutPaperTitleLeft} from "../../../../layout/main/paper/PaperTitleLeft"
 import {PaperTitleLeftTypographyLevel1 as LayoutPaperTitleLeftTypographyLevel1} from "../../../../layout/main/paper/PaperTitleLeftTypographyLevel1"
-import {APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_OWNER, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_PROJECT_MANAGER, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_STATUS_CONFIRMED, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN, SecurityNavigateToIndex, SecurityNavigateToPathError404, SecurityRouteGuestUser} from "../../../../security"
+import {APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SHELTER, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_PROJECT_MANAGER, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_STATUS_CONFIRMED, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN, SecurityNavigateToIndex, SecurityNavigateToPathError404, SecurityRouteGuestUser} from "../../../../security"
 
 const STEP_RETURN_INITIAL = "step-return-initial"
 const STEP_RETURN_SIGN_IN = "step-return-sign-in"
@@ -451,14 +451,14 @@ const View = React.memo(
                                     } else {
                                         const cognitoUserGroupList = cognitoUser.signInUserSession && cognitoUser.signInUserSession.accessToken && cognitoUser.signInUserSession.accessToken.payload && cognitoUser.signInUserSession.accessToken.payload["cognito:groups"] ? [...cognitoUser.signInUserSession.accessToken.payload["cognito:groups"]] : []
                                         const dynamodbUserGroupList = []
-                                        for (const cognitoUserGroupForOf of [APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_OWNER, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_PROJECT_MANAGER]) {
+                                        for (const cognitoUserGroupForOf of [APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SHELTER, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_PROJECT_MANAGER]) {
                                             if (cognitoUserGroupList.includes(cognitoUserGroupForOf)) {
                                                 switch (cognitoUserGroupForOf) {
                                                     case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN:
                                                         dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN)
                                                         break
-                                                    case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_OWNER:
-                                                        dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER)
+                                                    case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SHELTER:
+                                                        dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER)
                                                         break
                                                     case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN:
                                                         dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN)
@@ -836,14 +836,14 @@ const View = React.memo(
                                 async (cognitoUser) => {
                                     const cognitoUserGroupList = cognitoUser.signInUserSession && cognitoUser.signInUserSession.accessToken && cognitoUser.signInUserSession.accessToken.payload && cognitoUser.signInUserSession.accessToken.payload["cognito:groups"] ? [...cognitoUser.signInUserSession.accessToken.payload["cognito:groups"]] : []
                                     const dynamodbUserGroupList = []
-                                    for (const cognitoUserGroupForOf of [APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_OWNER, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_PROJECT_MANAGER]) {
+                                    for (const cognitoUserGroupForOf of [APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SHELTER, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_PROJECT_MANAGER]) {
                                         if (cognitoUserGroupList.includes(cognitoUserGroupForOf)) {
                                             switch (cognitoUserGroupForOf) {
                                                 case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN:
                                                     dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN)
                                                     break
-                                                case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_OWNER:
-                                                    dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER)
+                                                case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SHELTER:
+                                                    dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER)
                                                     break
                                                 case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN:
                                                     dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN)

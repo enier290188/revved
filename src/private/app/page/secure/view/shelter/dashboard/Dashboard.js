@@ -19,7 +19,7 @@ import {PaperTitleLeft as LayoutPaperTitleLeft} from "../../../layout/main/paper
 import {PaperTitleLeftTypographyLevel1 as LayoutPaperTitleLeftTypographyLevel1} from "../../../layout/main/paper/PaperTitleLeftTypographyLevel1"
 import {PaperTitleRight as LayoutPaperTitleRight} from "../../../layout/main/paper/PaperTitleRight"
 import {Typography as LayoutTypography} from "../../../layout/main/typography/Typography"
-import {SecurityNavigateToIndex, SecurityNavigateToPathError404, SecurityRouteCurrentUserOwner} from "../../../security"
+import {SecurityNavigateToIndex, SecurityNavigateToPathError404, SecurityRouteCurrentUserShelter} from "../../../security"
 
 const STEP_RETURN_INITIAL = "step-return-initial"
 const STEP_RETURN_SUCCESS = "step-return-success"
@@ -216,7 +216,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.dashboard.alert.refresh.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.dashboard.alert.refresh.then.warning"}})
                                                 }
                                             }
                                         }
@@ -231,7 +231,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.dashboard.alert.refresh.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.dashboard.alert.refresh.then.error"}})
                                         }
                                     }
                                 }
@@ -248,7 +248,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.dashboard.alert.refresh.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.dashboard.alert.refresh.error"}})
                     }
                 }
             },
@@ -340,7 +340,7 @@ const View = React.memo(
                             <LayoutPaperTitle>
                                 <LayoutPaperTitleLeft>
                                     <MuiBox component={"div"} p={1}>
-                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"dashboard"} text1={<FormattedMessage id={"app.page.secure.view.owner.dashboard"}/>}/>
+                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"dashboard"} text1={<FormattedMessage id={"app.page.secure.view.shelter.dashboard"}/>}/>
                                     </MuiBox>
                                 </LayoutPaperTitleLeft>
                             </LayoutPaperTitle>
@@ -365,7 +365,7 @@ const View = React.memo(
                             <LayoutPaperTitle>
                                 <LayoutPaperTitleLeft>
                                     <MuiBox component={"div"} p={1}>
-                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"dashboard"} text1={<FormattedMessage id={"app.page.secure.view.owner.dashboard"}/>}/>
+                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"dashboard"} text1={<FormattedMessage id={"app.page.secure.view.shelter.dashboard"}/>}/>
                                     </MuiBox>
                                 </LayoutPaperTitleLeft>
                                 <LayoutPaperTitleRight>
@@ -375,7 +375,7 @@ const View = React.memo(
                                             disabled={stepIsSubmitting}
                                             size={"small"}
                                             iconFont={"update"}
-                                            text={<FormattedMessage id={"app.page.secure.view.owner.dashboard.action.refresh"}/>}
+                                            text={<FormattedMessage id={"app.page.secure.view.shelter.dashboard.action.refresh"}/>}
                                             handleOnClick={handleRefresh}
                                         />
                                     </MuiBox>
@@ -409,7 +409,7 @@ export const Dashboard = React.memo(
     () => {
         return (
             <Routes>
-                <Route path={`/`} element={<SecurityRouteCurrentUserOwner pathFrom={PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD}><View/></SecurityRouteCurrentUserOwner>}/>
+                <Route path={`/`} element={<SecurityRouteCurrentUserShelter pathFrom={PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD}><View/></SecurityRouteCurrentUserShelter>}/>
                 <Route path={`*`} element={<SecurityNavigateToPathError404/>}/>
             </Routes>
         )

@@ -1,0 +1,7 @@
+{
+  "app.page.secure.view.shelter.dashboard": "Tablero",
+  "app.page.secure.view.shelter.dashboard.action.refresh": "Actualizar",
+  "app.page.secure.view.shelter.dashboard.alert.refresh.then.error": "Error al obtener datos.",
+  "app.page.secure.view.shelter.dashboard.alert.refresh.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.shelter.dashboard.alert.refresh.error": "Error al obtener datos."
+}

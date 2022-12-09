@@ -1,0 +1,7 @@
+{
+  "app.page.secure.view.shelter.dashboard": "Dashboard",
+  "app.page.secure.view.shelter.dashboard.action.refresh": "Refresh",
+  "app.page.secure.view.shelter.dashboard.alert.refresh.then.error": "Error fetching data.",
+  "app.page.secure.view.shelter.dashboard.alert.refresh.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.dashboard.alert.refresh.error": "Error fetching data."
+}

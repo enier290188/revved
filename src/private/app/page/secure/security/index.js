@@ -6,11 +6,8 @@ import {PATH_APP_PAGE} from "../../../../setting/path/app/page"
 import {PATH_APP_PAGE_SECURE} from "../../../../setting/path/app/page/secure"
 import {PATH_APP_PAGE_SECURE_ACCOUNT_CURRENT_SIGN_OUT} from "../../../../setting/path/app/page/secure/account/current/sign-out"
 import {PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN} from "../../../../setting/path/app/page/secure/account/guest/sign-in"
-import {PATH_APP_PAGE_SECURE_ADMIN_DASHBOARD} from "../../../../setting/path/app/page/secure/admin/dashboard"
 import {PATH_APP_PAGE_SECURE_ERROR_404} from "../../../../setting/path/app/page/secure/error/404"
-import {PATH_APP_PAGE_SECURE_OWNER_DASHBOARD} from "../../../../setting/path/app/page/secure/owner/dashboard"
-import {PATH_APP_PAGE_SECURE_PROJECT_MANAGER_DASHBOARD} from "../../../../setting/path/app/page/secure/project-manager/dashboard"
-import {PATH_APP_PAGE_SECURE_SALESMAN_DASHBOARD} from "../../../../setting/path/app/page/secure/salesman/dashboard"
+import {PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD} from "../../../../setting/path/app/page/secure/shelter/dashboard"
 import {Context as ContextAlert} from "../../../context/Alert"
 import {Context as ContextUser} from "../../../context/User"
 import * as AppUtilGraphql from "../../../util/graphql"
@@ -20,23 +17,17 @@ import {LoadingSecurity} from "../layout/main/loading/LoadingSecurity"
 export const APP_PAGE_SECURE_SECURITY_COGNITO_USER_STATUS_CONFIRMED = "CONFIRMED"
 export const APP_PAGE_SECURE_SECURITY_COGNITO_USER_STATUS_FORCE_CHANGE_PASSWORD = "FORCE_CHANGE_PASSWORD"
 export const APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN = "Admin"
-export const APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_OWNER = "Owner"
-export const APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN = "Salesman"
-export const APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_PROJECT_MANAGER = "ProjectManager"
+export const APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SHELTER = "Shelter"
 
 export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_STATUS_CONFIRMED = "CONFIRMED"
 export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_STATUS_FORCE_CHANGE_PASSWORD = "FORCE_CHANGE_PASSWORD"
 export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN = "ADMIN"
-export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER = "OWNER"
-export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN = "SALESMAN"
-export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER = "PROJECT_MANAGER"
+export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER = "SHELTER"
 
 export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_STATUS_CONFIRMED_LABEL = "Confirmed"
 export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_STATUS_FORCE_CHANGE_PASSWORD_LABEL = "Force Change Password"
 export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN_LABEL = "Admin"
-export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER_LABEL = "Owner"
-export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN_LABEL = "Salesman"
-export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER_LABEL = "Project Manager"
+export const APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER_LABEL = "Shelter"
 
 export const SecurityNavigateToPath = React.memo(
     ({path, replace = true}) => {
@@ -83,15 +74,9 @@ export const SecurityNavigateToIndex = React.memo(
         const pathTo = userModel
             ? pathFrom === PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN && location.search && location.search.indexOf(urlNextQuery) !== -1
                 ? getUrlNext()
-                : userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN)
-                    ? PATH_APP_PAGE_SECURE_ADMIN_DASHBOARD
-                    : userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER)
-                        ? PATH_APP_PAGE_SECURE_OWNER_DASHBOARD
-                        : userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN)
-                            ? PATH_APP_PAGE_SECURE_SALESMAN_DASHBOARD
-                            : userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER)
-                                ? PATH_APP_PAGE_SECURE_PROJECT_MANAGER_DASHBOARD
-                                : PATH_APP_PAGE_SECURE
+                : userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER)
+                    ? PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD
+                    : PATH_APP_PAGE_SECURE
             : pathFrom === PATH_APP || pathFrom === PATH_APP_PAGE || pathFrom === PATH_APP_PAGE_SECURE || pathFrom === PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN || pathFrom === PATH_APP_PAGE_SECURE_ACCOUNT_CURRENT_SIGN_OUT
                 ? `${PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN}`
                 : `${PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN}?${urlNextQuery}${pathFrom}`
@@ -108,7 +93,7 @@ export const SecurityLayoutCurrentUser = React.memo(
         const userModel = contextUser.getUser()
         const userModelUserGroupList = userModel && userModel.userGroupList ? [...userModel.userGroupList] : []
 
-        if (userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN) || userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER) || userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN) || userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER)) {
+        if (userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN) || userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER)) {
             return children
         } else {
             return null
@@ -130,41 +115,13 @@ export const SecurityLayoutCurrentUserAdmin = React.memo(
     }
 )
 
-export const SecurityLayoutCurrentUserOwner = React.memo(
+export const SecurityLayoutCurrentUserShelter = React.memo(
     ({children}) => {
         const contextUser = React.useContext(ContextUser)
         const userModel = contextUser.getUser()
         const userModelUserGroupList = userModel && userModel.userGroupList ? [...userModel.userGroupList] : []
 
-        if (userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER)) {
-            return children
-        } else {
-            return null
-        }
-    }
-)
-
-export const SecurityLayoutCurrentUserSalesman = React.memo(
-    ({children}) => {
-        const contextUser = React.useContext(ContextUser)
-        const userModel = contextUser.getUser()
-        const userModelUserGroupList = userModel && userModel.userGroupList ? [...userModel.userGroupList] : []
-
-        if (userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN)) {
-            return children
-        } else {
-            return null
-        }
-    }
-)
-
-export const SecurityLayoutCurrentUserProjectManager = React.memo(
-    ({children}) => {
-        const contextUser = React.useContext(ContextUser)
-        const userModel = contextUser.getUser()
-        const userModelUserGroupList = userModel && userModel.userGroupList ? [...userModel.userGroupList] : []
-
-        if (userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER)) {
+        if (userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER)) {
             return children
         } else {
             return null
@@ -250,20 +207,14 @@ const SecurityRouteCurrent = React.memo(
                                         await Auth.currentSession().then().catch()
                                         const cognitoUserGroupList = cognitoUser.signInUserSession && cognitoUser.signInUserSession.accessToken && cognitoUser.signInUserSession.accessToken.payload && cognitoUser.signInUserSession.accessToken.payload["cognito:groups"] ? [...cognitoUser.signInUserSession.accessToken.payload["cognito:groups"]] : []
                                         const dynamodbUserGroupList = []
-                                        for (const cognitoUserGroupForOf of [APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_OWNER, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_PROJECT_MANAGER]) {
+                                        for (const cognitoUserGroupForOf of [APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SHELTER]) {
                                             if (cognitoUserGroupList.includes(cognitoUserGroupForOf)) {
                                                 switch (cognitoUserGroupForOf) {
                                                     case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_ADMIN:
                                                         dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN)
                                                         break
-                                                    case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_OWNER:
-                                                        dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER)
-                                                        break
-                                                    case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SALESMAN:
-                                                        dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN)
-                                                        break
-                                                    case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_PROJECT_MANAGER:
-                                                        dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER)
+                                                    case APP_PAGE_SECURE_SECURITY_COGNITO_USER_GROUP_SHELTER:
+                                                        dynamodbUserGroupList.push(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER)
                                                         break
                                                     default:
                                                         break
@@ -575,7 +526,7 @@ const SecurityRouteCurrent = React.memo(
 export const SecurityRouteCurrentUser = React.memo(
     ({children, pathFrom}) => {
         return (
-            <SecurityRouteCurrent pathFrom={pathFrom} dynamodbUserGroupToCheckList={[APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER]}>
+            <SecurityRouteCurrent pathFrom={pathFrom} dynamodbUserGroupToCheckList={[APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN, APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER]}>
                 {children}
             </SecurityRouteCurrent>
         )
@@ -592,30 +543,10 @@ export const SecurityRouteCurrentUserAdmin = React.memo(
     }
 )
 
-export const SecurityRouteCurrentUserOwner = React.memo(
+export const SecurityRouteCurrentUserShelter = React.memo(
     ({children, pathFrom}) => {
         return (
-            <SecurityRouteCurrent pathFrom={pathFrom} dynamodbUserGroupToCheckList={[APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_OWNER]}>
-                {children}
-            </SecurityRouteCurrent>
-        )
-    }
-)
-
-export const SecurityRouteCurrentUserSalesman = React.memo(
-    ({children, pathFrom}) => {
-        return (
-            <SecurityRouteCurrent pathFrom={pathFrom} dynamodbUserGroupToCheckList={[APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SALESMAN]}>
-                {children}
-            </SecurityRouteCurrent>
-        )
-    }
-)
-
-export const SecurityRouteCurrentUserProjectManager = React.memo(
-    ({children, pathFrom}) => {
-        return (
-            <SecurityRouteCurrent pathFrom={pathFrom} dynamodbUserGroupToCheckList={[APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_PROJECT_MANAGER]}>
+            <SecurityRouteCurrent pathFrom={pathFrom} dynamodbUserGroupToCheckList={[APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER]}>
                 {children}
             </SecurityRouteCurrent>
         )

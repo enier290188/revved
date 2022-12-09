@@ -1,5 +1,25 @@
-type Todo @model {
-  id: ID!
-  name: String
-  description: String
+enum UserGroup {
+    ADMIN
+    SHELTER
+}
+
+type User
+@model
+@auth(
+    rules: [
+        {allow: groups, groups: ["Admin"], operations: [read, create, update, delete], provider: userPools},
+        {allow: groups, groups: ["Shelter"], operations: [read, create, update, delete], provider: userPools},
+        {allow: private, operations: [read], provider: userPools},
+        {allow: public, operations: [read], provider: iam}
+    ]
+) {
+    id: ID!
+    picture: String
+    email: String
+    name: String
+    userGroupList: [UserGroup]
+    cognitoUsername: String
+    cognitoUserStatus: String
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
 }

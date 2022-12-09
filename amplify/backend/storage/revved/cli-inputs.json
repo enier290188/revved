@@ -1,0 +1,15 @@
+{
+  "resourceName": "revved",
+  "policyUUID": "9bbc9eb4",
+  "bucketName": "revved",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ],
+  "triggerFunction": "NONE"
+}

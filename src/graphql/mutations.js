@@ -1,6 +1,14 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const revvedCognitoUserUpdatePasswordChange = /* GraphQL */ `
+  mutation RevvedCognitoUserUpdatePasswordChange(
+    $email: String
+    $password: String
+  ) {
+    revvedCognitoUserUpdatePasswordChange(email: $email, password: $password)
+  }
+`;
 export const createUser = /* GraphQL */ `
   mutation CreateUser(
     $input: CreateUserInput!

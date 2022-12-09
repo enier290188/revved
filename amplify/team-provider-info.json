@@ -15,6 +15,12 @@
       "auth": {
         "revved": {},
         "userPoolGroups": {}
+      },
+      "function": {
+        "revvedCognitoUserUpdatePasswordChange": {
+          "deploymentBucketName": "amplify-revved-main-202620-deployment",
+          "s3Key": "amplify-builds/revvedCognitoUserUpdatePasswordChange-30415331446650385674-build.zip"
+        }
       }
     }
   }

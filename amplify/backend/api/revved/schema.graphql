@@ -23,3 +23,8 @@ type User
     createdAt: AWSDateTime
     updatedAt: AWSDateTime
 }
+
+type Mutation {
+    revvedCognitoUserUpdatePasswordChange(email: String, password: String): AWSJSON
+        @function(name: "revvedCognitoUserUpdatePasswordChange-${env}")
+}

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "auth": {
+      "revved": [
+        "create",
+        "read"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

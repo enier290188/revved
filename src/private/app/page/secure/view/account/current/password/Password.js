@@ -3,7 +3,7 @@ import {API, graphqlOperation} from "aws-amplify"
 import React from "react"
 import {FormattedMessage} from "react-intl"
 import {Route, Routes} from "react-router"
-import {crmCognitoUserUpdatePasswordChange} from "../../../../../../../../graphql/mutations"
+import {revvedCognitoUserUpdatePasswordChange} from "../../../../../../../../graphql/mutations"
 import {PATH_APP_PAGE_SECURE_ACCOUNT_CURRENT_PASSWORD} from "../../../../../../../setting/path/app/page/secure/account/current/password"
 import {Context as ContextAlert} from "../../../../../../context/Alert"
 import {Context as ContextUser} from "../../../../../../context/User"
@@ -241,9 +241,9 @@ const View = React.memo(
                         const userLoggedInModel = dataUserLoggedInModel.instance
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel) {
                             try {
-                                const responseCrmCognitoUserUpdatePasswordChange = await API.graphql(graphqlOperation(crmCognitoUserUpdatePasswordChange, {email: userLoggedInModel.email, password: data.password}))
-                                const jsonCrmCognitoUserUpdatePasswordChange = JSON.parse(responseCrmCognitoUserUpdatePasswordChange.data.crmCognitoUserUpdatePasswordChange)
-                                if (jsonCrmCognitoUserUpdatePasswordChange._response.success === true) {
+                                const responseRevvedCognitoUserUpdatePasswordChange = await API.graphql(graphqlOperation(revvedCognitoUserUpdatePasswordChange, {email: userLoggedInModel.email, password: data.password}))
+                                const jsonRevvedCognitoUserUpdatePasswordChange = JSON.parse(responseRevvedCognitoUserUpdatePasswordChange.data.revvedCognitoUserUpdatePasswordChange)
+                                if (jsonRevvedCognitoUserUpdatePasswordChange._response.success === true) {
                                     return {
                                         _response: {
                                             success: true

@@ -10,6 +10,11 @@
       "StackName": "amplify-revved-main-202620",
       "StackId": "arn:aws:cloudformation:us-east-1:279196095265:stack/amplify-revved-main-202620/940617c0-7736-11ed-b840-0e74c018307b",
       "AmplifyAppId": "dznpace98i07n"
+    },
+    "categories": {
+      "auth": {
+        "revved": {}
+      }
     }
   }
 }

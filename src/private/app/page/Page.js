@@ -1,5 +1,18 @@
 import React from "react"
-import {Page} from "./page/Page"
+import {Navigate, Routes, Route} from "react-router"
+import {BrowserRouter} from "react-router-dom"
+import {PATH_APP} from "../../setting/path/app"
+import {PATH_APP_PAGE} from "../../setting/path/app/page"
+import {PATH_APP_PAGE_GUEST} from "../../setting/path/app/page/guest"
+import {PATH_APP_PAGE_SECURE} from "../../setting/path/app/page/secure"
+import {PATH_APP_PAGE_SECURE_ERROR_404} from "../../setting/path/app/page/secure/error/404"
+import {Wrapper as WrapperContextAlert} from "../context/Alert"
+import {Wrapper as WrapperContextDrawer} from "../context/Drawer"
+import {Wrapper as WrapperContextI18n} from "../context/I18n"
+import {Wrapper as WrapperContextUser} from "../context/User"
+import {Guest as PageGuest} from "./guest/Guest"
+import {Secure as PageSecure} from "./secure/Secure"
+import {SecurityNavigateToIndex} from "./secure/security"
 
 const STEP_RETURN_INITIAL = "step-return-initial"
 const STEP_RETURN_SUCCESS = "step-return-success"
@@ -12,7 +25,7 @@ const STEP_EFFECT_REFRESH_THEN_ERROR = "step-effect-refresh-then-error"
 const STEP_EFFECT_REFRESH_ERROR = "step-effect-refresh-error"
 const STEP_EFFECT_DEFAULT = "step-effect-default"
 
-export const App = React.memo(
+export const Page = React.memo(
     () => {
         const [
             {
@@ -170,7 +183,7 @@ export const App = React.memo(
                         )
                         break
                     default:
-                        console.log("App")
+                        console.log("Page")
                         break
                 }
 
@@ -190,7 +203,24 @@ export const App = React.memo(
                 return null
             case STEP_RETURN_SUCCESS:
                 return (
-                    <Page/>
+                    <WrapperContextUser>
+                        <WrapperContextI18n>
+                            <WrapperContextDrawer>
+                                <WrapperContextAlert>
+                                    <BrowserRouter>
+                                        <Routes>
+                                            <Route path={`/`} element={<SecurityNavigateToIndex pathFrom={`/`}/>}/>
+                                            <Route path={`${PATH_APP}`} element={<SecurityNavigateToIndex pathFrom={`${PATH_APP}`}/>}/>
+                                            <Route path={`${PATH_APP_PAGE}`} element={<SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE}`}/>}/>
+                                            <Route path={`${PATH_APP_PAGE_GUEST}*`} element={<PageGuest/>}/>
+                                            <Route path={`${PATH_APP_PAGE_SECURE}*`} element={<PageSecure/>}/>
+                                            <Route path={`*`} element={<Navigate to={PATH_APP_PAGE_SECURE_ERROR_404} replace={true}/>}/>
+                                        </Routes>
+                                    </BrowserRouter>
+                                </WrapperContextAlert>
+                            </WrapperContextDrawer>
+                        </WrapperContextI18n>
+                    </WrapperContextUser>
                 )
             case STEP_RETURN_ERROR:
                 return null

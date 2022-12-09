@@ -1,0 +1,13 @@
+{
+  "app.page.secure.view.account.current.picture": "Imagen",
+  "app.page.secure.view.account.current.picture.field.picture.label": "Buscar",
+  "app.page.secure.view.account.current.picture.action.submit": "Guardar",
+  "app.page.secure.view.account.current.picture.action.refresh": "Actualizar",
+  "app.page.secure.view.account.current.picture.alert.refresh.then.error": "Error al obtener datos.",
+  "app.page.secure.view.account.current.picture.alert.refresh.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.account.current.picture.alert.refresh.error": "Error al obtener datos.",
+  "app.page.secure.view.account.current.picture.alert.submit.then.success": "Usuario \"{name}\" se actualizó correctamente.",
+  "app.page.secure.view.account.current.picture.alert.submit.then.error": "Error al actualizar datos.",
+  "app.page.secure.view.account.current.picture.alert.submit.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.account.current.picture.alert.submit.error": "Error al actualizar datos."
+}

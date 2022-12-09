@@ -1,0 +1,4 @@
+{
+  "app.util.graphql.error.ERROR_INTERNET_DISCONNECTED": "Network Error",
+  "app.util.graphql.error.ERROR_UNAUTHORIZED": "Unauthorized"
+}

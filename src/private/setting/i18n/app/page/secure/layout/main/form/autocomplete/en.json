@@ -1,0 +1,8 @@
+{
+  "app.page.secure.layout.main.form.autocomplete.create.label": "Create",
+  "app.page.secure.layout.main.form.autocomplete.create.value": "\"{optionLabel}\"",
+  "app.page.secure.layout.main.form.autocomplete.no-options": "No options...",
+  "app.page.secure.layout.main.form.autocomplete.clear": "Clear",
+  "app.page.secure.layout.main.form.autocomplete.open": "Open",
+  "app.page.secure.layout.main.form.autocomplete.close": "Close"
+}

@@ -1,0 +1,14 @@
+{
+  "app.page.secure.view.account.current.password": "Password",
+  "app.page.secure.view.account.current.password.field.new-password.label": "New Password",
+  "app.page.secure.view.account.current.password.field.confirm-new-password.label": "Confirm New Password",
+  "app.page.secure.view.account.current.password.action.submit": "Save",
+  "app.page.secure.view.account.current.password.action.refresh": "Refresh",
+  "app.page.secure.view.account.current.password.alert.refresh.then.error": "Error fetching data.",
+  "app.page.secure.view.account.current.password.alert.refresh.then.warning": "Data not found.",
+  "app.page.secure.view.account.current.password.alert.refresh.error": "Error fetching data.",
+  "app.page.secure.view.account.current.password.alert.submit.then.success": "User \"{name}\" was updated successfully.",
+  "app.page.secure.view.account.current.password.alert.submit.then.error": "Error updating data.",
+  "app.page.secure.view.account.current.password.alert.submit.then.warning": "Data not found.",
+  "app.page.secure.view.account.current.password.alert.submit.error": "Error updating data."
+}

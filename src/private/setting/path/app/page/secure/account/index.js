@@ -1,0 +1,4 @@
+import {PATH_APP_PAGE_SECURE} from "../index"
+
+export const SLUG_APP_PAGE_SECURE_ACCOUNT = "account/"
+export const PATH_APP_PAGE_SECURE_ACCOUNT = `${PATH_APP_PAGE_SECURE}${SLUG_APP_PAGE_SECURE_ACCOUNT}`

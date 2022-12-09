@@ -1,0 +1,6 @@
+{
+  "app.page.secure.layout.main.table.label-rows-per-page": "Filas por página:",
+  "app.page.secure.layout.main.table.label-from-to-of-count": "{from}-{to} de {count}",
+  "app.page.secure.layout.main.table.type.time-month.plural": "{value} meses",
+  "app.page.secure.layout.main.table.type.time-month.single": "{value} mes"
+}

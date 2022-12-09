@@ -1,0 +1,13 @@
+{
+  "app.page.secure.view.account.current.sign-out": "Cerrar Sesión",
+  "app.page.secure.view.account.current.sign-out.question": "¿Le gustaría cerrar su sesión?",
+  "app.page.secure.view.account.current.sign-out.action.submit": "Cerrar Sesión",
+  "app.page.secure.view.account.current.sign-out.action.refresh": "Actualizar",
+  "app.page.secure.view.account.current.sign-out.alert.refresh.then.error": "Error al obtener datos.",
+  "app.page.secure.view.account.current.sign-out.alert.refresh.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.account.current.sign-out.alert.refresh.error": "Error al obtener datos.",
+  "app.page.secure.view.account.current.sign-out.alert.submit.then.success": "Usuario \"{name}\" se cerró su sesión correctamente.",
+  "app.page.secure.view.account.current.sign-out.alert.submit.then.error": "Error al actualizar datos.",
+  "app.page.secure.view.account.current.sign-out.alert.submit.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.account.current.sign-out.alert.submit.error": "Error al actualizar datos."
+}

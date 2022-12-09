@@ -1,0 +1,13 @@
+{
+  "app.page.secure.view.account.current.picture": "Picture",
+  "app.page.secure.view.account.current.picture.field.picture.label": "Search",
+  "app.page.secure.view.account.current.picture.action.submit": "Save",
+  "app.page.secure.view.account.current.picture.action.refresh": "Refresh",
+  "app.page.secure.view.account.current.picture.alert.refresh.then.error": "Error fetching data.",
+  "app.page.secure.view.account.current.picture.alert.refresh.then.warning": "Data not found.",
+  "app.page.secure.view.account.current.picture.alert.refresh.error": "Error fetching data.",
+  "app.page.secure.view.account.current.picture.alert.submit.then.success": "User \"{name}\" was updated successfully.",
+  "app.page.secure.view.account.current.picture.alert.submit.then.error": "Error updating data.",
+  "app.page.secure.view.account.current.picture.alert.submit.then.warning": "Data not found.",
+  "app.page.secure.view.account.current.picture.alert.submit.error": "Error updating data."
+}

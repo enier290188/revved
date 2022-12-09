@@ -1,0 +1,6 @@
+{
+  "app.page.secure.layout.main.table.label-rows-per-page": "Rows per page:",
+  "app.page.secure.layout.main.table.label-from-to-of-count": "{from}-{to} of {count}",
+  "app.page.secure.layout.main.table.type.time-month.plural": "{value} months",
+  "app.page.secure.layout.main.table.type.time-month.single": "{value} month"
+}

@@ -1,0 +1,14 @@
+{
+  "app.page.secure.view.account.current.info": "Información",
+  "app.page.secure.view.account.current.info.field.email.label": "Correo",
+  "app.page.secure.view.account.current.info.field.name.label": "Nombre",
+  "app.page.secure.view.account.current.info.action.submit": "Guardar",
+  "app.page.secure.view.account.current.info.action.refresh": "Actualizar",
+  "app.page.secure.view.account.current.info.alert.refresh.then.error": "Error al obtener datos.",
+  "app.page.secure.view.account.current.info.alert.refresh.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.account.current.info.alert.refresh.error": "Error al obtener datos.",
+  "app.page.secure.view.account.current.info.alert.submit.then.success": "Usuario \"{name}\" se actualizó correctamente.",
+  "app.page.secure.view.account.current.info.alert.submit.then.error": "Error al actualizar datos.",
+  "app.page.secure.view.account.current.info.alert.submit.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.account.current.info.alert.submit.error": "Error al actualizar datos."
+}

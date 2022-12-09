@@ -1,0 +1,6 @@
+{
+  "app.page.secure.layout.alert.error": "Error",
+  "app.page.secure.layout.alert.info": "Info",
+  "app.page.secure.layout.alert.success": "Success",
+  "app.page.secure.layout.alert.warning": "Warning"
+}

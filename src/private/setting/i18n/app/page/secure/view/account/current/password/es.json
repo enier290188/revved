@@ -1,0 +1,14 @@
+{
+  "app.page.secure.view.account.current.password": "Contraseña",
+  "app.page.secure.view.account.current.password.field.new-password.label": "Nueva Contraseña",
+  "app.page.secure.view.account.current.password.field.confirm-new-password.label": "Confirmar Nueva Contraseña",
+  "app.page.secure.view.account.current.password.action.submit": "Guardar",
+  "app.page.secure.view.account.current.password.action.refresh": "Actualizar",
+  "app.page.secure.view.account.current.password.alert.refresh.then.error": "Error al obtener datos.",
+  "app.page.secure.view.account.current.password.alert.refresh.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.account.current.password.alert.refresh.error": "Error al obtener datos.",
+  "app.page.secure.view.account.current.password.alert.submit.then.success": "Usuario \"{name}\" se actualizó correctamente.",
+  "app.page.secure.view.account.current.password.alert.submit.then.error": "Error al actualizar datos.",
+  "app.page.secure.view.account.current.password.alert.submit.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.account.current.password.alert.submit.error": "Error al actualizar datos."
+}

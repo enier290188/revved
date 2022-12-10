@@ -1,6 +1,5 @@
 {
   "app.page.secure.view.shelter.adopter.update": "Modificar Adoptante",
-  "app.page.secure.view.shelter.adopter.update.field.user.label": "Dueño",
   "app.page.secure.view.shelter.adopter.update.field.name.label": "Nombre",
   "app.page.secure.view.shelter.adopter.update.field.email.label": "Correo",
   "app.page.secure.view.shelter.adopter.update.field.email.help": "correo@dominio.com",

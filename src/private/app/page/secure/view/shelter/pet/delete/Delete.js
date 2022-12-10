@@ -3,11 +3,11 @@ import {Storage} from "aws-amplify"
 import React from "react"
 import {FormattedMessage} from "react-intl"
 import {Route, Routes, useParams} from "react-router"
-import {PATH_APP_PAGE_SECURE_SHELTER_ADOPTER} from "../../../../../../../setting/path/app/page/secure/shelter/adopter"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/comment"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/delete"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/update"
-import {STORAGE_APP_ADOPTER} from "../../../../../../../setting/storage/app"
+import {PATH_APP_PAGE_SECURE_SHELTER_PET} from "../../../../../../../setting/path/app/page/secure/shelter/pet"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_COMMENT} from "../../../../../../../setting/path/app/page/secure/shelter/pet/comment"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_DELETE} from "../../../../../../../setting/path/app/page/secure/shelter/pet/delete"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE} from "../../../../../../../setting/path/app/page/secure/shelter/pet/update"
+import {STORAGE_APP_PET} from "../../../../../../../setting/storage/app"
 import {Context as ContextAlert} from "../../../../../../context/Alert"
 import {Context as ContextUser} from "../../../../../../context/User"
 import * as AppUtilGraphql from "../../../../../../util/graphql"
@@ -54,7 +54,7 @@ const STEP_EFFECT_DEFAULT = "step-effect-default"
 
 const View = React.memo(
     () => {
-        const {paramAdopterId} = useParams()
+        const {paramPetId} = useParams()
         const contextUser = React.useContext(ContextUser)
         const contextAlert = React.useContext(ContextAlert)
         const [
@@ -62,7 +62,7 @@ const View = React.memo(
                 stepReturn,
                 stepEffect,
                 stepIsSubmitting,
-                instanceAdopter
+                instancePet
             },
             setState
         ] = React.useState(
@@ -70,7 +70,7 @@ const View = React.memo(
                 stepReturn: STEP_RETURN_INITIAL,
                 stepEffect: STEP_EFFECT_INITIAL,
                 stepIsSubmitting: false,
-                instanceAdopter: null
+                instancePet: null
             }
         )
         const isComponentMountedRef = React.useRef(true)
@@ -103,11 +103,11 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataAdopterModel = await AppUtilGraphql.getModel(
+                        const dataPetModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getAdopter",
-                                    id: paramAdopterId,
+                                    name: "getPet",
+                                    id: paramPetId,
                                     itemList: [
                                         {
                                             key: "name",
@@ -117,26 +117,26 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataPetModel._response.error && dataPetModel._response.errorType) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const adopterModel = dataAdopterModel.instance
+                        const petModel = dataPetModel.instance
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
-                            const instanceAdopter = {
-                                id: adopterModel.id,
-                                name: adopterModel.name
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petModel) {
+                            const instancePet = {
+                                id: petModel.id,
+                                name: petModel.name
                             }
                             return {
                                 _response: {
                                     success: true
                                 },
-                                instanceAdopter: instanceAdopter
+                                instancePet: instancePet
                             }
                         } else {
                             let warningType = null
@@ -165,7 +165,7 @@ const View = React.memo(
                 }
             },
             [
-                paramAdopterId,
+                paramPetId,
                 contextUser
             ]
         )
@@ -198,11 +198,11 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataAdopterModel = await AppUtilGraphql.getModel(
+                        const dataPetModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getAdopter",
-                                    id: paramAdopterId,
+                                    name: "getPet",
+                                    id: paramPetId,
                                     itemList: [
                                         {
                                             key: "name",
@@ -212,20 +212,20 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataPetModel._response.error && dataPetModel._response.errorType) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const adopterModel = dataAdopterModel.instance
+                        const petModel = dataPetModel.instance
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petModel) {
                             try {
                                 const storageObjectList = await Storage.list(
-                                    `${STORAGE_APP_ADOPTER}${adopterModel.id}/`,
+                                    `${STORAGE_APP_PET}${petModel.id}/`,
                                     {
                                         level: "public"
                                     }
@@ -247,11 +247,11 @@ const View = React.memo(
                                 }
                             } catch (e) {
                             }
-                            const dataAdopterDeletedModel = await AppUtilGraphql.deleteModel(
+                            const dataPetDeletedModel = await AppUtilGraphql.deleteModel(
                                 {
                                     query: {
-                                        name: "deleteAdopter",
-                                        id: adopterModel.id,
+                                        name: "deletePet",
+                                        id: petModel.id,
                                         itemList: [
                                             {
                                                 key: "name",
@@ -259,31 +259,31 @@ const View = React.memo(
                                             }
                                         ],
                                         input: {
-                                            _version: adopterModel._version
+                                            _version: petModel._version
                                         }
                                     }
                                 }
                             )
-                            if (dataAdopterDeletedModel._response.error && dataAdopterDeletedModel._response.errorType) {
-                                if (dataAdopterDeletedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                            if (dataPetDeletedModel._response.error && dataPetDeletedModel._response.errorType) {
+                                if (dataPetDeletedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                     ERROR_INTERNET_DISCONNECTED = true
                                 }
-                                if (dataAdopterDeletedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                                if (dataPetDeletedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                     ERROR_UNAUTHORIZED = true
                                 }
                             }
-                            const adopterDeletedModel = dataAdopterDeletedModel.instance
+                            const petDeletedModel = dataPetDeletedModel.instance
 
-                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterDeletedModel) {
-                                const instanceAdopter = {
-                                    id: adopterDeletedModel.id,
-                                    name: adopterDeletedModel.name
+                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petDeletedModel) {
+                                const instancePet = {
+                                    id: petDeletedModel.id,
+                                    name: petDeletedModel.name
                                 }
                                 return {
                                     _response: {
                                         success: true
                                     },
-                                    instanceAdopter: instanceAdopter
+                                    instancePet: instancePet
                                 }
                             } else {
                                 let warningType = null
@@ -327,7 +327,7 @@ const View = React.memo(
                 }
             },
             [
-                paramAdopterId,
+                paramPetId,
                 contextUser
             ]
         )
@@ -427,7 +427,7 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_REFRESH_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceAdopter: data.instanceAdopter
+                                                            instancePet: data.instancePet
                                                         }
                                                     )
                                                 )
@@ -460,7 +460,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.delete.alert.refresh.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.delete.alert.refresh.then.warning"}})
                                                 }
                                             }
                                         }
@@ -475,7 +475,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.delete.alert.refresh.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.delete.alert.refresh.then.error"}})
                                         }
                                     }
                                 }
@@ -492,7 +492,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.delete.alert.refresh.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.delete.alert.refresh.error"}})
                     }
                 }
             },
@@ -558,11 +558,11 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_SUBMIT_IS_SUBMITTING_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceAdopter: data.instanceAdopter
+                                                            instancePet: data.instancePet
                                                         }
                                                     )
                                                 )
-                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.delete.alert.submit.then.success", values: {name: data.instanceAdopter.name}}})
+                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.pet.delete.alert.submit.then.success", values: {name: data.instancePet.name}}})
                                             }
                                         } else {
                                             if (isComponentMountedRef.current === true) {
@@ -592,7 +592,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.delete.alert.submit.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.delete.alert.submit.then.warning"}})
                                                 }
                                             }
                                         }
@@ -607,7 +607,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.delete.alert.submit.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.delete.alert.submit.then.error"}})
                                         }
                                     }
                                 }
@@ -624,7 +624,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.delete.alert.submit.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.delete.alert.submit.error"}})
                     }
                 }
             },
@@ -783,7 +783,7 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"delete"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.delete"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"delete"} text1={<FormattedMessage id={"app.page.secure.view.shelter.pet.delete"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                     </LayoutPaperTitle>
@@ -812,13 +812,13 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"delete"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.delete"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"delete"} text1={<FormattedMessage id={"app.page.secure.view.shelter.pet.delete"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                         <LayoutPaperTitleRight>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}
+                                                    url={PATH_APP_PAGE_SECURE_SHELTER_PET}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     variant={"contained"}
@@ -840,7 +840,7 @@ const View = React.memo(
                                                         <FormattedMessage id={"app.page.secure.layout.alert.warning"}/>
                                                     </MuiAlertTitle>
                                                     <MuiTypography component={"p"} variant={"body1"}>
-                                                        <FormattedMessage id={"app.page.secure.view.shelter.adopter.delete.question"} values={{name: instanceAdopter.name}}/>
+                                                        <FormattedMessage id={"app.page.secure.view.shelter.pet.delete.question"} values={{name: instancePet.name}}/>
                                                     </MuiTypography>
                                                 </MuiAlert>
                                             </MuiBox>
@@ -859,7 +859,7 @@ const View = React.memo(
                                                     color={"error"}
                                                     size={"small"}
                                                     iconFont={"delete"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.delete.action.submit"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.delete.action.submit"}/>}
                                                     handleOnClick={handleSubmit}
                                                 />
                                             </MuiBox>
@@ -869,7 +869,7 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"update"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.delete.action.refresh"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.delete.action.refresh"}/>}
                                                     handleOnClick={handleRefresh}
                                                 />
                                             </MuiBox>
@@ -877,22 +877,22 @@ const View = React.memo(
                                         <LayoutPaperActionRight>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_PET}${paramPetId}/${SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"edit"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.delete.action.update"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.delete.action.update"}/>}
                                                 />
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_PET}${paramPetId}/${SLUG_APP_PAGE_SECURE_SHELTER_PET_COMMENT}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"comment"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.delete.action.comment"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.delete.action.comment"}/>}
                                                 />
                                             </MuiBox>
                                         </LayoutPaperActionRight>
@@ -903,11 +903,11 @@ const View = React.memo(
                     </React.Fragment>
                 )
             case STEP_RETURN_SUCCESS_SECURITY_NAVIGATE_TO_LIST:
-                return <SecurityNavigateToPath path={PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}/>
+                return <SecurityNavigateToPath path={PATH_APP_PAGE_SECURE_SHELTER_PET}/>
             case STEP_RETURN_SECURITY_NAVIGATE_TO_PATH_ERROR_404:
                 return <SecurityNavigateToPathError404/>
             case STEP_RETURN_SECURITY_NAVIGATE_TO_INDEX:
-                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE}`}/>
+                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_PET}${paramPetId}/${SLUG_APP_PAGE_SECURE_SHELTER_PET_DELETE}`}/>
             default:
                 return null
         }

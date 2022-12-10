@@ -14,7 +14,6 @@ import {Button as LayoutButton} from "../../../../layout/main/button/Button"
 import {NavLinkButton as LayoutNavLinkButton} from "../../../../layout/main/button/NavLinkButton"
 import {Container as LayoutContainer} from "../../../../layout/main/container/Container"
 import {Dialog as LayoutDialog} from "../../../../layout/main/dialog/Dialog"
-import {Autocomplete as LayoutAutocomplete} from "../../../../layout/main/form/autocomplete/Autocomplete"
 import {AutocompleteGoogleAddress as LayoutAutocompleteGoogleAddress} from "../../../../layout/main/form/autocomplete/AutocompleteGoogleAddress"
 import {AutocompleteGoogleAddressMap as LayoutAutocompleteGoogleAddressMap} from "../../../../layout/main/form/autocomplete/AutocompleteGoogleAddressMap"
 import {TextField as LayoutTextField} from "../../../../layout/main/form/text-field/TextField"
@@ -63,8 +62,7 @@ const View = React.memo(
                 stepReturn,
                 stepEffect,
                 stepIsSubmitting,
-                instanceContact,
-                fieldUser,
+                instanceAdopter,
                 fieldName,
                 fieldEmail,
                 fieldPhone,
@@ -78,12 +76,7 @@ const View = React.memo(
                 stepReturn: STEP_RETURN_INITIAL,
                 stepEffect: STEP_EFFECT_INITIAL,
                 stepIsSubmitting: false,
-                instanceContact: null,
-                fieldUser: {
-                    value: {},
-                    valueList: [],
-                    error: null
-                },
+                instanceAdopter: null,
                 fieldName: {
                     value: "",
                     error: null
@@ -124,10 +117,6 @@ const View = React.memo(
         )
         const isComponentMountedRef = React.useRef(true)
 
-        const fieldUserValidate = (value) => {
-            return AppUtilForm.validateField(value && value.id ? value.id : "", [["fieldRequired"]])
-        }
-
         const fieldNameValidate = (value) => {
             return AppUtilForm.validateField(value, [["fieldRequired"], ["fieldMaxLength", 32]])
         }
@@ -147,64 +136,6 @@ const View = React.memo(
         const fieldLanguageValidate = (value) => {
             return AppUtilForm.validateField(value, [["fieldRequired"]])
         }
-
-        const handleFieldUserSearch = React.useCallback(
-            async (search) => {
-                try {
-                    if (search && typeof search === "string" && search.trim() !== "") {
-                        if (isComponentMountedRef.current === true) {
-                            setState(
-                                (oldState) => (
-                                    {
-                                        ...oldState
-                                    }
-                                )
-                            )
-                        }
-                    } else {
-                        if (isComponentMountedRef.current === true) {
-                            setState(
-                                (oldState) => (
-                                    {
-                                        ...oldState,
-                                        fieldUser: {
-                                            ...oldState.fieldUser,
-                                            value: {},
-                                            error: fieldUserValidate({})
-                                        }
-                                    }
-                                )
-                            )
-                        }
-                    }
-                } catch (e) {
-                }
-            },
-            []
-        )
-
-        const handleFieldUserChanged = React.useCallback(
-            async (value) => {
-                try {
-                    if (isComponentMountedRef.current === true) {
-                        setState(
-                            (oldState) => (
-                                {
-                                    ...oldState,
-                                    fieldUser: {
-                                        ...oldState.fieldUser,
-                                        value: value,
-                                        error: fieldUserValidate(value)
-                                    }
-                                }
-                            )
-                        )
-                    }
-                } catch (e) {
-                }
-            },
-            []
-        )
 
         const fieldNameHandleOnChange = React.useCallback(
             ({target: {value}}) => {
@@ -533,8 +464,8 @@ const View = React.memo(
                         const userModelList = dataUserModelList.instanceList
 
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId) {
-                            const contactModelUser = {}
-                            const contactModelUserList = []
+                            const adopterModelUser = {}
+                            const adopterModelUserList = []
                             try {
                                 for (const userModelForOf of userModelList) {
                                     const userModelForOfDict = {
@@ -542,15 +473,15 @@ const View = React.memo(
                                         label: userModelForOf.name
                                     }
                                     if (userModelForOf.id === userLoggedInModel.id) {
-                                        contactModelUser["id"] = userModelForOfDict.id
-                                        contactModelUser["label"] = userModelForOfDict.label
+                                        adopterModelUser["id"] = userModelForOfDict.id
+                                        adopterModelUser["label"] = userModelForOfDict.label
                                     }
-                                    contactModelUserList.push(userModelForOfDict)
+                                    adopterModelUserList.push(userModelForOfDict)
                                 }
                             } catch (e) {
                             }
-                            const contactModelAddress = {}
-                            const instanceContact = {
+                            const adopterModelAddress = {}
+                            const instanceAdopter = {
                                 id: null,
                                 name: "",
                                 email: "",
@@ -561,13 +492,13 @@ const View = React.memo(
                                 _response: {
                                     success: true
                                 },
-                                instanceContact: instanceContact,
+                                instanceAdopter: instanceAdopter,
                                 fieldUser: {
-                                    value: contactModelUser,
-                                    valueList: contactModelUserList
+                                    value: adopterModelUser,
+                                    valueList: adopterModelUserList
                                 },
                                 fieldAddress: {
-                                    value: contactModelAddress,
+                                    value: adopterModelAddress,
                                     valueList: []
                                 }
                             }
@@ -714,10 +645,10 @@ const View = React.memo(
                                 }
                             } catch (e) {
                             }
-                            const dataContactCreatedModel = await AppUtilGraphql.createModel(
+                            const dataAdopterCreatedModel = await AppUtilGraphql.createModel(
                                 {
                                     query: {
-                                        name: "createContact",
+                                        name: "createAdopter",
                                         itemList: [
                                             {
                                                 key: "companyId",
@@ -760,65 +691,65 @@ const View = React.memo(
                                     }
                                 }
                             )
-                            if (dataContactCreatedModel._response.error && dataContactCreatedModel._response.errorType) {
-                                if (dataContactCreatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                            if (dataAdopterCreatedModel._response.error && dataAdopterCreatedModel._response.errorType) {
+                                if (dataAdopterCreatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                     ERROR_INTERNET_DISCONNECTED = true
                                 }
-                                if (dataContactCreatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                                if (dataAdopterCreatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                     ERROR_UNAUTHORIZED = true
                                 }
                             }
-                            const contactCreatedModel = dataContactCreatedModel.instance
+                            const adopterCreatedModel = dataAdopterCreatedModel.instance
 
-                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId && contactCreatedModel && companyModel.id === contactCreatedModel.companyId) {
-                                const contactCreatedModelUser = {}
-                                const contactCreatedModelUserList = []
+                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId && adopterCreatedModel && companyModel.id === adopterCreatedModel.companyId) {
+                                const adopterCreatedModelUser = {}
+                                const adopterCreatedModelUserList = []
                                 try {
                                     for (const userModelForOf of userModelList) {
                                         const userModelForOfDict = {
                                             id: userModelForOf.id,
                                             label: userModelForOf.name
                                         }
-                                        if (userModelForOf.id === contactCreatedModel.userId) {
-                                            contactCreatedModelUser["id"] = userModelForOfDict.id
-                                            contactCreatedModelUser["label"] = userModelForOfDict.label
+                                        if (userModelForOf.id === adopterCreatedModel.userId) {
+                                            adopterCreatedModelUser["id"] = userModelForOfDict.id
+                                            adopterCreatedModelUser["label"] = userModelForOfDict.label
                                         }
-                                        contactCreatedModelUserList.push(userModelForOfDict)
+                                        adopterCreatedModelUserList.push(userModelForOfDict)
                                     }
                                 } catch (e) {
                                 }
-                                const contactUpdatedModelAddress = {}
+                                const adopterUpdatedModelAddress = {}
                                 try {
-                                    const jsonParse = JSON.parse(contactCreatedModel.address)
+                                    const jsonParse = JSON.parse(adopterCreatedModel.address)
                                     if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                        contactUpdatedModelAddress.id = jsonParse.id
-                                        contactUpdatedModelAddress.lat = jsonParse.lat
-                                        contactUpdatedModelAddress.lng = jsonParse.lng
-                                        contactUpdatedModelAddress.zoom = jsonParse.zoom
-                                        contactUpdatedModelAddress.label = jsonParse.label
-                                        contactUpdatedModelAddress.mainText = jsonParse.mainText
-                                        contactUpdatedModelAddress.secondaryText = jsonParse.secondaryText
+                                        adopterUpdatedModelAddress.id = jsonParse.id
+                                        adopterUpdatedModelAddress.lat = jsonParse.lat
+                                        adopterUpdatedModelAddress.lng = jsonParse.lng
+                                        adopterUpdatedModelAddress.zoom = jsonParse.zoom
+                                        adopterUpdatedModelAddress.label = jsonParse.label
+                                        adopterUpdatedModelAddress.mainText = jsonParse.mainText
+                                        adopterUpdatedModelAddress.secondaryText = jsonParse.secondaryText
                                     }
                                 } catch (e) {
                                 }
-                                const instanceContactCreated = {
-                                    id: contactCreatedModel.id,
-                                    name: contactCreatedModel.name,
-                                    email: contactCreatedModel.email,
-                                    phone: contactCreatedModel.phone,
-                                    language: contactCreatedModel.language
+                                const instanceAdopterCreated = {
+                                    id: adopterCreatedModel.id,
+                                    name: adopterCreatedModel.name,
+                                    email: adopterCreatedModel.email,
+                                    phone: adopterCreatedModel.phone,
+                                    language: adopterCreatedModel.language
                                 }
                                 return {
                                     _response: {
                                         success: true
                                     },
-                                    instanceContact: instanceContactCreated,
+                                    instanceAdopter: instanceAdopterCreated,
                                     fieldUser: {
-                                        value: contactCreatedModelUser,
-                                        valueList: contactCreatedModelUserList
+                                        value: adopterCreatedModelUser,
+                                        valueList: adopterCreatedModelUserList
                                     },
                                     fieldAddress: {
-                                        value: contactUpdatedModelAddress,
+                                        value: adopterUpdatedModelAddress,
                                         valueList: []
                                     }
                                 }
@@ -963,27 +894,21 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_REFRESH_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceContact: data.instanceContact,
-                                                            fieldUser: {
-                                                                ...oldState.fieldUser,
-                                                                value: data.fieldUser.value,
-                                                                valueList: data.fieldUser.valueList,
-                                                                error: fieldUserValidate(data.fieldUser.value)
-                                                            },
+                                                            instanceAdopter: data.instanceAdopter,
                                                             fieldName: {
                                                                 ...oldState.fieldName,
-                                                                value: data.instanceContact.name,
-                                                                error: fieldNameValidate(data.instanceContact.name)
+                                                                value: data.instanceAdopter.name,
+                                                                error: fieldNameValidate(data.instanceAdopter.name)
                                                             },
                                                             fieldEmail: {
                                                                 ...oldState.fieldEmail,
-                                                                value: data.instanceContact.email,
-                                                                error: fieldEmailValidate(data.instanceContact.email)
+                                                                value: data.instanceAdopter.email,
+                                                                error: fieldEmailValidate(data.instanceAdopter.email)
                                                             },
                                                             fieldPhone: {
                                                                 ...oldState.fieldPhone,
-                                                                value: data.instanceContact.phone,
-                                                                error: fieldPhoneValidate(data.instanceContact.phone)
+                                                                value: data.instanceAdopter.phone,
+                                                                error: fieldPhoneValidate(data.instanceAdopter.phone)
                                                             },
                                                             fieldAddress: {
                                                                 ...oldState.fieldAddress,
@@ -997,8 +922,8 @@ const View = React.memo(
                                                             },
                                                             fieldLanguage: {
                                                                 ...oldState.fieldLanguage,
-                                                                value: data.instanceContact.language,
-                                                                error: fieldLanguageValidate(data.instanceContact.language)
+                                                                value: data.instanceAdopter.language,
+                                                                error: fieldLanguageValidate(data.instanceAdopter.language)
                                                             }
                                                         }
                                                     )
@@ -1079,24 +1004,19 @@ const View = React.memo(
             async () => {
                 try {
                     if (stepEffect === STEP_EFFECT_SUBMIT) {
-                        const fieldUserError = fieldUserValidate(fieldUser.value)
                         const fieldNameError = fieldNameValidate(fieldName.value)
                         const fieldEmailError = fieldEmailValidate(fieldEmail.value)
                         const fieldPhoneError = fieldPhoneValidate(fieldPhone.value)
                         const fieldAddressError = fieldAddressValidate(fieldAddress.value)
                         const fieldLanguageError = fieldLanguageValidate(fieldLanguage.value)
 
-                        if (fieldUserError || fieldNameError || fieldEmailError || fieldPhoneError || fieldAddressError || fieldLanguageError) {
+                        if (fieldNameError || fieldEmailError || fieldPhoneError || fieldAddressError || fieldLanguageError) {
                             if (isComponentMountedRef.current === true) {
                                 setState(
                                     (oldState) => (
                                         {
                                             ...oldState,
                                             stepEffect: STEP_EFFECT_SUBMIT_WARNING,
-                                            fieldUser: {
-                                                ...oldState.fieldUser,
-                                                error: fieldUserError
-                                            },
                                             fieldName: {
                                                 ...oldState.fieldName,
                                                 error: fieldNameError
@@ -1140,7 +1060,6 @@ const View = React.memo(
             },
             [
                 stepEffect,
-                fieldUser.value,
                 fieldName.value,
                 fieldEmail.value,
                 fieldPhone.value,
@@ -1155,7 +1074,6 @@ const View = React.memo(
                     if (stepEffect === STEP_EFFECT_SUBMIT_IS_SUBMITTING && stepIsSubmitting === true && 0 === contextAlert.getAlertList().length) {
                         await submitData(
                             {
-                                user: fieldUser.value,
                                 name: fieldName.value,
                                 email: fieldEmail.value,
                                 phone: fieldPhone.value,
@@ -1174,27 +1092,21 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_SUBMIT_IS_SUBMITTING_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceContact: data.instanceContact,
-                                                            fieldUser: {
-                                                                ...oldState.fieldUser,
-                                                                value: data.fieldUser.value,
-                                                                valueList: data.fieldUser.valueList,
-                                                                error: fieldUserValidate(data.fieldUser.value)
-                                                            },
+                                                            instanceAdopter: data.instanceAdopter,
                                                             fieldName: {
                                                                 ...oldState.fieldName,
-                                                                value: data.instanceContact.name,
-                                                                error: fieldNameValidate(data.instanceContact.name)
+                                                                value: data.instanceAdopter.name,
+                                                                error: fieldNameValidate(data.instanceAdopter.name)
                                                             },
                                                             fieldEmail: {
                                                                 ...oldState.fieldEmail,
-                                                                value: data.instanceContact.email,
-                                                                error: fieldEmailValidate(data.instanceContact.email)
+                                                                value: data.instanceAdopter.email,
+                                                                error: fieldEmailValidate(data.instanceAdopter.email)
                                                             },
                                                             fieldPhone: {
                                                                 ...oldState.fieldPhone,
-                                                                value: data.instanceContact.phone,
-                                                                error: fieldPhoneValidate(data.instanceContact.phone)
+                                                                value: data.instanceAdopter.phone,
+                                                                error: fieldPhoneValidate(data.instanceAdopter.phone)
                                                             },
                                                             fieldAddress: {
                                                                 ...oldState.fieldAddress,
@@ -1208,13 +1120,13 @@ const View = React.memo(
                                                             },
                                                             fieldLanguage: {
                                                                 ...oldState.fieldLanguage,
-                                                                value: data.instanceContact.language,
-                                                                error: fieldLanguageValidate(data.instanceContact.language)
+                                                                value: data.instanceAdopter.language,
+                                                                error: fieldLanguageValidate(data.instanceAdopter.language)
                                                             }
                                                         }
                                                     )
                                                 )
-                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.create.alert.submit.then.success", values: {name: data.instanceContact.name}}})
+                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.create.alert.submit.then.success", values: {name: data.instanceAdopter.name}}})
                                             }
                                         } else {
                                             if (isComponentMountedRef.current === true) {
@@ -1284,7 +1196,6 @@ const View = React.memo(
                 contextAlert,
                 stepEffect,
                 stepIsSubmitting,
-                fieldUser.value,
                 fieldName.value,
                 fieldEmail.value,
                 fieldPhone.value,
@@ -1493,17 +1404,6 @@ const View = React.memo(
                                     <LayoutPaperContent>
                                         <LayoutPaperContentCenter maxWidth={"480px"}>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutAutocomplete
-                                                    disabled={stepIsSubmitting}
-                                                    required={true}
-                                                    iconFont={"person_pin"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.field.user.label"}/>}
-                                                    field={fieldUser}
-                                                    handleSearch={handleFieldUserSearch}
-                                                    handleChanged={handleFieldUserChanged}
-                                                />
-                                            </MuiBox>
-                                            <MuiBox component={"div"} p={1}>
                                                 <LayoutTextField
                                                     disabled={stepIsSubmitting}
                                                     required={true}
@@ -1572,7 +1472,7 @@ const View = React.memo(
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutButton
                                                     loading={stepIsSubmitting}
-                                                    disabled={stepIsSubmitting || Boolean(fieldUser.error) || Boolean(fieldName.error) || Boolean(fieldEmail.error) || Boolean(fieldPhone.error) || Boolean(fieldAddress.error) || Boolean(fieldLanguage.error)}
+                                                    disabled={stepIsSubmitting || Boolean(fieldName.error) || Boolean(fieldEmail.error) || Boolean(fieldPhone.error) || Boolean(fieldAddress.error) || Boolean(fieldLanguage.error)}
                                                     variant={"contained"}
                                                     size={"small"}
                                                     iconFont={"save"}
@@ -1598,7 +1498,7 @@ const View = React.memo(
                     </React.Fragment>
                 )
             case STEP_RETURN_SUCCESS_SECURITY_NAVIGATE_TO_UPDATE:
-                return <SecurityNavigateToPath path={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${instanceContact.id}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}/>
+                return <SecurityNavigateToPath path={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${instanceAdopter.id}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}/>
             case STEP_RETURN_SECURITY_NAVIGATE_TO_PATH_ERROR_404:
                 return <SecurityNavigateToPathError404/>
             case STEP_RETURN_SECURITY_NAVIGATE_TO_INDEX:

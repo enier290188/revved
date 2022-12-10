@@ -1,6 +1,5 @@
 {
   "app.page.secure.view.shelter.adopter.create": "Create Adopter",
-  "app.page.secure.view.shelter.adopter.create.field.user.label": "Owner",
   "app.page.secure.view.shelter.adopter.create.field.name.label": "Name",
   "app.page.secure.view.shelter.adopter.create.field.email.label": "Email",
   "app.page.secure.view.shelter.adopter.create.field.email.help": "email@domain.com",

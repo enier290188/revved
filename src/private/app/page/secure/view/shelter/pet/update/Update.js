@@ -84,7 +84,7 @@ const View = React.memo(
                 fieldOwnerPhone,
                 fieldOwnerAddress,
                 fieldOwnerAddressMap,
-                fieldLanguage
+                fieldOwnerLanguage
             },
             setState
         ] = React.useState(
@@ -124,7 +124,7 @@ const View = React.memo(
                 fieldOwnerAddressMap: {
                     value: {}
                 },
-                fieldLanguage: {
+                fieldOwnerLanguage: {
                     value: "",
                     valueList: [
                         {
@@ -159,14 +159,14 @@ const View = React.memo(
         }
 
         const fieldOwnerPhoneValidate = (value) => {
-            return AppUtilForm.validateField(value, [["fieldTypeOwnerPhone"]])
+            return AppUtilForm.validateField(value, [["fieldTypePhone"]])
         }
 
         const fieldOwnerAddressValidate = (value) => {
             return AppUtilForm.validateField(value && value.id ? value.id : "", [])
         }
 
-        const fieldLanguageValidate = (value) => {
+        const fieldOwnerLanguageValidate = (value) => {
             return AppUtilForm.validateField(value, [["fieldRequired"]])
         }
 
@@ -434,7 +434,7 @@ const View = React.memo(
             []
         )
 
-        const fieldLanguageHandleOnChange = React.useCallback(
+        const fieldOwnerLanguageHandleOnChange = React.useCallback(
             ({target: {value}}) => {
                 try {
                     if (isComponentMountedRef.current === true) {
@@ -442,10 +442,10 @@ const View = React.memo(
                             (oldState) => (
                                 {
                                     ...oldState,
-                                    fieldLanguage: {
-                                        ...oldState.fieldLanguage,
+                                    fieldOwnerLanguage: {
+                                        ...oldState.fieldOwnerLanguage,
                                         value: value,
-                                        error: fieldLanguageValidate(value)
+                                        error: fieldOwnerLanguageValidate(value)
                                     }
                                 }
                             )
@@ -516,7 +516,7 @@ const View = React.memo(
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_DICTIONARY
                                         },
                                         {
-                                            key: "language",
+                                            key: "ownerLanguage",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         }
                                     ]
@@ -588,7 +588,7 @@ const View = React.memo(
                                 ownerName: petModel.ownerName,
                                 ownerEmail: petModel.ownerEmail,
                                 ownerPhone: petModel.ownerPhone,
-                                language: petModel.language
+                                ownerLanguage: petModel.ownerLanguage
                             }
                             return {
                                 _response: {
@@ -694,7 +694,7 @@ const View = React.memo(
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_DICTIONARY
                                         },
                                         {
-                                            key: "language",
+                                            key: "ownerLanguage",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         }
                                     ]
@@ -781,7 +781,7 @@ const View = React.memo(
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_DICTIONARY
                                             },
                                             {
-                                                key: "language",
+                                                key: "ownerLanguage",
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                             }
                                         ],
@@ -792,7 +792,7 @@ const View = React.memo(
                                             ownerEmail: data.ownerEmail,
                                             ownerPhone: data.ownerPhone,
                                             ownerAddress: JSON.stringify(dataDictOwnerAddress),
-                                            language: data.language,
+                                            ownerLanguage: data.ownerLanguage,
                                             _version: petModel._version
                                         }
                                     }
@@ -863,7 +863,7 @@ const View = React.memo(
                                     ownerName: petUpdatedModel.ownerName,
                                     ownerEmail: petUpdatedModel.ownerEmail,
                                     ownerPhone: petUpdatedModel.ownerPhone,
-                                    language: petUpdatedModel.language
+                                    ownerLanguage: petUpdatedModel.ownerLanguage
                                 }
                                 return {
                                     _response: {
@@ -1065,10 +1065,10 @@ const View = React.memo(
                                                                 ...oldState.fieldOwnerAddressMap,
                                                                 value: data.fieldOwnerAddress.value
                                                             },
-                                                            fieldLanguage: {
-                                                                ...oldState.fieldLanguage,
-                                                                value: data.instancePet.language,
-                                                                error: fieldLanguageValidate(data.instancePet.language)
+                                                            fieldOwnerLanguage: {
+                                                                ...oldState.fieldOwnerLanguage,
+                                                                value: data.instancePet.ownerLanguage,
+                                                                error: fieldOwnerLanguageValidate(data.instancePet.ownerLanguage)
                                                             }
                                                         }
                                                     )
@@ -1155,9 +1155,9 @@ const View = React.memo(
                         const fieldOwnerEmailError = fieldOwnerEmailValidate(fieldOwnerEmail.value)
                         const fieldOwnerPhoneError = fieldOwnerPhoneValidate(fieldOwnerPhone.value)
                         const fieldOwnerAddressError = fieldOwnerAddressValidate(fieldOwnerAddress.value)
-                        const fieldLanguageError = fieldLanguageValidate(fieldLanguage.value)
+                        const fieldOwnerLanguageError = fieldOwnerLanguageValidate(fieldOwnerLanguage.value)
 
-                        if (fieldPictureError || fieldNameError || fieldOwnerNameError || fieldOwnerEmailError || fieldOwnerPhoneError || fieldOwnerAddressError || fieldLanguageError) {
+                        if (fieldPictureError || fieldNameError || fieldOwnerNameError || fieldOwnerEmailError || fieldOwnerPhoneError || fieldOwnerAddressError || fieldOwnerLanguageError) {
                             if (isComponentMountedRef.current === true) {
                                 setState(
                                     (oldState) => (
@@ -1189,9 +1189,9 @@ const View = React.memo(
                                                 ...oldState.fieldOwnerAddress,
                                                 error: fieldOwnerAddressError
                                             },
-                                            fieldLanguage: {
-                                                ...oldState.fieldLanguage,
-                                                error: fieldLanguageError
+                                            fieldOwnerLanguage: {
+                                                ...oldState.fieldOwnerLanguage,
+                                                error: fieldOwnerLanguageError
                                             }
                                         }
                                     )
@@ -1222,7 +1222,7 @@ const View = React.memo(
                 fieldOwnerEmail.value,
                 fieldOwnerPhone.value,
                 fieldOwnerAddress.value,
-                fieldLanguage.value
+                fieldOwnerLanguage.value
             ]
         )
 
@@ -1241,7 +1241,7 @@ const View = React.memo(
                                 ownerEmail: fieldOwnerEmail.value,
                                 ownerPhone: fieldOwnerPhone.value,
                                 ownerAddress: fieldOwnerAddress.value,
-                                language: fieldLanguage.value
+                                ownerLanguage: fieldOwnerLanguage.value
                             }
                         )
                             .then(
@@ -1300,10 +1300,10 @@ const View = React.memo(
                                                                 ...oldState.fieldOwnerAddressMap,
                                                                 value: data.fieldOwnerAddress.value
                                                             },
-                                                            fieldLanguage: {
-                                                                ...oldState.fieldLanguage,
-                                                                value: data.instancePet.language,
-                                                                error: fieldLanguageValidate(data.instancePet.language)
+                                                            fieldOwnerLanguage: {
+                                                                ...oldState.fieldOwnerLanguage,
+                                                                value: data.instancePet.ownerLanguage,
+                                                                error: fieldOwnerLanguageValidate(data.instancePet.ownerLanguage)
                                                             }
                                                         }
                                                     )
@@ -1385,7 +1385,7 @@ const View = React.memo(
                 fieldOwnerEmail.value,
                 fieldOwnerPhone.value,
                 fieldOwnerAddress.value,
-                fieldLanguage.value,
+                fieldOwnerLanguage.value,
                 submitData
             ]
         )
@@ -1662,9 +1662,9 @@ const View = React.memo(
                                                     required={true}
                                                     type={"text"}
                                                     iconFont={"translate"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.language.label"}/>}
-                                                    field={fieldLanguage}
-                                                    handleOnChange={fieldLanguageHandleOnChange}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.owner-language.label"}/>}
+                                                    field={fieldOwnerLanguage}
+                                                    handleOnChange={fieldOwnerLanguageHandleOnChange}
                                                 />
                                             </MuiBox>
                                         </LayoutPaperContentCenter>
@@ -1677,7 +1677,7 @@ const View = React.memo(
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutButton
                                                     loading={stepIsSubmitting}
-                                                    disabled={stepIsSubmitting || Boolean(fieldPicture.error) || Boolean(fieldName.error) || Boolean(fieldOwnerName.error) || Boolean(fieldOwnerEmail.error) || Boolean(fieldOwnerPhone.error) || Boolean(fieldOwnerAddress.error) || Boolean(fieldLanguage.error)}
+                                                    disabled={stepIsSubmitting || Boolean(fieldPicture.error) || Boolean(fieldName.error) || Boolean(fieldOwnerName.error) || Boolean(fieldOwnerEmail.error) || Boolean(fieldOwnerPhone.error) || Boolean(fieldOwnerAddress.error) || Boolean(fieldOwnerLanguage.error)}
                                                     variant={"contained"}
                                                     size={"small"}
                                                     iconFont={"save"}

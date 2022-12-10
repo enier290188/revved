@@ -1,0 +1,15 @@
+{
+  "app.page.secure.view.shelter.pet": "Mascotas",
+  "app.page.secure.view.shelter.pet.list.column.name": "NOMBRE",
+  "app.page.secure.view.shelter.pet.list.column.email": "CORREO",
+  "app.page.secure.view.shelter.pet.list.column.phone": "TELÉFONO",
+  "app.page.secure.view.shelter.pet.list.column.address": "DIRECCIÓN",
+  "app.page.secure.view.shelter.pet.list.column.language": "IDIOMA",
+  "app.page.secure.view.shelter.pet.list.column.user": "DUEÑO",
+  "app.page.secure.view.shelter.pet.list.column.created-at": "CREADO",
+  "app.page.secure.view.shelter.pet.list.column.updated-at": "MODIFICADO",
+  "app.page.secure.view.shelter.pet.action.refresh": "Actualizar",
+  "app.page.secure.view.shelter.pet.alert.refresh.then.error": "Error al obtener datos.",
+  "app.page.secure.view.shelter.pet.alert.refresh.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.shelter.pet.alert.refresh.error": "Error al obtener datos."
+}

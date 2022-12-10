@@ -1,0 +1,22 @@
+{
+  "app.page.secure.view.shelter.pet.update": "Update Pet",
+  "app.page.secure.view.shelter.pet.update.field.user.label": "Owner",
+  "app.page.secure.view.shelter.pet.update.field.name.label": "Name",
+  "app.page.secure.view.shelter.pet.update.field.email.label": "Email",
+  "app.page.secure.view.shelter.pet.update.field.email.help": "email@domain.com",
+  "app.page.secure.view.shelter.pet.update.field.phone.label": "Phone",
+  "app.page.secure.view.shelter.pet.update.field.phone.help": "##########",
+  "app.page.secure.view.shelter.pet.update.field.address.label": "Address",
+  "app.page.secure.view.shelter.pet.update.field.language.label": "Language",
+  "app.page.secure.view.shelter.pet.update.action.submit": "Save",
+  "app.page.secure.view.shelter.pet.update.action.refresh": "Refresh",
+  "app.page.secure.view.shelter.pet.update.action.comment": "Comments",
+  "app.page.secure.view.shelter.pet.update.action.delete": "Delete",
+  "app.page.secure.view.shelter.pet.update.alert.refresh.then.error": "Error fetching data.",
+  "app.page.secure.view.shelter.pet.update.alert.refresh.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.pet.update.alert.refresh.error": "Error fetching data.",
+  "app.page.secure.view.shelter.pet.update.alert.submit.then.success": "Pet \"{name}\" was updated successfully.",
+  "app.page.secure.view.shelter.pet.update.alert.submit.then.error": "Error updating data.",
+  "app.page.secure.view.shelter.pet.update.alert.submit.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.pet.update.alert.submit.error": "Error updating data."
+}

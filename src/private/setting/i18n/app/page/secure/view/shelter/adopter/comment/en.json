@@ -1,0 +1,13 @@
+{
+  "app.page.secure.view.shelter.pet.comment": "Comments Pet",
+  "app.page.secure.view.shelter.pet.comment.action.refresh": "Refresh",
+  "app.page.secure.view.shelter.pet.comment.action.update": "Update",
+  "app.page.secure.view.shelter.pet.comment.action.delete": "Delete",
+  "app.page.secure.view.shelter.pet.comment.alert.refresh.then.error": "Error fetching data.",
+  "app.page.secure.view.shelter.pet.comment.alert.refresh.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.pet.comment.alert.refresh.error": "Error fetching data.",
+  "app.page.secure.view.shelter.pet.comment.alert.submit.then.success": "Pet \"{name}\" was updated successfully.",
+  "app.page.secure.view.shelter.pet.comment.alert.submit.then.error": "Error updating data.",
+  "app.page.secure.view.shelter.pet.comment.alert.submit.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.pet.comment.alert.submit.error": "Error updating data."
+}

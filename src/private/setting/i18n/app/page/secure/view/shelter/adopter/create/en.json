@@ -1,0 +1,20 @@
+{
+  "app.page.secure.view.shelter.pet.create": "Create Pet",
+  "app.page.secure.view.shelter.pet.create.field.user.label": "Owner",
+  "app.page.secure.view.shelter.pet.create.field.name.label": "Name",
+  "app.page.secure.view.shelter.pet.create.field.email.label": "Email",
+  "app.page.secure.view.shelter.pet.create.field.email.help": "email@domain.com",
+  "app.page.secure.view.shelter.pet.create.field.phone.label": "Phone",
+  "app.page.secure.view.shelter.pet.create.field.phone.help": "##########",
+  "app.page.secure.view.shelter.pet.create.field.address.label": "Address",
+  "app.page.secure.view.shelter.pet.create.field.language.label": "Language",
+  "app.page.secure.view.shelter.pet.create.action.submit": "Save",
+  "app.page.secure.view.shelter.pet.create.action.refresh": "Refresh",
+  "app.page.secure.view.shelter.pet.create.alert.refresh.then.error": "Error fetching data.",
+  "app.page.secure.view.shelter.pet.create.alert.refresh.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.pet.create.alert.refresh.error": "Error fetching data.",
+  "app.page.secure.view.shelter.pet.create.alert.submit.then.success": "Pet \"{name}\" was created successfully.",
+  "app.page.secure.view.shelter.pet.create.alert.submit.then.error": "Error creating data.",
+  "app.page.secure.view.shelter.pet.create.alert.submit.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.pet.create.alert.submit.error": "Error creating data."
+}

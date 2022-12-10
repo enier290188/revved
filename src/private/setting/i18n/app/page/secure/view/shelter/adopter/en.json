@@ -1,0 +1,15 @@
+{
+  "app.page.secure.view.shelter.pet": "Pets",
+  "app.page.secure.view.shelter.pet.list.column.name": "NAME",
+  "app.page.secure.view.shelter.pet.list.column.email": "EMAIL",
+  "app.page.secure.view.shelter.pet.list.column.phone": "PHONE",
+  "app.page.secure.view.shelter.pet.list.column.address": "ADDRESS",
+  "app.page.secure.view.shelter.pet.list.column.language": "LANGUAGE",
+  "app.page.secure.view.shelter.pet.list.column.user": "OWNER",
+  "app.page.secure.view.shelter.pet.list.column.created-at": "CREATED AT",
+  "app.page.secure.view.shelter.pet.list.column.updated-at": "UPDATED AT",
+  "app.page.secure.view.shelter.pet.action.refresh": "Refresh",
+  "app.page.secure.view.shelter.pet.alert.refresh.then.error": "Error fetching data.",
+  "app.page.secure.view.shelter.pet.alert.refresh.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.pet.alert.refresh.error": "Error fetching data."
+}

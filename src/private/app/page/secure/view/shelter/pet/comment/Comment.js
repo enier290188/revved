@@ -3,9 +3,9 @@ import {Storage} from "aws-amplify"
 import React from "react"
 import {FormattedMessage} from "react-intl"
 import {Route, Routes, useParams} from "react-router"
-import {PATH_APP_PAGE_SECURE_SHELTER_ADOPTER} from "../../../../../../../setting/path/app/page/secure/shelter/adopter"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/delete"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/update"
+import {PATH_APP_PAGE_SECURE_SHELTER_PET} from "../../../../../../../setting/path/app/page/secure/shelter/pet"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_DELETE} from "../../../../../../../setting/path/app/page/secure/shelter/pet/delete"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE} from "../../../../../../../setting/path/app/page/secure/shelter/pet/update"
 import {Context as ContextAlert} from "../../../../../../context/Alert"
 import {Context as ContextUser} from "../../../../../../context/User"
 import * as AppUtilGraphql from "../../../../../../util/graphql"
@@ -53,7 +53,7 @@ const STEP_EFFECT_DEFAULT = "step-effect-default"
 
 const View = React.memo(
     () => {
-        const {paramAdopterId} = useParams()
+        const {paramPetId} = useParams()
         const contextUser = React.useContext(ContextUser)
         const contextAlert = React.useContext(ContextAlert)
         const [
@@ -61,8 +61,8 @@ const View = React.memo(
                 stepReturn,
                 stepEffect,
                 stepIsSubmitting,
-                instanceAdopter,
-                actionOnInstanceAdopterCommentList
+                instancePet,
+                actionOnInstancePetCommentList
             },
             setState
         ] = React.useState(
@@ -70,8 +70,8 @@ const View = React.memo(
                 stepReturn: STEP_RETURN_INITIAL,
                 stepEffect: STEP_EFFECT_INITIAL,
                 stepIsSubmitting: false,
-                instanceAdopter: null,
-                actionOnInstanceAdopterCommentList: null
+                instancePet: null,
+                actionOnInstancePetCommentList: null
             }
         )
         const isComponentMountedRef = React.useRef(true)
@@ -104,11 +104,11 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataAdopterModel = await AppUtilGraphql.getModel(
+                        const dataPetModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getAdopter",
-                                    id: paramAdopterId,
+                                    name: "getPet",
+                                    id: paramPetId,
                                     itemList: [
                                         {
                                             key: "name",
@@ -122,15 +122,15 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataPetModel._response.error && dataPetModel._response.errorType) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const adopterModel = dataAdopterModel.instance
+                        const petModel = dataPetModel.instance
 
                         const dataUserModelList = await AppUtilGraphql.getModelList(
                             {
@@ -159,13 +159,13 @@ const View = React.memo(
                         }
                         const userModelList = dataUserModelList.instanceList
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
-                            const instanceAdopter = {
-                                id: adopterModel.id,
-                                name: adopterModel.name,
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petModel) {
+                            const instancePet = {
+                                id: petModel.id,
+                                name: petModel.name,
                                 commentList: []
                             }
-                            if (0 < adopterModel.commentList.length) {
+                            if (0 < petModel.commentList.length) {
                                 const userModelListDict = {}
                                 for (const userModelForOf of userModelList) {
                                     try {
@@ -211,9 +211,9 @@ const View = React.memo(
                                     } catch (e) {
                                     }
                                 }
-                                for (const adopterModelCommentForOf of adopterModel.commentList) {
+                                for (const petModelCommentForOf of petModel.commentList) {
                                     try {
-                                        const adopterModelCommentForOfJSONParse = JSON.parse(adopterModelCommentForOf)
+                                        const petModelCommentForOfJSONParse = JSON.parse(petModelCommentForOf)
                                         const user = {
                                             id: null,
                                             picture: null,
@@ -224,7 +224,7 @@ const View = React.memo(
                                             }
                                         }
                                         try {
-                                            const userModelDict = userModelListDict[adopterModelCommentForOfJSONParse.userId]
+                                            const userModelDict = userModelListDict[petModelCommentForOfJSONParse.userId]
                                             user["id"] = userModelDict.id
                                             user["picture"] = userModelDict.picture
                                             user["name"] = userModelDict.name
@@ -234,11 +234,11 @@ const View = React.memo(
                                         }
                                         const comment = {
                                             user: user,
-                                            comment: adopterModelCommentForOfJSONParse.comment,
-                                            createdAt: adopterModelCommentForOfJSONParse.createdAt,
-                                            updatedAt: adopterModelCommentForOfJSONParse.updatedAt
+                                            comment: petModelCommentForOfJSONParse.comment,
+                                            createdAt: petModelCommentForOfJSONParse.createdAt,
+                                            updatedAt: petModelCommentForOfJSONParse.updatedAt
                                         }
-                                        instanceAdopter.commentList.push(comment)
+                                        instancePet.commentList.push(comment)
                                     } catch (e) {
                                     }
                                 }
@@ -248,7 +248,7 @@ const View = React.memo(
                                 _response: {
                                     success: true
                                 },
-                                instanceAdopter: instanceAdopter
+                                instancePet: instancePet
                             }
                         } else {
                             let warningType = null
@@ -277,7 +277,7 @@ const View = React.memo(
                 }
             },
             [
-                paramAdopterId,
+                paramPetId,
                 contextUser
             ]
         )
@@ -310,11 +310,11 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataAdopterModel = await AppUtilGraphql.getModel(
+                        const dataPetModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getAdopter",
-                                    id: paramAdopterId,
+                                    name: "getPet",
+                                    id: paramPetId,
                                     itemList: [
                                         {
                                             key: "name",
@@ -328,15 +328,15 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataPetModel._response.error && dataPetModel._response.errorType) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const adopterModel = dataAdopterModel.instance
+                        const petModel = dataPetModel.instance
 
                         const dataUserModelList = await AppUtilGraphql.getModelList(
                             {
@@ -365,51 +365,51 @@ const View = React.memo(
                         }
                         const userModelList = dataUserModelList.instanceList
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
-                            const dataActionOnInstanceAdopterCommentList = {...data.actionOnInstanceAdopterCommentList}
-                            let adopterUpdatedModel = null
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petModel) {
+                            const dataActionOnInstancePetCommentList = {...data.actionOnInstancePetCommentList}
+                            let petUpdatedModel = null
                             if (
-                                (dataActionOnInstanceAdopterCommentList.type) &&
-                                (dataActionOnInstanceAdopterCommentList.type === "CREATE" || dataActionOnInstanceAdopterCommentList.type === "UPDATE" || dataActionOnInstanceAdopterCommentList.type === "DELETE") &&
-                                (dataActionOnInstanceAdopterCommentList.comment)
+                                (dataActionOnInstancePetCommentList.type) &&
+                                (dataActionOnInstancePetCommentList.type === "CREATE" || dataActionOnInstancePetCommentList.type === "UPDATE" || dataActionOnInstancePetCommentList.type === "DELETE") &&
+                                (dataActionOnInstancePetCommentList.comment)
                             ) {
-                                let adopterModelCommentList = adopterModel.commentList
+                                let petModelCommentList = petModel.commentList
                                 const dateNow = Date.now()
                                 try {
-                                    switch (dataActionOnInstanceAdopterCommentList.type) {
+                                    switch (dataActionOnInstancePetCommentList.type) {
                                         case "CREATE": {
                                             const commentJSONStringify = JSON.stringify(
                                                 {
                                                     userId: userId,
-                                                    comment: dataActionOnInstanceAdopterCommentList.comment.comment,
+                                                    comment: dataActionOnInstancePetCommentList.comment.comment,
                                                     createdAt: dateNow,
                                                     updatedAt: dateNow
                                                 }
                                             )
-                                            adopterModelCommentList.push(commentJSONStringify)
+                                            petModelCommentList.push(commentJSONStringify)
                                             break
                                         }
                                         case "UPDATE": {
-                                            const commentJSONParse = JSON.parse(adopterModelCommentList[dataActionOnInstanceAdopterCommentList.index])
+                                            const commentJSONParse = JSON.parse(petModelCommentList[dataActionOnInstancePetCommentList.index])
                                             if (
-                                                commentJSONParse.userId === dataActionOnInstanceAdopterCommentList.comment.user.id &&
-                                                // commentJSONParse.comment === dataActionOnInstanceAdopterCommentList.comment.comment &&
-                                                commentJSONParse.createdAt === dataActionOnInstanceAdopterCommentList.comment.createdAt &&
-                                                commentJSONParse.updatedAt === dataActionOnInstanceAdopterCommentList.comment.updatedAt
+                                                commentJSONParse.userId === dataActionOnInstancePetCommentList.comment.user.id &&
+                                                // commentJSONParse.comment === dataActionOnInstancePetCommentList.comment.comment &&
+                                                commentJSONParse.createdAt === dataActionOnInstancePetCommentList.comment.createdAt &&
+                                                commentJSONParse.updatedAt === dataActionOnInstancePetCommentList.comment.updatedAt
                                             ) {
-                                                adopterModelCommentList = adopterModelCommentList.map(
-                                                    (adopterModelCommentMap, index) => {
-                                                        if ((index === dataActionOnInstanceAdopterCommentList.index)) {
+                                                petModelCommentList = petModelCommentList.map(
+                                                    (petModelCommentMap, index) => {
+                                                        if ((index === dataActionOnInstancePetCommentList.index)) {
                                                             return JSON.stringify(
                                                                 {
                                                                     userId: userId,
-                                                                    comment: dataActionOnInstanceAdopterCommentList.comment.comment,
-                                                                    createdAt: dataActionOnInstanceAdopterCommentList.comment.createdAt,
+                                                                    comment: dataActionOnInstancePetCommentList.comment.comment,
+                                                                    createdAt: dataActionOnInstancePetCommentList.comment.createdAt,
                                                                     updatedAt: dateNow
                                                                 }
                                                             )
                                                         } else {
-                                                            return adopterModelCommentMap
+                                                            return petModelCommentMap
                                                         }
                                                     }
                                                 )
@@ -417,14 +417,14 @@ const View = React.memo(
                                             break
                                         }
                                         case "DELETE": {
-                                            const commentJSONParse = JSON.parse(adopterModelCommentList[dataActionOnInstanceAdopterCommentList.index])
+                                            const commentJSONParse = JSON.parse(petModelCommentList[dataActionOnInstancePetCommentList.index])
                                             if (
-                                                commentJSONParse.userId === dataActionOnInstanceAdopterCommentList.comment.user.id &&
-                                                commentJSONParse.comment === dataActionOnInstanceAdopterCommentList.comment.comment &&
-                                                commentJSONParse.createdAt === dataActionOnInstanceAdopterCommentList.comment.createdAt &&
-                                                commentJSONParse.updatedAt === dataActionOnInstanceAdopterCommentList.comment.updatedAt
+                                                commentJSONParse.userId === dataActionOnInstancePetCommentList.comment.user.id &&
+                                                commentJSONParse.comment === dataActionOnInstancePetCommentList.comment.comment &&
+                                                commentJSONParse.createdAt === dataActionOnInstancePetCommentList.comment.createdAt &&
+                                                commentJSONParse.updatedAt === dataActionOnInstancePetCommentList.comment.updatedAt
                                             ) {
-                                                adopterModelCommentList = adopterModelCommentList.filter((adopterModelCommentFilter, index) => (index !== dataActionOnInstanceAdopterCommentList.index))
+                                                petModelCommentList = petModelCommentList.filter((petModelCommentFilter, index) => (index !== dataActionOnInstancePetCommentList.index))
                                             }
                                             break
                                         }
@@ -432,11 +432,11 @@ const View = React.memo(
                                             break
                                         }
                                     }
-                                    const dataAdopterUpdatedModel = await AppUtilGraphql.updateModel(
+                                    const dataPetUpdatedModel = await AppUtilGraphql.updateModel(
                                         {
                                             query: {
-                                                name: "updateAdopter",
-                                                id: adopterModel.id,
+                                                name: "updatePet",
+                                                id: petModel.id,
                                                 itemList: [
                                                     {
                                                         key: "name",
@@ -448,35 +448,35 @@ const View = React.memo(
                                                     }
                                                 ],
                                                 input: {
-                                                    commentList: adopterModelCommentList,
-                                                    _version: adopterModel._version
+                                                    commentList: petModelCommentList,
+                                                    _version: petModel._version
                                                 }
                                             }
                                         }
                                     )
-                                    if (dataAdopterUpdatedModel._response.error && dataAdopterUpdatedModel._response.errorType) {
-                                        if (dataAdopterUpdatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                                    if (dataPetUpdatedModel._response.error && dataPetUpdatedModel._response.errorType) {
+                                        if (dataPetUpdatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                             ERROR_INTERNET_DISCONNECTED = true
                                         }
-                                        if (dataAdopterUpdatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                                        if (dataPetUpdatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                             ERROR_UNAUTHORIZED = true
                                         }
                                     }
-                                    adopterUpdatedModel = dataAdopterUpdatedModel.instance
+                                    petUpdatedModel = dataPetUpdatedModel.instance
                                 } catch (e) {
-                                    adopterUpdatedModel = adopterModel
+                                    petUpdatedModel = petModel
                                 }
                             } else {
-                                adopterUpdatedModel = adopterModel
+                                petUpdatedModel = petModel
                             }
 
-                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterUpdatedModel) {
-                                const instanceAdopterUpdated = {
-                                    id: adopterUpdatedModel.id,
-                                    name: adopterUpdatedModel.name,
+                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petUpdatedModel) {
+                                const instancePetUpdated = {
+                                    id: petUpdatedModel.id,
+                                    name: petUpdatedModel.name,
                                     commentList: []
                                 }
-                                if (0 < adopterUpdatedModel.commentList.length) {
+                                if (0 < petUpdatedModel.commentList.length) {
                                     const userModelListDict = {}
                                     for (const userModelForOf of userModelList) {
                                         try {
@@ -522,9 +522,9 @@ const View = React.memo(
                                         } catch (e) {
                                         }
                                     }
-                                    for (const adopterUpdatedModelCommentForOf of adopterUpdatedModel.commentList) {
+                                    for (const petUpdatedModelCommentForOf of petUpdatedModel.commentList) {
                                         try {
-                                            const adopterUpdatedModelCommentForOfJSONParse = JSON.parse(adopterUpdatedModelCommentForOf)
+                                            const petUpdatedModelCommentForOfJSONParse = JSON.parse(petUpdatedModelCommentForOf)
                                             const user = {
                                                 id: null,
                                                 picture: null,
@@ -535,7 +535,7 @@ const View = React.memo(
                                                 }
                                             }
                                             try {
-                                                const userModelDict = userModelListDict[adopterUpdatedModelCommentForOfJSONParse.userId]
+                                                const userModelDict = userModelListDict[petUpdatedModelCommentForOfJSONParse.userId]
                                                 user["id"] = userModelDict.id
                                                 user["picture"] = userModelDict.picture
                                                 user["name"] = userModelDict.name
@@ -545,11 +545,11 @@ const View = React.memo(
                                             }
                                             const comment = {
                                                 user: user,
-                                                comment: adopterUpdatedModelCommentForOfJSONParse.comment,
-                                                createdAt: adopterUpdatedModelCommentForOfJSONParse.createdAt,
-                                                updatedAt: adopterUpdatedModelCommentForOfJSONParse.updatedAt
+                                                comment: petUpdatedModelCommentForOfJSONParse.comment,
+                                                createdAt: petUpdatedModelCommentForOfJSONParse.createdAt,
+                                                updatedAt: petUpdatedModelCommentForOfJSONParse.updatedAt
                                             }
-                                            instanceAdopterUpdated.commentList.push(comment)
+                                            instancePetUpdated.commentList.push(comment)
                                         } catch (e) {
                                         }
                                     }
@@ -559,7 +559,7 @@ const View = React.memo(
                                     _response: {
                                         success: true
                                     },
-                                    instanceAdopter: instanceAdopterUpdated
+                                    instancePet: instancePetUpdated
                                 }
                             } else {
                                 let warningType = null
@@ -603,7 +603,7 @@ const View = React.memo(
                 }
             },
             [
-                paramAdopterId,
+                paramPetId,
                 contextUser
             ]
         )
@@ -647,8 +647,8 @@ const View = React.memo(
                                     {
                                         ...oldState,
                                         stepEffect: STEP_EFFECT_SUBMIT,
-                                        actionOnInstanceAdopterCommentList: {
-                                            ...oldState.actionOnInstanceAdopterCommentList,
+                                        actionOnInstancePetCommentList: {
+                                            ...oldState.actionOnInstancePetCommentList,
                                             type: "CREATE",
                                             index: null,
                                             comment: comment
@@ -678,8 +678,8 @@ const View = React.memo(
                                     {
                                         ...oldState,
                                         stepEffect: STEP_EFFECT_SUBMIT,
-                                        actionOnInstanceAdopterCommentList: {
-                                            ...oldState.actionOnInstanceAdopterCommentList,
+                                        actionOnInstancePetCommentList: {
+                                            ...oldState.actionOnInstancePetCommentList,
                                             type: "UPDATE",
                                             index: index,
                                             comment: comment
@@ -709,8 +709,8 @@ const View = React.memo(
                                     {
                                         ...oldState,
                                         stepEffect: STEP_EFFECT_SUBMIT,
-                                        actionOnInstanceAdopterCommentList: {
-                                            ...oldState.actionOnInstanceAdopterCommentList,
+                                        actionOnInstancePetCommentList: {
+                                            ...oldState.actionOnInstancePetCommentList,
                                             type: "DELETE",
                                             index: index,
                                             comment: comment
@@ -768,8 +768,8 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_REFRESH_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceAdopter: data.instanceAdopter,
-                                                            actionOnInstanceAdopterCommentList: null
+                                                            instancePet: data.instancePet,
+                                                            actionOnInstancePetCommentList: null
                                                         }
                                                     )
                                                 )
@@ -802,7 +802,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.refresh.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.comment.alert.refresh.then.warning"}})
                                                 }
                                             }
                                         }
@@ -817,7 +817,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.refresh.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.comment.alert.refresh.then.error"}})
                                         }
                                     }
                                 }
@@ -834,7 +834,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.refresh.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.comment.alert.refresh.error"}})
                     }
                 }
             },
@@ -888,7 +888,7 @@ const View = React.memo(
             async () => {
                 try {
                     if (stepEffect === STEP_EFFECT_SUBMIT_IS_SUBMITTING && stepIsSubmitting === true && 0 === contextAlert.getAlertList().length) {
-                        await submitData({actionOnInstanceAdopterCommentList: actionOnInstanceAdopterCommentList})
+                        await submitData({actionOnInstancePetCommentList: actionOnInstancePetCommentList})
                             .then(
                                 (data) => {
                                     if (data && data._response && (data._response.success || data._response.warning)) {
@@ -900,12 +900,12 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_SUBMIT_IS_SUBMITTING_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceAdopter: data.instanceAdopter,
-                                                            actionOnInstanceAdopterCommentList: null
+                                                            instancePet: data.instancePet,
+                                                            actionOnInstancePetCommentList: null
                                                         }
                                                     )
                                                 )
-                                                // contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.then.success", values: {name: data.instanceAdopter.name}}})
+                                                // contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.pet.comment.alert.submit.then.success", values: {name: data.instancePet.name}}})
                                             }
                                         } else {
                                             if (isComponentMountedRef.current === true) {
@@ -935,7 +935,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.comment.alert.submit.then.warning"}})
                                                 }
                                             }
                                         }
@@ -950,7 +950,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.comment.alert.submit.then.error"}})
                                         }
                                     }
                                 }
@@ -967,7 +967,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.comment.alert.submit.error"}})
                     }
                 }
             },
@@ -975,7 +975,7 @@ const View = React.memo(
                 contextAlert,
                 stepEffect,
                 stepIsSubmitting,
-                actionOnInstanceAdopterCommentList,
+                actionOnInstancePetCommentList,
                 submitData
             ]
         )
@@ -1127,7 +1127,7 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"comment"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"comment"} text1={<FormattedMessage id={"app.page.secure.view.shelter.pet.comment"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                     </LayoutPaperTitle>
@@ -1156,13 +1156,13 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"comment"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"comment"} text1={<FormattedMessage id={"app.page.secure.view.shelter.pet.comment"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                         <LayoutPaperTitleRight>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}
+                                                    url={PATH_APP_PAGE_SECURE_SHELTER_PET}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     variant={"contained"}
@@ -1179,7 +1179,7 @@ const View = React.memo(
                                     <LayoutPaperAction>
                                         <LayoutPaperActionLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutTypography component={"h6"} variant={"h6"} iconFont={"face"} text={instanceAdopter.name}/>
+                                                <LayoutTypography component={"h6"} variant={"h6"} iconFont={"pets"} text={instancePet.name}/>
                                             </MuiBox>
                                         </LayoutPaperActionLeft>
                                         <LayoutPaperActionRight>
@@ -1189,28 +1189,28 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"update"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment.action.refresh"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.comment.action.refresh"}/>}
                                                     handleOnClick={handleRefresh}
                                                 />
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_PET}${paramPetId}/${SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"edit"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment.action.update"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.comment.action.update"}/>}
                                                 />
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_PET}${paramPetId}/${SLUG_APP_PAGE_SECURE_SHELTER_PET_DELETE}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"delete"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment.action.delete"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.comment.action.delete"}/>}
                                                 />
                                             </MuiBox>
                                         </LayoutPaperActionRight>
@@ -1221,7 +1221,7 @@ const View = React.memo(
                                     <LayoutPaperContent>
                                         <LayoutPaperContentCenter maxWidth={"480px"}>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutCommentList stepIsSubmitting={stepIsSubmitting} commentList={instanceAdopter.commentList} handleCreate={handleCreate} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
+                                                <LayoutCommentList stepIsSubmitting={stepIsSubmitting} commentList={instancePet.commentList} handleCreate={handleCreate} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
                                             </MuiBox>
                                         </LayoutPaperContentCenter>
                                     </LayoutPaperContent>
@@ -1233,7 +1233,7 @@ const View = React.memo(
             case STEP_RETURN_SECURITY_NAVIGATE_TO_PATH_ERROR_404:
                 return <SecurityNavigateToPathError404/>
             case STEP_RETURN_SECURITY_NAVIGATE_TO_INDEX:
-                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}/>
+                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_PET}${paramPetId}/${SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE}`}/>
             default:
                 return null
         }

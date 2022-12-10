@@ -141,6 +141,26 @@ const View = React.memo(
             return AppUtilForm.validateField(value, [["fieldTypePicture"]])
         }
 
+        const fieldNameValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldRequired"], ["fieldMaxLength", 32]])
+        }
+
+        const fieldEmailValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldTypeEmail"]])
+        }
+
+        const fieldPhoneValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldTypePhone"]])
+        }
+
+        const fieldAddressValidate = (value) => {
+            return AppUtilForm.validateField(value && value.id ? value.id : "", [["fieldRequired"]])
+        }
+
+        const fieldLanguageValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldRequired"]])
+        }
+
         const fieldPictureHandleOnChange = React.useCallback(
             (newStatePicture) => {
                 try {
@@ -163,26 +183,6 @@ const View = React.memo(
             },
             []
         )
-
-        const fieldNameValidate = (value) => {
-            return AppUtilForm.validateField(value, [["fieldRequired"], ["fieldMaxLength", 32]])
-        }
-
-        const fieldEmailValidate = (value) => {
-            return AppUtilForm.validateField(value, [["fieldTypeEmail"]])
-        }
-
-        const fieldPhoneValidate = (value) => {
-            return AppUtilForm.validateField(value, [["fieldTypePhone"]])
-        }
-
-        const fieldAddressValidate = (value) => {
-            return AppUtilForm.validateField(value && value.id ? value.id : "", [["fieldRequired"]])
-        }
-
-        const fieldLanguageValidate = (value) => {
-            return AppUtilForm.validateField(value, [["fieldRequired"]])
-        }
 
         const fieldNameHandleOnChange = React.useCallback(
             ({target: {value}}) => {

@@ -79,7 +79,8 @@ const View = React.memo(
                 instancePet,
                 fieldPicture,
                 fieldName,
-                fieldEmail,
+                fieldOwnerName,
+                fieldOwnerEmail,
                 fieldPhone,
                 fieldAddress,
                 fieldAddressMap,
@@ -101,10 +102,14 @@ const View = React.memo(
                     value: "",
                     error: null
                 },
-                fieldEmail: {
+                fieldOwnerName: {
+                    value: "",
+                    error: null
+                },
+                fieldOwnerEmail: {
                     value: "",
                     error: null,
-                    help: [<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.email.help"}/>]
+                    help: [<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.owner-email.help"}/>]
                 },
                 fieldPhone: {
                     value: "",
@@ -141,6 +146,30 @@ const View = React.memo(
             return AppUtilForm.validateField(value, [["fieldTypePicture"]])
         }
 
+        const fieldNameValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldMaxLength", 32]])
+        }
+
+        const fieldOwnerNameValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldMaxLength", 32]])
+        }
+
+        const fieldOwnerEmailValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldTypeEmail"]])
+        }
+
+        const fieldPhoneValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldTypePhone"]])
+        }
+
+        const fieldAddressValidate = (value) => {
+            return AppUtilForm.validateField(value && value.id ? value.id : "", [["fieldRequired"]])
+        }
+
+        const fieldLanguageValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldRequired"]])
+        }
+
         const fieldPictureHandleOnChange = React.useCallback(
             (newStatePicture) => {
                 try {
@@ -163,26 +192,6 @@ const View = React.memo(
             },
             []
         )
-
-        const fieldNameValidate = (value) => {
-            return AppUtilForm.validateField(value, [["fieldRequired"], ["fieldMaxLength", 32]])
-        }
-
-        const fieldEmailValidate = (value) => {
-            return AppUtilForm.validateField(value, [["fieldTypeEmail"]])
-        }
-
-        const fieldPhoneValidate = (value) => {
-            return AppUtilForm.validateField(value, [["fieldTypePhone"]])
-        }
-
-        const fieldAddressValidate = (value) => {
-            return AppUtilForm.validateField(value && value.id ? value.id : "", [["fieldRequired"]])
-        }
-
-        const fieldLanguageValidate = (value) => {
-            return AppUtilForm.validateField(value, [["fieldRequired"]])
-        }
 
         const fieldNameHandleOnChange = React.useCallback(
             ({target: {value}}) => {
@@ -207,7 +216,7 @@ const View = React.memo(
             []
         )
 
-        const fieldEmailHandleOnChange = React.useCallback(
+        const fieldOwnerNameHandleOnChange = React.useCallback(
             ({target: {value}}) => {
                 try {
                     if (isComponentMountedRef.current === true) {
@@ -215,10 +224,33 @@ const View = React.memo(
                             (oldState) => (
                                 {
                                     ...oldState,
-                                    fieldEmail: {
-                                        ...oldState.fieldEmail,
+                                    fieldOwnerName: {
+                                        ...oldState.fieldOwnerName,
                                         value: value,
-                                        error: fieldEmailValidate(value)
+                                        error: fieldOwnerNameValidate(value)
+                                    }
+                                }
+                            )
+                        )
+                    }
+                } catch (e) {
+                }
+            },
+            []
+        )
+
+        const fieldOwnerEmailHandleOnChange = React.useCallback(
+            ({target: {value}}) => {
+                try {
+                    if (isComponentMountedRef.current === true) {
+                        setState(
+                            (oldState) => (
+                                {
+                                    ...oldState,
+                                    fieldOwnerEmail: {
+                                        ...oldState.fieldOwnerEmail,
+                                        value: value,
+                                        error: fieldOwnerEmailValidate(value)
                                     }
                                 }
                             )
@@ -468,7 +500,11 @@ const View = React.memo(
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
                                         {
-                                            key: "email",
+                                            key: "ownerName",
+                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
+                                        },
+                                        {
+                                            key: "ownerEmail",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
                                         {
@@ -549,7 +585,8 @@ const View = React.memo(
                             const instancePet = {
                                 id: petModel.id,
                                 name: petModel.name,
-                                email: petModel.email,
+                                ownerName: petModel.ownerName,
+                                ownerEmail: petModel.ownerEmail,
                                 phone: petModel.phone,
                                 language: petModel.language
                             }
@@ -641,7 +678,11 @@ const View = React.memo(
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
                                         {
-                                            key: "email",
+                                            key: "ownerName",
+                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
+                                        },
+                                        {
+                                            key: "ownerEmail",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
                                         {
@@ -724,7 +765,11 @@ const View = React.memo(
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                             },
                                             {
-                                                key: "email",
+                                                key: "ownerName",
+                                                type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
+                                            },
+                                            {
+                                                key: "ownerEmail",
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                             },
                                             {
@@ -743,7 +788,8 @@ const View = React.memo(
                                         input: {
                                             picture: data.picture.imageToDelete === true ? "" : storageResponsePicture && storageResponsePicture.key ? storageResponsePicture.key : petModel.picture,
                                             name: data.name,
-                                            email: data.email,
+                                            ownerName: data.ownerName,
+                                            ownerEmail: data.ownerEmail,
                                             phone: data.phone,
                                             address: JSON.stringify(dataDictAddress),
                                             language: data.language,
@@ -814,7 +860,8 @@ const View = React.memo(
                                 const instancePetUpdated = {
                                     id: petUpdatedModel.id,
                                     name: petUpdatedModel.name,
-                                    email: petUpdatedModel.email,
+                                    ownerName: petUpdatedModel.ownerName,
+                                    ownerEmail: petUpdatedModel.ownerEmail,
                                     phone: petUpdatedModel.phone,
                                     language: petUpdatedModel.language
                                 }
@@ -993,10 +1040,15 @@ const View = React.memo(
                                                                 value: data.instancePet.name,
                                                                 error: fieldNameValidate(data.instancePet.name)
                                                             },
-                                                            fieldEmail: {
-                                                                ...oldState.fieldEmail,
-                                                                value: data.instancePet.email,
-                                                                error: fieldEmailValidate(data.instancePet.email)
+                                                            fieldOwnerName: {
+                                                                ...oldState.fieldOwnerName,
+                                                                value: data.instancePet.ownerName,
+                                                                error: fieldOwnerNameValidate(data.instancePet.ownerName)
+                                                            },
+                                                            fieldOwnerEmail: {
+                                                                ...oldState.fieldOwnerEmail,
+                                                                value: data.instancePet.ownerEmail,
+                                                                error: fieldOwnerEmailValidate(data.instancePet.ownerEmail)
                                                             },
                                                             fieldPhone: {
                                                                 ...oldState.fieldPhone,
@@ -1099,12 +1151,13 @@ const View = React.memo(
                     if (stepEffect === STEP_EFFECT_SUBMIT) {
                         const fieldPictureError = fieldPictureValidate(fieldPicture.imageCroppedFile)
                         const fieldNameError = fieldNameValidate(fieldName.value)
-                        const fieldEmailError = fieldEmailValidate(fieldEmail.value)
+                        const fieldOwnerNameError = fieldOwnerNameValidate(fieldOwnerName.value)
+                        const fieldOwnerEmailError = fieldOwnerEmailValidate(fieldOwnerEmail.value)
                         const fieldPhoneError = fieldPhoneValidate(fieldPhone.value)
                         const fieldAddressError = fieldAddressValidate(fieldAddress.value)
                         const fieldLanguageError = fieldLanguageValidate(fieldLanguage.value)
 
-                        if (fieldPictureError || fieldNameError || fieldEmailError || fieldPhoneError || fieldAddressError || fieldLanguageError) {
+                        if (fieldPictureError || fieldNameError || fieldOwnerNameError || fieldOwnerEmailError || fieldPhoneError || fieldAddressError || fieldLanguageError) {
                             if (isComponentMountedRef.current === true) {
                                 setState(
                                     (oldState) => (
@@ -1120,9 +1173,13 @@ const View = React.memo(
                                                 ...oldState.fieldName,
                                                 error: fieldNameError
                                             },
-                                            fieldEmail: {
-                                                ...oldState.fieldEmail,
-                                                error: fieldEmailError
+                                            fieldOwnerName: {
+                                                ...oldState.fieldOwnerName,
+                                                error: fieldOwnerNameError
+                                            },
+                                            fieldOwnerEmail: {
+                                                ...oldState.fieldOwnerEmail,
+                                                error: fieldOwnerEmailError
                                             },
                                             fieldPhone: {
                                                 ...oldState.fieldPhone,
@@ -1161,7 +1218,8 @@ const View = React.memo(
                 stepEffect,
                 fieldPicture.imageCroppedFile,
                 fieldName.value,
-                fieldEmail.value,
+                fieldOwnerName.value,
+                fieldOwnerEmail.value,
                 fieldPhone.value,
                 fieldAddress.value,
                 fieldLanguage.value
@@ -1179,7 +1237,8 @@ const View = React.memo(
                                     imageCroppedFile: fieldPicture.imageCroppedFile
                                 },
                                 name: fieldName.value,
-                                email: fieldEmail.value,
+                                ownerName: fieldOwnerName.value,
+                                ownerEmail: fieldOwnerEmail.value,
                                 phone: fieldPhone.value,
                                 address: fieldAddress.value,
                                 language: fieldLanguage.value
@@ -1216,10 +1275,15 @@ const View = React.memo(
                                                                 value: data.instancePet.name,
                                                                 error: fieldNameValidate(data.instancePet.name)
                                                             },
-                                                            fieldEmail: {
-                                                                ...oldState.fieldEmail,
-                                                                value: data.instancePet.email,
-                                                                error: fieldEmailValidate(data.instancePet.email)
+                                                            fieldOwnerName: {
+                                                                ...oldState.fieldOwnerName,
+                                                                value: data.instancePet.ownerName,
+                                                                error: fieldOwnerNameValidate(data.instancePet.ownerName)
+                                                            },
+                                                            fieldOwnerEmail: {
+                                                                ...oldState.fieldOwnerEmail,
+                                                                value: data.instancePet.ownerEmail,
+                                                                error: fieldOwnerEmailValidate(data.instancePet.ownerEmail)
                                                             },
                                                             fieldPhone: {
                                                                 ...oldState.fieldPhone,
@@ -1317,7 +1381,8 @@ const View = React.memo(
                 fieldPicture.imageToDelete,
                 fieldPicture.imageCroppedFile,
                 fieldName.value,
-                fieldEmail.value,
+                fieldOwnerName.value,
+                fieldOwnerEmail.value,
                 fieldPhone.value,
                 fieldAddress.value,
                 fieldLanguage.value,
@@ -1535,7 +1600,7 @@ const View = React.memo(
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutTextField
                                                     disabled={stepIsSubmitting}
-                                                    required={true}
+                                                    required={false}
                                                     type={"text"}
                                                     iconFont={"description"}
                                                     label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.name.label"}/>}
@@ -1547,11 +1612,22 @@ const View = React.memo(
                                                 <LayoutTextField
                                                     disabled={stepIsSubmitting}
                                                     required={false}
+                                                    type={"text"}
+                                                    iconFont={"description"}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.owner-name.label"}/>}
+                                                    field={fieldOwnerName}
+                                                    handleOnChange={fieldOwnerNameHandleOnChange}
+                                                />
+                                            </MuiBox>
+                                            <MuiBox component={"div"} p={1}>
+                                                <LayoutTextField
+                                                    disabled={stepIsSubmitting}
+                                                    required={false}
                                                     type={"email"}
                                                     iconFont={"email"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.email.label"}/>}
-                                                    field={fieldEmail}
-                                                    handleOnChange={fieldEmailHandleOnChange}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.owner-email.label"}/>}
+                                                    field={fieldOwnerEmail}
+                                                    handleOnChange={fieldOwnerEmailHandleOnChange}
                                                 />
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
@@ -1601,7 +1677,7 @@ const View = React.memo(
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutButton
                                                     loading={stepIsSubmitting}
-                                                    disabled={stepIsSubmitting || Boolean(fieldPicture.error) || Boolean(fieldName.error) || Boolean(fieldEmail.error) || Boolean(fieldPhone.error) || Boolean(fieldAddress.error) || Boolean(fieldLanguage.error)}
+                                                    disabled={stepIsSubmitting || Boolean(fieldPicture.error) || Boolean(fieldName.error) || Boolean(fieldOwnerName.error) || Boolean(fieldOwnerEmail.error) || Boolean(fieldPhone.error) || Boolean(fieldAddress.error) || Boolean(fieldLanguage.error)}
                                                     variant={"contained"}
                                                     size={"small"}
                                                     iconFont={"save"}

@@ -64,6 +64,7 @@ const View = React.memo(
                 stepIsSubmitting,
                 instancePet,
                 fieldName,
+                fieldOwnerName,
                 fieldEmail,
                 fieldPhone,
                 fieldAddress,
@@ -78,6 +79,10 @@ const View = React.memo(
                 stepIsSubmitting: false,
                 instancePet: null,
                 fieldName: {
+                    value: "",
+                    error: null
+                },
+                fieldOwnerName: {
                     value: "",
                     error: null
                 },
@@ -121,6 +126,10 @@ const View = React.memo(
             return AppUtilForm.validateField(value, [["fieldRequired"], ["fieldMaxLength", 32]])
         }
 
+        const fieldOwnerNameValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldRequired"], ["fieldMaxLength", 32]])
+        }
+
         const fieldEmailValidate = (value) => {
             return AppUtilForm.validateField(value, [["fieldTypeEmail"]])
         }
@@ -138,6 +147,29 @@ const View = React.memo(
         }
 
         const fieldNameHandleOnChange = React.useCallback(
+            ({target: {value}}) => {
+                try {
+                    if (isComponentMountedRef.current === true) {
+                        setState(
+                            (oldState) => (
+                                {
+                                    ...oldState,
+                                    fieldName: {
+                                        ...oldState.fieldName,
+                                        value: value,
+                                        error: fieldNameValidate(value)
+                                    }
+                                }
+                            )
+                        )
+                    }
+                } catch (e) {
+                }
+            },
+            []
+        )
+
+        const fieldOwnerNameHandleOnChange = React.useCallback(
             ({target: {value}}) => {
                 try {
                     if (isComponentMountedRef.current === true) {
@@ -411,6 +443,7 @@ const View = React.memo(
                             const instancePet = {
                                 id: null,
                                 name: "",
+                                ownerName: "",
                                 email: "",
                                 phone: "",
                                 language: "ENGLISH"
@@ -723,6 +756,11 @@ const View = React.memo(
                                                                 ...oldState.fieldName,
                                                                 value: data.instancePet.name,
                                                                 error: fieldNameValidate(data.instancePet.name)
+                                                            },
+                                                            fieldOwnerName: {
+                                                                ...oldState.fieldOwnerName,
+                                                                value: data.instancePet.ownerName,
+                                                                error: fieldOwnerNameValidate(data.instancePet.ownerName)
                                                             },
                                                             fieldEmail: {
                                                                 ...oldState.fieldEmail,
@@ -1230,12 +1268,23 @@ const View = React.memo(
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutTextField
                                                     disabled={stepIsSubmitting}
-                                                    required={true}
+                                                    required={false}
                                                     type={"text"}
                                                     iconFont={"description"}
                                                     label={<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.name.label"}/>}
                                                     field={fieldName}
                                                     handleOnChange={fieldNameHandleOnChange}
+                                                />
+                                            </MuiBox>
+                                            <MuiBox component={"div"} p={1}>
+                                                <LayoutTextField
+                                                    disabled={stepIsSubmitting}
+                                                    required={false}
+                                                    type={"text"}
+                                                    iconFont={"description"}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.owner-name.label"}/>}
+                                                    field={fieldOwnerName}
+                                                    handleOnChange={fieldOwnerNameHandleOnChange}
                                                 />
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>

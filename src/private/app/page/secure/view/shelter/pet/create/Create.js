@@ -67,8 +67,8 @@ const View = React.memo(
                 fieldOwnerName,
                 fieldOwnerEmail,
                 fieldOwnerPhone,
-                fieldAddress,
-                fieldAddressMap,
+                fieldOwnerAddress,
+                fieldOwnerAddressMap,
                 fieldLanguage
             },
             setState
@@ -96,12 +96,12 @@ const View = React.memo(
                     error: null,
                     help: [<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.owner-phone.help"}/>]
                 },
-                fieldAddress: {
+                fieldOwnerAddress: {
                     value: {},
                     valueList: [],
                     error: null
                 },
-                fieldAddressMap: {
+                fieldOwnerAddressMap: {
                     value: {}
                 },
                 fieldLanguage: {
@@ -138,8 +138,8 @@ const View = React.memo(
             return AppUtilForm.validateField(value, [["fieldTypePhone"]])
         }
 
-        const fieldAddressValidate = (value) => {
-            return AppUtilForm.validateField(value && value.id ? value.id : "", [["fieldRequired"]])
+        const fieldOwnerAddressValidate = (value) => {
+            return AppUtilForm.validateField(value && value.id ? value.id : "", [])
         }
 
         const fieldLanguageValidate = (value) => {
@@ -238,7 +238,7 @@ const View = React.memo(
             []
         )
 
-        const handleFieldAddressSearch = React.useCallback(
+        const handleFieldOwnerAddressSearch = React.useCallback(
             async (search) => {
                 try {
                     if (search && typeof search === "string" && search.trim() !== "") {
@@ -252,8 +252,8 @@ const View = React.memo(
                                                 (oldState) => (
                                                     {
                                                         ...oldState,
-                                                        fieldAddress: {
-                                                            ...oldState.fieldAddress,
+                                                        fieldOwnerAddress: {
+                                                            ...oldState.fieldOwnerAddress,
                                                             valueList: data
                                                                 ? data.map(
                                                                     (valueMap) => {
@@ -281,14 +281,14 @@ const View = React.memo(
                                 (oldState) => (
                                     {
                                         ...oldState,
-                                        fieldAddress: {
-                                            ...oldState.fieldAddress,
+                                        fieldOwnerAddress: {
+                                            ...oldState.fieldOwnerAddress,
                                             value: {},
                                             valueList: [],
-                                            error: fieldAddressValidate({})
+                                            error: fieldOwnerAddressValidate({})
                                         },
-                                        fieldAddressMap: {
-                                            ...oldState.fieldAddressMap,
+                                        fieldOwnerAddressMap: {
+                                            ...oldState.fieldOwnerAddressMap,
                                             value: {}
                                         }
                                     }
@@ -302,7 +302,7 @@ const View = React.memo(
             []
         )
 
-        const handleFieldAddressChanged = React.useCallback(
+        const handleFieldOwnerAddressChanged = React.useCallback(
             async (value) => {
                 try {
                     if (value && value.id) {
@@ -319,14 +319,14 @@ const View = React.memo(
                                                     (oldState) => (
                                                         {
                                                             ...oldState,
-                                                            fieldAddress: {
-                                                                ...oldState.fieldAddress,
+                                                            fieldOwnerAddress: {
+                                                                ...oldState.fieldOwnerAddress,
                                                                 value: {...value, lat: lat, lng: lng, zoom: 18},
-                                                                valueList: [...oldState.fieldAddress.valueList],
-                                                                error: fieldAddressValidate(value)
+                                                                valueList: [...oldState.fieldOwnerAddress.valueList],
+                                                                error: fieldOwnerAddressValidate(value)
                                                             },
-                                                            fieldAddressMap: {
-                                                                ...oldState.fieldAddressMap,
+                                                            fieldOwnerAddressMap: {
+                                                                ...oldState.fieldOwnerAddressMap,
                                                                 value: {...value, lat: lat, lng: lng, zoom: 18}
                                                             }
                                                         }
@@ -343,14 +343,14 @@ const View = React.memo(
                                 (oldState) => (
                                     {
                                         ...oldState,
-                                        fieldAddress: {
-                                            ...oldState.fieldAddress,
+                                        fieldOwnerAddress: {
+                                            ...oldState.fieldOwnerAddress,
                                             value: {},
                                             valueList: [],
-                                            error: fieldAddressValidate({})
+                                            error: fieldOwnerAddressValidate({})
                                         },
-                                        fieldAddressMap: {
-                                            ...oldState.fieldAddressMap,
+                                        fieldOwnerAddressMap: {
+                                            ...oldState.fieldOwnerAddressMap,
                                             value: {}
                                         }
                                     }
@@ -364,7 +364,7 @@ const View = React.memo(
             []
         )
 
-        const handleFieldAddressMapChanged = React.useCallback(
+        const handleFieldOwnerAddressMapChanged = React.useCallback(
             async (value) => {
                 try {
                     if (isComponentMountedRef.current === true) {
@@ -372,10 +372,10 @@ const View = React.memo(
                             (oldState) => (
                                 {
                                     ...oldState,
-                                    fieldAddress: {
-                                        ...oldState.fieldAddress,
+                                    fieldOwnerAddress: {
+                                        ...oldState.fieldOwnerAddress,
                                         value: value,
-                                        error: fieldAddressValidate(value)
+                                        error: fieldOwnerAddressValidate(value)
                                     }
                                 }
                             )
@@ -439,7 +439,7 @@ const View = React.memo(
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel) {
-                            const petModelAddress = {}
+                            const petModelOwnerAddress = {}
                             const instancePet = {
                                 id: null,
                                 name: "",
@@ -453,8 +453,8 @@ const View = React.memo(
                                     success: true
                                 },
                                 instancePet: instancePet,
-                                fieldAddress: {
-                                    value: petModelAddress,
+                                fieldOwnerAddress: {
+                                    value: petModelOwnerAddress,
                                     valueList: []
                                 }
                             }
@@ -518,17 +518,17 @@ const View = React.memo(
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel) {
-                            const dataDictAddress = {}
+                            const dataDictOwnerAddress = {}
                             try {
-                                const dataDict = data.address
+                                const dataDict = data.ownerAddress
                                 if (dataDict.id && dataDict.lat && dataDict.lng && dataDict.zoom && dataDict.label && dataDict.mainText && dataDict.secondaryText) {
-                                    dataDictAddress.id = dataDict.id
-                                    dataDictAddress.lat = dataDict.lat
-                                    dataDictAddress.lng = dataDict.lng
-                                    dataDictAddress.zoom = dataDict.zoom
-                                    dataDictAddress.label = dataDict.label
-                                    dataDictAddress.mainText = dataDict.mainText
-                                    dataDictAddress.secondaryText = dataDict.secondaryText
+                                    dataDictOwnerAddress.id = dataDict.id
+                                    dataDictOwnerAddress.lat = dataDict.lat
+                                    dataDictOwnerAddress.lng = dataDict.lng
+                                    dataDictOwnerAddress.zoom = dataDict.zoom
+                                    dataDictOwnerAddress.label = dataDict.label
+                                    dataDictOwnerAddress.mainText = dataDict.mainText
+                                    dataDictOwnerAddress.secondaryText = dataDict.secondaryText
                                 }
                             } catch (e) {
                             }
@@ -554,7 +554,7 @@ const View = React.memo(
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                             },
                                             {
-                                                key: "address",
+                                                key: "ownerAddress",
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_DICTIONARY
                                             },
                                             {
@@ -567,7 +567,7 @@ const View = React.memo(
                                             ownerName: data.ownerName,
                                             ownerEmail: data.ownerEmail,
                                             ownerPhone: data.ownerPhone,
-                                            address: JSON.stringify(dataDictAddress),
+                                            ownerAddress: JSON.stringify(dataDictOwnerAddress),
                                             language: data.language
                                         }
                                     }
@@ -584,17 +584,17 @@ const View = React.memo(
                             const petCreatedModel = dataPetCreatedModel.instance
 
                             if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petCreatedModel) {
-                                const petUpdatedModelAddress = {}
+                                const petUpdatedModelOwnerAddress = {}
                                 try {
-                                    const jsonParse = JSON.parse(petCreatedModel.address)
+                                    const jsonParse = JSON.parse(petCreatedModel.ownerAddress)
                                     if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                        petUpdatedModelAddress.id = jsonParse.id
-                                        petUpdatedModelAddress.lat = jsonParse.lat
-                                        petUpdatedModelAddress.lng = jsonParse.lng
-                                        petUpdatedModelAddress.zoom = jsonParse.zoom
-                                        petUpdatedModelAddress.label = jsonParse.label
-                                        petUpdatedModelAddress.mainText = jsonParse.mainText
-                                        petUpdatedModelAddress.secondaryText = jsonParse.secondaryText
+                                        petUpdatedModelOwnerAddress.id = jsonParse.id
+                                        petUpdatedModelOwnerAddress.lat = jsonParse.lat
+                                        petUpdatedModelOwnerAddress.lng = jsonParse.lng
+                                        petUpdatedModelOwnerAddress.zoom = jsonParse.zoom
+                                        petUpdatedModelOwnerAddress.label = jsonParse.label
+                                        petUpdatedModelOwnerAddress.mainText = jsonParse.mainText
+                                        petUpdatedModelOwnerAddress.secondaryText = jsonParse.secondaryText
                                     }
                                 } catch (e) {
                                 }
@@ -611,8 +611,8 @@ const View = React.memo(
                                         success: true
                                     },
                                     instancePet: instancePetCreated,
-                                    fieldAddress: {
-                                        value: petUpdatedModelAddress,
+                                    fieldOwnerAddress: {
+                                        value: petUpdatedModelOwnerAddress,
                                         valueList: []
                                     }
                                 }
@@ -778,15 +778,15 @@ const View = React.memo(
                                                                 value: data.instancePet.ownerPhone,
                                                                 error: fieldOwnerPhoneValidate(data.instancePet.ownerPhone)
                                                             },
-                                                            fieldAddress: {
-                                                                ...oldState.fieldAddress,
-                                                                value: data.fieldAddress.value,
-                                                                valueList: data.fieldAddress.valueList,
-                                                                error: fieldAddressValidate(data.fieldAddress.value)
+                                                            fieldOwnerAddress: {
+                                                                ...oldState.fieldOwnerAddress,
+                                                                value: data.fieldOwnerAddress.value,
+                                                                valueList: data.fieldOwnerAddress.valueList,
+                                                                error: fieldOwnerAddressValidate(data.fieldOwnerAddress.value)
                                                             },
-                                                            fieldAddressMap: {
-                                                                ...oldState.fieldAddressMap,
-                                                                value: data.fieldAddress.value
+                                                            fieldOwnerAddressMap: {
+                                                                ...oldState.fieldOwnerAddressMap,
+                                                                value: data.fieldOwnerAddress.value
                                                             },
                                                             fieldLanguage: {
                                                                 ...oldState.fieldLanguage,
@@ -876,10 +876,10 @@ const View = React.memo(
                         const fieldOwnerNameError = fieldOwnerNameValidate(fieldOwnerName.value)
                         const fieldOwnerEmailError = fieldOwnerEmailValidate(fieldOwnerEmail.value)
                         const fieldOwnerPhoneError = fieldOwnerPhoneValidate(fieldOwnerPhone.value)
-                        const fieldAddressError = fieldAddressValidate(fieldAddress.value)
+                        const fieldOwnerAddressError = fieldOwnerAddressValidate(fieldOwnerAddress.value)
                         const fieldLanguageError = fieldLanguageValidate(fieldLanguage.value)
 
-                        if (fieldNameError || fieldOwnerNameError || fieldOwnerEmailError || fieldOwnerPhoneError || fieldAddressError || fieldLanguageError) {
+                        if (fieldNameError || fieldOwnerNameError || fieldOwnerEmailError || fieldOwnerPhoneError || fieldOwnerAddressError || fieldLanguageError) {
                             if (isComponentMountedRef.current === true) {
                                 setState(
                                     (oldState) => (
@@ -902,9 +902,9 @@ const View = React.memo(
                                                 ...oldState.fieldOwnerPhone,
                                                 error: fieldOwnerPhoneError
                                             },
-                                            fieldAddress: {
-                                                ...oldState.fieldAddress,
-                                                error: fieldAddressError
+                                            fieldOwnerAddress: {
+                                                ...oldState.fieldOwnerAddress,
+                                                error: fieldOwnerAddressError
                                             },
                                             fieldLanguage: {
                                                 ...oldState.fieldLanguage,
@@ -937,7 +937,7 @@ const View = React.memo(
                 fieldOwnerName.value,
                 fieldOwnerEmail.value,
                 fieldOwnerPhone.value,
-                fieldAddress.value,
+                fieldOwnerAddress.value,
                 fieldLanguage.value
             ]
         )
@@ -952,7 +952,7 @@ const View = React.memo(
                                 ownerName: fieldOwnerName.value,
                                 ownerEmail: fieldOwnerEmail.value,
                                 ownerPhone: fieldOwnerPhone.value,
-                                address: fieldAddress.value,
+                                ownerAddress: fieldOwnerAddress.value,
                                 language: fieldLanguage.value
                             }
                         )
@@ -988,15 +988,15 @@ const View = React.memo(
                                                                 value: data.instancePet.ownerPhone,
                                                                 error: fieldOwnerPhoneValidate(data.instancePet.ownerPhone)
                                                             },
-                                                            fieldAddress: {
-                                                                ...oldState.fieldAddress,
-                                                                value: data.fieldAddress.value,
-                                                                valueList: data.fieldAddress.valueList,
-                                                                error: fieldAddressValidate(data.fieldAddress.value)
+                                                            fieldOwnerAddress: {
+                                                                ...oldState.fieldOwnerAddress,
+                                                                value: data.fieldOwnerAddress.value,
+                                                                valueList: data.fieldOwnerAddress.valueList,
+                                                                error: fieldOwnerAddressValidate(data.fieldOwnerAddress.value)
                                                             },
-                                                            fieldAddressMap: {
-                                                                ...oldState.fieldAddressMap,
-                                                                value: data.fieldAddress.value
+                                                            fieldOwnerAddressMap: {
+                                                                ...oldState.fieldOwnerAddressMap,
+                                                                value: data.fieldOwnerAddress.value
                                                             },
                                                             fieldLanguage: {
                                                                 ...oldState.fieldLanguage,
@@ -1080,7 +1080,7 @@ const View = React.memo(
                 fieldOwnerName.value,
                 fieldOwnerEmail.value,
                 fieldOwnerPhone.value,
-                fieldAddress.value,
+                fieldOwnerAddress.value,
                 fieldLanguage.value,
                 submitData
             ]
@@ -1333,14 +1333,14 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     required={true}
                                                     iconFont={"place"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.address.label"}/>}
-                                                    field={fieldAddress}
-                                                    handleSearch={handleFieldAddressSearch}
-                                                    handleChanged={handleFieldAddressChanged}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.owner-address.label"}/>}
+                                                    field={fieldOwnerAddress}
+                                                    handleSearch={handleFieldOwnerAddressSearch}
+                                                    handleChanged={handleFieldOwnerAddressChanged}
                                                 />
                                                 <LayoutAutocompleteGoogleAddressMap
-                                                    field={fieldAddressMap}
-                                                    handleChanged={handleFieldAddressMapChanged}
+                                                    field={fieldOwnerAddressMap}
+                                                    handleChanged={handleFieldOwnerAddressMapChanged}
                                                 />
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
@@ -1364,7 +1364,7 @@ const View = React.memo(
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutButton
                                                     loading={stepIsSubmitting}
-                                                    disabled={stepIsSubmitting || Boolean(fieldName.error) || Boolean(fieldOwnerName.error) || Boolean(fieldOwnerEmail.error) || Boolean(fieldOwnerPhone.error) || Boolean(fieldAddress.error) || Boolean(fieldLanguage.error)}
+                                                    disabled={stepIsSubmitting || Boolean(fieldName.error) || Boolean(fieldOwnerName.error) || Boolean(fieldOwnerEmail.error) || Boolean(fieldOwnerPhone.error) || Boolean(fieldOwnerAddress.error) || Boolean(fieldLanguage.error)}
                                                     variant={"contained"}
                                                     size={"small"}
                                                     iconFont={"save"}

@@ -1,4 +1,6 @@
 {
+  "app.page.secure.layout.drawer.shelter": "SHELTER",
+  "app.page.secure.layout.drawer.shelter.dashboard": "Dashboard",
   "app.page.secure.layout.drawer.account": "ACCOUNT",
   "app.page.secure.layout.drawer.account.guest.forgot-password": "Forgot Password",
   "app.page.secure.layout.drawer.account.guest.sign-in": "Sign In",

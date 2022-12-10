@@ -7,8 +7,9 @@ import {PATH_APP_PAGE_SECURE_ACCOUNT_CURRENT_INFO} from "../../../../../setting/
 import {PATH_APP_PAGE_SECURE_ACCOUNT_CURRENT_SIGN_OUT} from "../../../../../setting/path/app/page/secure/account/current/sign-out"
 import {PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_FORGOT_PASSWORD} from "../../../../../setting/path/app/page/secure/account/guest/forgot-password"
 import {PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN} from "../../../../../setting/path/app/page/secure/account/guest/sign-in"
+import {PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD} from "../../../../../setting/path/app/page/secure/shelter/dashboard"
 import {Context as ContextDrawer} from "../../../../context/Drawer"
-import {SecurityLayoutCurrentUser, SecurityLayoutGuestUser} from "../../security"
+import {SecurityLayoutCurrentUser, SecurityLayoutCurrentUserShelter, SecurityLayoutGuestUser} from "../../security"
 import {List as LayoutList} from "./list/List"
 import {ListSubheader as LayoutListSubheader} from "./list/ListSubheader"
 import {ListItem as LayoutListItem} from "./list/ListItem"
@@ -23,6 +24,20 @@ export const LayoutDrawer = React.memo(
 
         return (
             <MuiBox component={"div"} sx={SxDrawer}>
+                <SecurityLayoutCurrentUserShelter>
+                    <MuiDivider/>
+                    <LayoutList level={1} subheader={<LayoutListSubheader level={1} text={<FormattedMessage id={"app.page.secure.layout.drawer.shelter"}/>}/>}>
+                        <LayoutListItem
+                            level={1}
+                            url={PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD}
+                            iconFont={"dashboard"}
+                            text={<FormattedMessage id={"app.page.secure.layout.drawer.shelter.dashboard"}/>}
+                            activeUrl={true}
+                            urlToCheck={PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD}
+                            handleOnClick={async () => await handleMuiDrawerListItemOnClick(isMobile)}
+                        />
+                    </LayoutList>
+                </SecurityLayoutCurrentUserShelter>
                 <SecurityLayoutCurrentUser>
                     <MuiDivider/>
                     <LayoutList level={1} subheader={<LayoutListSubheader level={1} text={<FormattedMessage id={"app.page.secure.layout.drawer.account"}/>}/>}>

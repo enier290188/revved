@@ -1,4 +1,6 @@
 {
+  "app.page.secure.layout.drawer.shelter": "REFUGIO",
+  "app.page.secure.layout.drawer.shelter.dashboard": "Tablero",
   "app.page.secure.layout.drawer.account": "CUENTA",
   "app.page.secure.layout.drawer.account.guest.forgot-password": "¿Olvidaste contraseña?",
   "app.page.secure.layout.drawer.account.guest.sign-in": "Iniciar Sesión",

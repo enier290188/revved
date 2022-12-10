@@ -7,7 +7,9 @@ import {PATH_APP_PAGE_SECURE_ACCOUNT_CURRENT_INFO} from "../../../../../setting/
 import {PATH_APP_PAGE_SECURE_ACCOUNT_CURRENT_SIGN_OUT} from "../../../../../setting/path/app/page/secure/account/current/sign-out"
 import {PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_FORGOT_PASSWORD} from "../../../../../setting/path/app/page/secure/account/guest/forgot-password"
 import {PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN} from "../../../../../setting/path/app/page/secure/account/guest/sign-in"
+import {PATH_APP_PAGE_SECURE_SHELTER_ADOPTER} from "../../../../../setting/path/app/page/secure/shelter/adopter"
 import {PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD} from "../../../../../setting/path/app/page/secure/shelter/dashboard"
+import {PATH_APP_PAGE_SECURE_SHELTER_PET} from "../../../../../setting/path/app/page/secure/shelter/pet"
 import {Context as ContextDrawer} from "../../../../context/Drawer"
 import {SecurityLayoutCurrentUser, SecurityLayoutCurrentUserShelter, SecurityLayoutGuestUser} from "../../security"
 import {List as LayoutList} from "./list/List"
@@ -34,6 +36,24 @@ export const LayoutDrawer = React.memo(
                             text={<FormattedMessage id={"app.page.secure.layout.drawer.shelter.dashboard"}/>}
                             activeUrl={true}
                             urlToCheck={PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD}
+                            handleOnClick={async () => await handleMuiDrawerListItemOnClick(isMobile)}
+                        />
+                        <LayoutListItem
+                            level={1}
+                            url={PATH_APP_PAGE_SECURE_SHELTER_PET}
+                            iconFont={"pets"}
+                            text={<FormattedMessage id={"app.page.secure.layout.drawer.shelter.pet"}/>}
+                            activeUrl={true}
+                            urlToCheck={PATH_APP_PAGE_SECURE_SHELTER_PET}
+                            handleOnClick={async () => await handleMuiDrawerListItemOnClick(isMobile)}
+                        />
+                        <LayoutListItem
+                            level={1}
+                            url={PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}
+                            iconFont={"settings_accessibility"}
+                            text={<FormattedMessage id={"app.page.secure.layout.drawer.shelter.adopter"}/>}
+                            activeUrl={true}
+                            urlToCheck={PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}
                             handleOnClick={async () => await handleMuiDrawerListItemOnClick(isMobile)}
                         />
                     </LayoutList>

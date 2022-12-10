@@ -52,7 +52,7 @@ const STEP_EFFECT_DEFAULT = "step-effect-default"
 
 const View = React.memo(
     () => {
-        const {paramContactId} = useParams()
+        const {paramAdopterId} = useParams()
         const contextUser = React.useContext(ContextUser)
         const contextAlert = React.useContext(ContextAlert)
         const [
@@ -60,7 +60,7 @@ const View = React.memo(
                 stepReturn,
                 stepEffect,
                 stepIsSubmitting,
-                instanceContact
+                instanceAdopter
             },
             setState
         ] = React.useState(
@@ -68,7 +68,7 @@ const View = React.memo(
                 stepReturn: STEP_RETURN_INITIAL,
                 stepEffect: STEP_EFFECT_INITIAL,
                 stepIsSubmitting: false,
-                instanceContact: null
+                instanceAdopter: null
             }
         )
         const isComponentMountedRef = React.useRef(true)
@@ -78,8 +78,7 @@ const View = React.memo(
                 try {
                     const user = contextUser.getUser()
                     const userId = user && user.id ? user.id : null
-                    const userCompanyId = user && user.companyId ? user.companyId : null
-                    if (user && userId && userCompanyId) {
+                    if (user && userId) {
                         let ERROR_INTERNET_DISCONNECTED = false
                         let ERROR_UNAUTHORIZED = false
 
@@ -88,12 +87,7 @@ const View = React.memo(
                                 query: {
                                     name: "getUser",
                                     id: userId,
-                                    itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        }
-                                    ]
+                                    itemList: []
                                 }
                             }
                         )
@@ -107,39 +101,12 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataCompanyModel = await AppUtilGraphql.getModel(
+                        const dataAdopterModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getCompany",
-                                    id: userCompanyId,
-                                    itemList: []
-                                }
-                            }
-                        )
-                        if (dataCompanyModel._response.error && dataCompanyModel._response.errorType) {
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const companyModel = dataCompanyModel.instance
-
-                        const dataContactModel = await AppUtilGraphql.getModel(
-                            {
-                                query: {
-                                    name: "getContact",
-                                    id: paramContactId,
+                                    name: "getAdopter",
+                                    id: paramAdopterId,
                                     itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        },
-                                        {
-                                            key: "userId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        },
                                         {
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -148,26 +115,26 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataContactModel._response.error && dataContactModel._response.errorType) {
-                            if (dataContactModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
+                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataContactModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const contactModel = dataContactModel.instance
+                        const adopterModel = dataAdopterModel.instance
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId && contactModel && companyModel.id === contactModel.companyId) {
-                            const instanceContact = {
-                                id: contactModel.id,
-                                name: contactModel.name
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
+                            const instanceAdopter = {
+                                id: adopterModel.id,
+                                name: adopterModel.name
                             }
                             return {
                                 _response: {
                                     success: true
                                 },
-                                instanceContact: instanceContact
+                                instanceAdopter: instanceAdopter
                             }
                         } else {
                             let warningType = null
@@ -196,7 +163,7 @@ const View = React.memo(
                 }
             },
             [
-                paramContactId,
+                paramAdopterId,
                 contextUser
             ]
         )
@@ -206,8 +173,7 @@ const View = React.memo(
                 try {
                     const user = contextUser.getUser()
                     const userId = user && user.id ? user.id : null
-                    const userCompanyId = user && user.companyId ? user.companyId : null
-                    if (user && userId && userCompanyId) {
+                    if (user && userId) {
                         let ERROR_INTERNET_DISCONNECTED = false
                         let ERROR_UNAUTHORIZED = false
 
@@ -216,12 +182,7 @@ const View = React.memo(
                                 query: {
                                     name: "getUser",
                                     id: userId,
-                                    itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        }
-                                    ]
+                                    itemList: []
                                 }
                             }
                         )
@@ -235,39 +196,12 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataCompanyModel = await AppUtilGraphql.getModel(
+                        const dataAdopterModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getCompany",
-                                    id: userCompanyId,
-                                    itemList: []
-                                }
-                            }
-                        )
-                        if (dataCompanyModel._response.error && dataCompanyModel._response.errorType) {
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const companyModel = dataCompanyModel.instance
-
-                        const dataContactModel = await AppUtilGraphql.getModel(
-                            {
-                                query: {
-                                    name: "getContact",
-                                    id: paramContactId,
+                                    name: "getAdopter",
+                                    id: paramAdopterId,
                                     itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        },
-                                        {
-                                            key: "userId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        },
                                         {
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -276,62 +210,54 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataContactModel._response.error && dataContactModel._response.errorType) {
-                            if (dataContactModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
+                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataContactModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const contactModel = dataContactModel.instance
+                        const adopterModel = dataAdopterModel.instance
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId && contactModel && companyModel.id === contactModel.companyId) {
-                            const dataContactDeletedModel = await AppUtilGraphql.deleteModel(
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
+                            const dataAdopterDeletedModel = await AppUtilGraphql.deleteModel(
                                 {
                                     query: {
-                                        name: "deleteContact",
-                                        id: contactModel.id,
+                                        name: "deleteAdopter",
+                                        id: adopterModel.id,
                                         itemList: [
-                                            {
-                                                key: "companyId",
-                                                type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                            },
-                                            {
-                                                key: "userId",
-                                                type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                            },
                                             {
                                                 key: "name",
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                             }
                                         ],
                                         input: {
-                                            _version: contactModel._version
+                                            _version: adopterModel._version
                                         }
                                     }
                                 }
                             )
-                            if (dataContactDeletedModel._response.error && dataContactDeletedModel._response.errorType) {
-                                if (dataContactDeletedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                            if (dataAdopterDeletedModel._response.error && dataAdopterDeletedModel._response.errorType) {
+                                if (dataAdopterDeletedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                     ERROR_INTERNET_DISCONNECTED = true
                                 }
-                                if (dataContactDeletedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                                if (dataAdopterDeletedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                     ERROR_UNAUTHORIZED = true
                                 }
                             }
-                            const contactDeletedModel = dataContactDeletedModel.instance
+                            const adopterDeletedModel = dataAdopterDeletedModel.instance
 
-                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId && contactDeletedModel && companyModel.id === contactDeletedModel.companyId) {
-                                const instanceContact = {
-                                    id: contactDeletedModel.id,
-                                    name: contactDeletedModel.name
+                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterDeletedModel) {
+                                const instanceAdopter = {
+                                    id: adopterDeletedModel.id,
+                                    name: adopterDeletedModel.name
                                 }
                                 return {
                                     _response: {
                                         success: true
                                     },
-                                    instanceContact: instanceContact
+                                    instanceAdopter: instanceAdopter
                                 }
                             } else {
                                 let warningType = null
@@ -375,7 +301,7 @@ const View = React.memo(
                 }
             },
             [
-                paramContactId,
+                paramAdopterId,
                 contextUser
             ]
         )
@@ -475,7 +401,7 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_REFRESH_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceContact: data.instanceContact
+                                                            instanceAdopter: data.instanceAdopter
                                                         }
                                                     )
                                                 )
@@ -606,11 +532,11 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_SUBMIT_IS_SUBMITTING_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceContact: data.instanceContact
+                                                            instanceAdopter: data.instanceAdopter
                                                         }
                                                     )
                                                 )
-                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.delete.alert.submit.then.success", values: {name: data.instanceContact.name}}})
+                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.delete.alert.submit.then.success", values: {name: data.instanceAdopter.name}}})
                                             }
                                         } else {
                                             if (isComponentMountedRef.current === true) {
@@ -888,7 +814,7 @@ const View = React.memo(
                                                         <FormattedMessage id={"app.page.secure.layout.alert.warning"}/>
                                                     </MuiAlertTitle>
                                                     <MuiTypography component={"p"} variant={"body1"}>
-                                                        <FormattedMessage id={"app.page.secure.view.shelter.adopter.delete.question"} values={{name: instanceContact.name}}/>
+                                                        <FormattedMessage id={"app.page.secure.view.shelter.adopter.delete.question"} values={{name: instanceAdopter.name}}/>
                                                     </MuiTypography>
                                                 </MuiAlert>
                                             </MuiBox>
@@ -925,7 +851,7 @@ const View = React.memo(
                                         <LayoutPaperActionRight>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramContactId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
@@ -935,7 +861,7 @@ const View = React.memo(
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramContactId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
@@ -955,7 +881,7 @@ const View = React.memo(
             case STEP_RETURN_SECURITY_NAVIGATE_TO_PATH_ERROR_404:
                 return <SecurityNavigateToPathError404/>
             case STEP_RETURN_SECURITY_NAVIGATE_TO_INDEX:
-                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramContactId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE}`}/>
+                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE}`}/>
             default:
                 return null
         }

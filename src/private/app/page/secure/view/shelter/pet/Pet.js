@@ -531,19 +531,19 @@ const ViewList = React.memo(
                                     try {
                                         if (response && response.value && response.value.data && response.value.data.onUpdatePet) {
                                             const petUpdatedModel = response.value.data.onUpdatePet
-                                            const petUpdatedModelAddress = {
+                                            const petUpdatedModelOwnerAddress = {
                                                 label: ""
                                             }
                                             try {
-                                                const jsonParse = JSON.parse(petUpdatedModel.address)
+                                                const jsonParse = JSON.parse(petUpdatedModel.ownerAddress)
                                                 if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                                    petUpdatedModelAddress.id = jsonParse.id
-                                                    petUpdatedModelAddress.lat = jsonParse.lat
-                                                    petUpdatedModelAddress.lng = jsonParse.lng
-                                                    petUpdatedModelAddress.zoom = jsonParse.zoom
-                                                    petUpdatedModelAddress.label = jsonParse.label
-                                                    petUpdatedModelAddress.mainText = jsonParse.mainText
-                                                    petUpdatedModelAddress.secondaryText = jsonParse.secondaryText
+                                                    petUpdatedModelOwnerAddress.id = jsonParse.id
+                                                    petUpdatedModelOwnerAddress.lat = jsonParse.lat
+                                                    petUpdatedModelOwnerAddress.lng = jsonParse.lng
+                                                    petUpdatedModelOwnerAddress.zoom = jsonParse.zoom
+                                                    petUpdatedModelOwnerAddress.label = jsonParse.label
+                                                    petUpdatedModelOwnerAddress.mainText = jsonParse.mainText
+                                                    petUpdatedModelOwnerAddress.secondaryText = jsonParse.secondaryText
                                                 }
                                             } catch (e) {
                                             }
@@ -554,10 +554,11 @@ const ViewList = React.memo(
                                                     crudRowList[index] = {
                                                         ...crudRowList[index],
                                                         name: petUpdatedModel.name,
-                                                        email: petUpdatedModel.email,
-                                                        phone: petUpdatedModel.phone,
-                                                        address: petUpdatedModelAddress.label,
-                                                        language: petUpdatedModel.language,
+                                                        ownerName: petUpdatedModel.ownerName,
+                                                        ownerEmail: petUpdatedModel.ownerEmail,
+                                                        ownerPhone: petUpdatedModel.ownerPhone,
+                                                        ownerAddress: petUpdatedModelOwnerAddress.label,
+                                                        ownerLanguage: petUpdatedModel.ownerLanguage,
                                                         createdAt: petUpdatedModel.createdAt,
                                                         updatedAt: petUpdatedModel.updatedAt
                                                     }

@@ -3,11 +3,11 @@ import {Storage} from "aws-amplify"
 import React from "react"
 import {FormattedMessage} from "react-intl"
 import {Route, Routes, useParams} from "react-router"
-import {PATH_APP_PAGE_SECURE_SHELTER_ADOPTER} from "../../../../../../../setting/path/app/page/secure/shelter/adopter"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/comment"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/delete"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/update"
-import {STORAGE_APP_ADOPTER} from "../../../../../../../setting/storage/app"
+import {PATH_APP_PAGE_SECURE_SHELTER_PET} from "../../../../../../../setting/path/app/page/secure/shelter/pet"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_COMMENT} from "../../../../../../../setting/path/app/page/secure/shelter/pet/comment"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_DELETE} from "../../../../../../../setting/path/app/page/secure/shelter/pet/delete"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE} from "../../../../../../../setting/path/app/page/secure/shelter/pet/update"
+import {STORAGE_APP_PET} from "../../../../../../../setting/storage/app"
 import {Context as ContextAlert} from "../../../../../../context/Alert"
 import {Context as ContextUser} from "../../../../../../context/User"
 import * as AppUtilForm from "../../../../../../util/form"
@@ -68,7 +68,7 @@ const CROP_CONFIG_INITIAL_PICTURE = {
 
 const View = React.memo(
     () => {
-        const {paramAdopterId} = useParams()
+        const {paramPetId} = useParams()
         const contextUser = React.useContext(ContextUser)
         const contextAlert = React.useContext(ContextAlert)
         const [
@@ -76,7 +76,7 @@ const View = React.memo(
                 stepReturn,
                 stepEffect,
                 stepIsSubmitting,
-                instanceAdopter,
+                instancePet,
                 fieldPicture,
                 fieldName,
                 fieldEmail,
@@ -91,7 +91,7 @@ const View = React.memo(
                 stepReturn: STEP_RETURN_INITIAL,
                 stepEffect: STEP_EFFECT_INITIAL,
                 stepIsSubmitting: false,
-                instanceAdopter: null,
+                instancePet: null,
                 fieldPicture: {
                     key: "fieldPicture",
                     value: "",
@@ -104,12 +104,12 @@ const View = React.memo(
                 fieldEmail: {
                     value: "",
                     error: null,
-                    help: [<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.field.email.help"}/>]
+                    help: [<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.email.help"}/>]
                 },
                 fieldPhone: {
                     value: "",
                     error: null,
-                    help: [<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.field.phone.help"}/>]
+                    help: [<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.phone.help"}/>]
                 },
                 fieldAddress: {
                     value: {},
@@ -453,11 +453,11 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataAdopterModel = await AppUtilGraphql.getModel(
+                        const dataPetModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getAdopter",
-                                    id: paramAdopterId,
+                                    name: "getPet",
+                                    id: paramPetId,
                                     itemList: [
                                         {
                                             key: "picture",
@@ -487,21 +487,21 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataPetModel._response.error && dataPetModel._response.errorType) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const adopterModel = dataAdopterModel.instance
+                        const petModel = dataPetModel.instance
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
-                            let adopterModelPicture = null
-                            const adopterModelPictureUrl = adopterModel.picture
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petModel) {
+                            let petModelPicture = null
+                            const petModelPictureUrl = petModel.picture
                                 ? await Storage.get(
-                                    adopterModel.picture,
+                                    petModel.picture,
                                     {
                                         level: "public",
                                         acl: "private",
@@ -510,7 +510,7 @@ const View = React.memo(
                                     }
                                 )
                                 : null
-                            if (adopterModelPictureUrl) {
+                            if (petModelPictureUrl) {
                                 const toDataURL = async url => fetch(url)
                                     .then(
                                         response => response.blob()
@@ -525,44 +525,44 @@ const View = React.memo(
                                             }
                                         )
                                     )
-                                await toDataURL(adopterModelPictureUrl)
+                                await toDataURL(petModelPictureUrl)
                                     .then(
                                         (dataUrl) => {
-                                            adopterModelPicture = dataUrl
+                                            petModelPicture = dataUrl
                                         }
                                     )
                             }
-                            const adopterModelAddress = {}
+                            const petModelAddress = {}
                             try {
-                                const jsonParse = JSON.parse(adopterModel.address)
+                                const jsonParse = JSON.parse(petModel.address)
                                 if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                    adopterModelAddress.id = jsonParse.id
-                                    adopterModelAddress.lat = jsonParse.lat
-                                    adopterModelAddress.lng = jsonParse.lng
-                                    adopterModelAddress.zoom = jsonParse.zoom
-                                    adopterModelAddress.label = jsonParse.label
-                                    adopterModelAddress.mainText = jsonParse.mainText
-                                    adopterModelAddress.secondaryText = jsonParse.secondaryText
+                                    petModelAddress.id = jsonParse.id
+                                    petModelAddress.lat = jsonParse.lat
+                                    petModelAddress.lng = jsonParse.lng
+                                    petModelAddress.zoom = jsonParse.zoom
+                                    petModelAddress.label = jsonParse.label
+                                    petModelAddress.mainText = jsonParse.mainText
+                                    petModelAddress.secondaryText = jsonParse.secondaryText
                                 }
                             } catch (e) {
                             }
-                            const instanceAdopter = {
-                                id: adopterModel.id,
-                                name: adopterModel.name,
-                                email: adopterModel.email,
-                                phone: adopterModel.phone,
-                                language: adopterModel.language
+                            const instancePet = {
+                                id: petModel.id,
+                                name: petModel.name,
+                                email: petModel.email,
+                                phone: petModel.phone,
+                                language: petModel.language
                             }
                             return {
                                 _response: {
                                     success: true
                                 },
-                                instanceAdopter: instanceAdopter,
+                                instancePet: instancePet,
                                 fieldPicture: {
-                                    value: adopterModelPicture
+                                    value: petModelPicture
                                 },
                                 fieldAddress: {
-                                    value: adopterModelAddress,
+                                    value: petModelAddress,
                                     valueList: []
                                 }
                             }
@@ -593,7 +593,7 @@ const View = React.memo(
                 }
             },
             [
-                paramAdopterId,
+                paramPetId,
                 contextUser
             ]
         )
@@ -626,11 +626,11 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataAdopterModel = await AppUtilGraphql.getModel(
+                        const dataPetModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getAdopter",
-                                    id: paramAdopterId,
+                                    name: "getPet",
+                                    id: paramPetId,
                                     itemList: [
                                         {
                                             key: "picture",
@@ -660,22 +660,22 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataPetModel._response.error && dataPetModel._response.errorType) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataPetModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const adopterModel = dataAdopterModel.instance
+                        const petModel = dataPetModel.instance
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petModel) {
                             let storageResponsePicture = null
                             try {
                                 if (data.picture.imageToDelete === true) {
                                     await Storage.remove(
-                                        `${STORAGE_APP_ADOPTER}${adopterModel.id}/picture.png`,
+                                        `${STORAGE_APP_PET}${petModel.id}/picture.png`,
                                         {
                                             level: "public"
                                         }
@@ -683,7 +683,7 @@ const View = React.memo(
                                 } else {
                                     if (data.picture.imageCroppedFile) {
                                         storageResponsePicture = await Storage.put(
-                                            `${STORAGE_APP_ADOPTER}${adopterModel.id}/picture.png`,
+                                            `${STORAGE_APP_PET}${petModel.id}/picture.png`,
                                             data.picture.imageCroppedFile,
                                             {
                                                 level: "public",
@@ -709,11 +709,11 @@ const View = React.memo(
                                 }
                             } catch (e) {
                             }
-                            const dataAdopterUpdatedModel = await AppUtilGraphql.updateModel(
+                            const dataPetUpdatedModel = await AppUtilGraphql.updateModel(
                                 {
                                     query: {
-                                        name: "updateAdopter",
-                                        id: adopterModel.id,
+                                        name: "updatePet",
+                                        id: petModel.id,
                                         itemList: [
                                             {
                                                 key: "picture",
@@ -741,32 +741,32 @@ const View = React.memo(
                                             }
                                         ],
                                         input: {
-                                            picture: data.picture.imageToDelete === true ? "" : storageResponsePicture && storageResponsePicture.key ? storageResponsePicture.key : adopterModel.picture,
+                                            picture: data.picture.imageToDelete === true ? "" : storageResponsePicture && storageResponsePicture.key ? storageResponsePicture.key : petModel.picture,
                                             name: data.name,
                                             email: data.email,
                                             phone: data.phone,
                                             address: JSON.stringify(dataDictAddress),
                                             language: data.language,
-                                            _version: adopterModel._version
+                                            _version: petModel._version
                                         }
                                     }
                                 }
                             )
-                            if (dataAdopterUpdatedModel._response.error && dataAdopterUpdatedModel._response.errorType) {
-                                if (dataAdopterUpdatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                            if (dataPetUpdatedModel._response.error && dataPetUpdatedModel._response.errorType) {
+                                if (dataPetUpdatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                     ERROR_INTERNET_DISCONNECTED = true
                                 }
-                                if (dataAdopterUpdatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                                if (dataPetUpdatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                     ERROR_UNAUTHORIZED = true
                                 }
                             }
-                            const adopterUpdatedModel = dataAdopterUpdatedModel.instance
+                            const petUpdatedModel = dataPetUpdatedModel.instance
 
-                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterUpdatedModel) {
-                                let adopterUpdatedModelPicture = null
-                                const adopterUpdatedModelPictureUrl = adopterUpdatedModel.picture
+                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && petUpdatedModel) {
+                                let petUpdatedModelPicture = null
+                                const petUpdatedModelPictureUrl = petUpdatedModel.picture
                                     ? await Storage.get(
-                                        adopterUpdatedModel.picture,
+                                        petUpdatedModel.picture,
                                         {
                                             level: "public",
                                             acl: "private",
@@ -775,7 +775,7 @@ const View = React.memo(
                                         }
                                     )
                                     : null
-                                if (adopterUpdatedModelPictureUrl) {
+                                if (petUpdatedModelPictureUrl) {
                                     const toDataURL = async url => fetch(url)
                                         .then(
                                             response => response.blob()
@@ -790,44 +790,44 @@ const View = React.memo(
                                                 }
                                             )
                                         )
-                                    await toDataURL(adopterUpdatedModelPictureUrl)
+                                    await toDataURL(petUpdatedModelPictureUrl)
                                         .then(
                                             (dataUrl) => {
-                                                adopterUpdatedModelPicture = dataUrl
+                                                petUpdatedModelPicture = dataUrl
                                             }
                                         )
                                 }
-                                const adopterUpdatedModelAddress = {}
+                                const petUpdatedModelAddress = {}
                                 try {
-                                    const jsonParse = JSON.parse(adopterUpdatedModel.address)
+                                    const jsonParse = JSON.parse(petUpdatedModel.address)
                                     if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                        adopterUpdatedModelAddress.id = jsonParse.id
-                                        adopterUpdatedModelAddress.lat = jsonParse.lat
-                                        adopterUpdatedModelAddress.lng = jsonParse.lng
-                                        adopterUpdatedModelAddress.zoom = jsonParse.zoom
-                                        adopterUpdatedModelAddress.label = jsonParse.label
-                                        adopterUpdatedModelAddress.mainText = jsonParse.mainText
-                                        adopterUpdatedModelAddress.secondaryText = jsonParse.secondaryText
+                                        petUpdatedModelAddress.id = jsonParse.id
+                                        petUpdatedModelAddress.lat = jsonParse.lat
+                                        petUpdatedModelAddress.lng = jsonParse.lng
+                                        petUpdatedModelAddress.zoom = jsonParse.zoom
+                                        petUpdatedModelAddress.label = jsonParse.label
+                                        petUpdatedModelAddress.mainText = jsonParse.mainText
+                                        petUpdatedModelAddress.secondaryText = jsonParse.secondaryText
                                     }
                                 } catch (e) {
                                 }
-                                const instanceAdopterUpdated = {
-                                    id: adopterUpdatedModel.id,
-                                    name: adopterUpdatedModel.name,
-                                    email: adopterUpdatedModel.email,
-                                    phone: adopterUpdatedModel.phone,
-                                    language: adopterUpdatedModel.language
+                                const instancePetUpdated = {
+                                    id: petUpdatedModel.id,
+                                    name: petUpdatedModel.name,
+                                    email: petUpdatedModel.email,
+                                    phone: petUpdatedModel.phone,
+                                    language: petUpdatedModel.language
                                 }
                                 return {
                                     _response: {
                                         success: true
                                     },
-                                    instanceAdopter: instanceAdopterUpdated,
+                                    instancePet: instancePetUpdated,
                                     fieldPicture: {
-                                        value: adopterUpdatedModelPicture
+                                        value: petUpdatedModelPicture
                                     },
                                     fieldAddress: {
-                                        value: adopterUpdatedModelAddress,
+                                        value: petUpdatedModelAddress,
                                         valueList: []
                                     }
                                 }
@@ -873,7 +873,7 @@ const View = React.memo(
                 }
             },
             [
-                paramAdopterId,
+                paramPetId,
                 contextUser
             ]
         )
@@ -973,7 +973,7 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_REFRESH_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceAdopter: data.instanceAdopter,
+                                                            instancePet: data.instancePet,
                                                             fieldPicture: {
                                                                 ...oldState.fieldPicture,
                                                                 value: data.fieldPicture.value,
@@ -986,22 +986,22 @@ const View = React.memo(
                                                                 imageSrc: null,
                                                                 imageCroppedFile: null,
                                                                 imageCroppedSrc: null,
-                                                                text: data.instanceAdopter.name
+                                                                text: data.instancePet.name
                                                             },
                                                             fieldName: {
                                                                 ...oldState.fieldName,
-                                                                value: data.instanceAdopter.name,
-                                                                error: fieldNameValidate(data.instanceAdopter.name)
+                                                                value: data.instancePet.name,
+                                                                error: fieldNameValidate(data.instancePet.name)
                                                             },
                                                             fieldEmail: {
                                                                 ...oldState.fieldEmail,
-                                                                value: data.instanceAdopter.email,
-                                                                error: fieldEmailValidate(data.instanceAdopter.email)
+                                                                value: data.instancePet.email,
+                                                                error: fieldEmailValidate(data.instancePet.email)
                                                             },
                                                             fieldPhone: {
                                                                 ...oldState.fieldPhone,
-                                                                value: data.instanceAdopter.phone,
-                                                                error: fieldPhoneValidate(data.instanceAdopter.phone)
+                                                                value: data.instancePet.phone,
+                                                                error: fieldPhoneValidate(data.instancePet.phone)
                                                             },
                                                             fieldAddress: {
                                                                 ...oldState.fieldAddress,
@@ -1015,8 +1015,8 @@ const View = React.memo(
                                                             },
                                                             fieldLanguage: {
                                                                 ...oldState.fieldLanguage,
-                                                                value: data.instanceAdopter.language,
-                                                                error: fieldLanguageValidate(data.instanceAdopter.language)
+                                                                value: data.instancePet.language,
+                                                                error: fieldLanguageValidate(data.instancePet.language)
                                                             }
                                                         }
                                                     )
@@ -1050,7 +1050,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.update.alert.refresh.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.update.alert.refresh.then.warning"}})
                                                 }
                                             }
                                         }
@@ -1065,7 +1065,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.update.alert.refresh.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.update.alert.refresh.then.error"}})
                                         }
                                     }
                                 }
@@ -1082,7 +1082,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.update.alert.refresh.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.update.alert.refresh.error"}})
                     }
                 }
             },
@@ -1196,7 +1196,7 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_SUBMIT_IS_SUBMITTING_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceAdopter: data.instanceAdopter,
+                                                            instancePet: data.instancePet,
                                                             fieldPicture: {
                                                                 ...oldState.fieldPicture,
                                                                 value: data.fieldPicture.value,
@@ -1209,22 +1209,22 @@ const View = React.memo(
                                                                 imageSrc: null,
                                                                 imageCroppedFile: null,
                                                                 imageCroppedSrc: null,
-                                                                text: data.instanceAdopter.name
+                                                                text: data.instancePet.name
                                                             },
                                                             fieldName: {
                                                                 ...oldState.fieldName,
-                                                                value: data.instanceAdopter.name,
-                                                                error: fieldNameValidate(data.instanceAdopter.name)
+                                                                value: data.instancePet.name,
+                                                                error: fieldNameValidate(data.instancePet.name)
                                                             },
                                                             fieldEmail: {
                                                                 ...oldState.fieldEmail,
-                                                                value: data.instanceAdopter.email,
-                                                                error: fieldEmailValidate(data.instanceAdopter.email)
+                                                                value: data.instancePet.email,
+                                                                error: fieldEmailValidate(data.instancePet.email)
                                                             },
                                                             fieldPhone: {
                                                                 ...oldState.fieldPhone,
-                                                                value: data.instanceAdopter.phone,
-                                                                error: fieldPhoneValidate(data.instanceAdopter.phone)
+                                                                value: data.instancePet.phone,
+                                                                error: fieldPhoneValidate(data.instancePet.phone)
                                                             },
                                                             fieldAddress: {
                                                                 ...oldState.fieldAddress,
@@ -1238,13 +1238,13 @@ const View = React.memo(
                                                             },
                                                             fieldLanguage: {
                                                                 ...oldState.fieldLanguage,
-                                                                value: data.instanceAdopter.language,
-                                                                error: fieldLanguageValidate(data.instanceAdopter.language)
+                                                                value: data.instancePet.language,
+                                                                error: fieldLanguageValidate(data.instancePet.language)
                                                             }
                                                         }
                                                     )
                                                 )
-                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.update.alert.submit.then.success", values: {name: data.instanceAdopter.name}}})
+                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.pet.update.alert.submit.then.success", values: {name: data.instancePet.name}}})
                                             }
                                         } else {
                                             if (isComponentMountedRef.current === true) {
@@ -1274,7 +1274,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.update.alert.submit.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.update.alert.submit.then.warning"}})
                                                 }
                                             }
                                         }
@@ -1289,7 +1289,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.update.alert.submit.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.update.alert.submit.then.error"}})
                                         }
                                     }
                                 }
@@ -1306,7 +1306,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.update.alert.submit.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.update.alert.submit.error"}})
                     }
                 }
             },
@@ -1472,7 +1472,7 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"edit"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"edit"} text1={<FormattedMessage id={"app.page.secure.view.shelter.pet.update"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                     </LayoutPaperTitle>
@@ -1501,13 +1501,13 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"edit"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"edit"} text1={<FormattedMessage id={"app.page.secure.view.shelter.pet.update"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                         <LayoutPaperTitleRight>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}
+                                                    url={PATH_APP_PAGE_SECURE_SHELTER_PET}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     variant={"contained"}
@@ -1527,7 +1527,7 @@ const View = React.memo(
                                                 <LayoutImageCropped
                                                     disabled={stepIsSubmitting}
                                                     variant={"circular"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.field.picture.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.picture.label"}/>}
                                                     field={fieldPicture}
                                                     handleOnChange={fieldPictureHandleOnChange}
                                                 />
@@ -1538,7 +1538,7 @@ const View = React.memo(
                                                     required={true}
                                                     type={"text"}
                                                     iconFont={"description"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.field.name.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.name.label"}/>}
                                                     field={fieldName}
                                                     handleOnChange={fieldNameHandleOnChange}
                                                 />
@@ -1549,7 +1549,7 @@ const View = React.memo(
                                                     required={false}
                                                     type={"email"}
                                                     iconFont={"email"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.field.email.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.email.label"}/>}
                                                     field={fieldEmail}
                                                     handleOnChange={fieldEmailHandleOnChange}
                                                 />
@@ -1560,7 +1560,7 @@ const View = React.memo(
                                                     required={false}
                                                     type={"tel"}
                                                     iconFont={"phone"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.field.phone.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.phone.label"}/>}
                                                     field={fieldPhone}
                                                     handleOnChange={fieldPhoneHandleOnChange}
                                                 />
@@ -1570,7 +1570,7 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     required={true}
                                                     iconFont={"place"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.field.address.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.address.label"}/>}
                                                     field={fieldAddress}
                                                     handleSearch={handleFieldAddressSearch}
                                                     handleChanged={handleFieldAddressChanged}
@@ -1586,7 +1586,7 @@ const View = React.memo(
                                                     required={true}
                                                     type={"text"}
                                                     iconFont={"translate"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.field.language.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.field.language.label"}/>}
                                                     field={fieldLanguage}
                                                     handleOnChange={fieldLanguageHandleOnChange}
                                                 />
@@ -1605,7 +1605,7 @@ const View = React.memo(
                                                     variant={"contained"}
                                                     size={"small"}
                                                     iconFont={"save"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.action.submit"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.action.submit"}/>}
                                                     handleOnClick={handleSubmit}
                                                 />
                                             </MuiBox>
@@ -1615,7 +1615,7 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"update"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.action.refresh"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.action.refresh"}/>}
                                                     handleOnClick={handleRefresh}
                                                 />
                                             </MuiBox>
@@ -1623,22 +1623,22 @@ const View = React.memo(
                                         <LayoutPaperActionRight>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_PET}${paramPetId}/${SLUG_APP_PAGE_SECURE_SHELTER_PET_COMMENT}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"comment"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.action.comment"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.action.comment"}/>}
                                                 />
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_PET}${paramPetId}/${SLUG_APP_PAGE_SECURE_SHELTER_PET_DELETE}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"delete"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.action.delete"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.pet.update.action.delete"}/>}
                                                 />
                                             </MuiBox>
                                         </LayoutPaperActionRight>
@@ -1651,7 +1651,7 @@ const View = React.memo(
             case STEP_RETURN_SECURITY_NAVIGATE_TO_PATH_ERROR_404:
                 return <SecurityNavigateToPathError404/>
             case STEP_RETURN_SECURITY_NAVIGATE_TO_INDEX:
-                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}/>
+                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_PET}${paramPetId}/${SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE}`}/>
             default:
                 return null
         }

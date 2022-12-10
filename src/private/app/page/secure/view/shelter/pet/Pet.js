@@ -195,19 +195,23 @@ const ViewList = React.memo(
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
                                         {
-                                            key: "email",
+                                            key: "ownerName",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
                                         {
-                                            key: "phone",
+                                            key: "ownerEmail",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
                                         {
-                                            key: "address",
+                                            key: "ownerPhone",
+                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
+                                        },
+                                        {
+                                            key: "ownerAddress",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_DICTIONARY
                                         },
                                         {
-                                            key: "language",
+                                            key: "ownerLanguage",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         }
                                     ]
@@ -227,19 +231,19 @@ const ViewList = React.memo(
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel) {
                             const petRowList = []
                             for (const petModelForOf of petModelList) {
-                                const petModelForOfAddress = {
+                                const petModelForOfOwnerAddress = {
                                     label: ""
                                 }
                                 try {
-                                    const jsonParse = JSON.parse(petModelForOf.address)
+                                    const jsonParse = JSON.parse(petModelForOf.ownerAddress)
                                     if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                        petModelForOfAddress.id = jsonParse.id
-                                        petModelForOfAddress.lat = jsonParse.lat
-                                        petModelForOfAddress.lng = jsonParse.lng
-                                        petModelForOfAddress.zoom = jsonParse.zoom
-                                        petModelForOfAddress.label = jsonParse.label
-                                        petModelForOfAddress.mainText = jsonParse.mainText
-                                        petModelForOfAddress.secondaryText = jsonParse.secondaryText
+                                        petModelForOfOwnerAddress.id = jsonParse.id
+                                        petModelForOfOwnerAddress.lat = jsonParse.lat
+                                        petModelForOfOwnerAddress.lng = jsonParse.lng
+                                        petModelForOfOwnerAddress.zoom = jsonParse.zoom
+                                        petModelForOfOwnerAddress.label = jsonParse.label
+                                        petModelForOfOwnerAddress.mainText = jsonParse.mainText
+                                        petModelForOfOwnerAddress.secondaryText = jsonParse.secondaryText
                                     }
                                 } catch (e) {
                                 }
@@ -248,10 +252,11 @@ const ViewList = React.memo(
                                     {
                                         id: petModelForOf.id,
                                         name: petModelForOf.name,
-                                        email: petModelForOf.email,
-                                        phone: petModelForOf.phone,
-                                        address: petModelForOfAddress.label,
-                                        language: petModelForOf.language,
+                                        ownerName: petModelForOf.ownerName,
+                                        ownerEmail: petModelForOf.ownerEmail,
+                                        ownerPhone: petModelForOf.ownerPhone,
+                                        ownerAddress: petModelForOfOwnerAddress.label,
+                                        ownerLanguage: petModelForOf.ownerLanguage,
                                         createdAt: petModelForOf.createdAt,
                                         updatedAt: petModelForOf.updatedAt
                                     }
@@ -463,19 +468,19 @@ const ViewList = React.memo(
                                     try {
                                         if (response && response.value && response.value.data && response.value.data.onCreatePet) {
                                             const petCreatedModel = response.value.data.onCreatePet
-                                            const petCreatedModelAddress = {
+                                            const petCreatedModelOwnerAddress = {
                                                 label: ""
                                             }
                                             try {
-                                                const jsonParse = JSON.parse(petCreatedModel.address)
+                                                const jsonParse = JSON.parse(petCreatedModel.ownerAddress)
                                                 if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                                    petCreatedModelAddress.id = jsonParse.id
-                                                    petCreatedModelAddress.lat = jsonParse.lat
-                                                    petCreatedModelAddress.lng = jsonParse.lng
-                                                    petCreatedModelAddress.zoom = jsonParse.zoom
-                                                    petCreatedModelAddress.label = jsonParse.label
-                                                    petCreatedModelAddress.mainText = jsonParse.mainText
-                                                    petCreatedModelAddress.secondaryText = jsonParse.secondaryText
+                                                    petCreatedModelOwnerAddress.id = jsonParse.id
+                                                    petCreatedModelOwnerAddress.lat = jsonParse.lat
+                                                    petCreatedModelOwnerAddress.lng = jsonParse.lng
+                                                    petCreatedModelOwnerAddress.zoom = jsonParse.zoom
+                                                    petCreatedModelOwnerAddress.label = jsonParse.label
+                                                    petCreatedModelOwnerAddress.mainText = jsonParse.mainText
+                                                    petCreatedModelOwnerAddress.secondaryText = jsonParse.secondaryText
                                                 }
                                             } catch (e) {
                                             }
@@ -484,10 +489,11 @@ const ViewList = React.memo(
                                                 {
                                                     id: petCreatedModel.id,
                                                     name: petCreatedModel.name,
-                                                    email: petCreatedModel.email,
-                                                    phone: petCreatedModel.phone,
-                                                    address: petCreatedModelAddress.label,
-                                                    language: petCreatedModel.language,
+                                                    ownerName: petCreatedModel.ownerName,
+                                                    ownerEmail: petCreatedModel.ownerEmail,
+                                                    ownerPhone: petCreatedModel.ownerPhone,
+                                                    ownerAddress: petCreatedModelOwnerAddress.label,
+                                                    ownerLanguage: petCreatedModel.ownerLanguage,
                                                     createdAt: petCreatedModel.createdAt,
                                                     updatedAt: petCreatedModel.updatedAt
                                                 }

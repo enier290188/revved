@@ -1,5 +1,6 @@
 {
   "app.page.secure.view.shelter.adopter.update": "Update Adopter",
+  "app.page.secure.view.shelter.adopter.update.field.picture.label": "Picture",
   "app.page.secure.view.shelter.adopter.update.field.name.label": "Name",
   "app.page.secure.view.shelter.adopter.update.field.email.label": "Email",
   "app.page.secure.view.shelter.adopter.update.field.email.help": "email@domain.com",

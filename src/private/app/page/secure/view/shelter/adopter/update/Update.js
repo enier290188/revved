@@ -1,4 +1,5 @@
 import {Box as MuiBox, Divider as MuiDivider} from "@mui/material"
+import {Storage} from "aws-amplify"
 import React from "react"
 import {FormattedMessage} from "react-intl"
 import {Route, Routes, useParams} from "react-router"
@@ -6,6 +7,7 @@ import {PATH_APP_PAGE_SECURE_SHELTER_ADOPTER} from "../../../../../../../setting
 import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/comment"
 import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/delete"
 import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/update"
+import {STORAGE_APP_ADOPTER} from "../../../../../../../setting/storage/app"
 import {Context as ContextAlert} from "../../../../../../context/Alert"
 import {Context as ContextUser} from "../../../../../../context/User"
 import * as AppUtilForm from "../../../../../../util/form"
@@ -17,6 +19,7 @@ import {Container as LayoutContainer} from "../../../../layout/main/container/Co
 import {Dialog as LayoutDialog} from "../../../../layout/main/dialog/Dialog"
 import {AutocompleteGoogleAddress as LayoutAutocompleteGoogleAddress} from "../../../../layout/main/form/autocomplete/AutocompleteGoogleAddress"
 import {AutocompleteGoogleAddressMap as LayoutAutocompleteGoogleAddressMap} from "../../../../layout/main/form/autocomplete/AutocompleteGoogleAddressMap"
+import {ImageCropped as LayoutImageCropped} from "../../../../layout/main/form/image/ImageCropped"
 import {TextField as LayoutTextField} from "../../../../layout/main/form/text-field/TextField"
 import {TextFiledSelect as LayoutTextFiledSelect} from "../../../../layout/main/form/text-field/TextFiledSelect"
 import {LoadingLinearProgress as LayoutLoadingLinearProgress} from "../../../../layout/main/loading/LoadingLinearProgress"
@@ -54,6 +57,15 @@ const STEP_EFFECT_SUBMIT_IS_SUBMITTING_THEN_ERROR = "step-effect-submit-is-submi
 const STEP_EFFECT_SUBMIT_IS_SUBMITTING_ERROR = "step-effect-submit-is-submitting-error"
 const STEP_EFFECT_DEFAULT = "step-effect-default"
 
+const CROP_CONFIG_INITIAL_PICTURE = {
+    unit: "px",
+    aspect: 1,
+    x: 0,
+    y: 0,
+    width: 200,
+    height: 200
+}
+
 const View = React.memo(
     () => {
         const {paramAdopterId} = useParams()
@@ -65,6 +77,7 @@ const View = React.memo(
                 stepEffect,
                 stepIsSubmitting,
                 instanceAdopter,
+                fieldPicture,
                 fieldName,
                 fieldEmail,
                 fieldPhone,
@@ -79,6 +92,11 @@ const View = React.memo(
                 stepEffect: STEP_EFFECT_INITIAL,
                 stepIsSubmitting: false,
                 instanceAdopter: null,
+                fieldPicture: {
+                    key: "fieldPicture",
+                    value: "",
+                    error: null
+                },
                 fieldName: {
                     value: "",
                     error: null
@@ -118,6 +136,33 @@ const View = React.memo(
             }
         )
         const isComponentMountedRef = React.useRef(true)
+
+        const fieldPictureValidate = (value) => {
+            return AppUtilForm.validateField(value, [["fieldTypePicture"]])
+        }
+
+        const fieldPictureHandleOnChange = React.useCallback(
+            (newStatePicture) => {
+                try {
+                    if (isComponentMountedRef.current === true) {
+                        setState(
+                            (oldState) => (
+                                {
+                                    ...oldState,
+                                    fieldPicture: {
+                                        ...oldState.fieldPicture,
+                                        error: newStatePicture.imageCroppedFile ? fieldPictureValidate(newStatePicture.imageCroppedFile) : oldState.fieldPicture.error,
+                                        ...newStatePicture
+                                    }
+                                }
+                            )
+                        )
+                    }
+                } catch (e) {
+                }
+            },
+            []
+        )
 
         const fieldNameValidate = (value) => {
             return AppUtilForm.validateField(value, [["fieldRequired"], ["fieldMaxLength", 32]])
@@ -415,6 +460,10 @@ const View = React.memo(
                                     id: paramAdopterId,
                                     itemList: [
                                         {
+                                            key: "picture",
+                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
+                                        },
+                                        {
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
@@ -449,6 +498,40 @@ const View = React.memo(
                         const adopterModel = dataAdopterModel.instance
 
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
+                            let adopterModelPicture = null
+                            const adopterModelPictureUrl = adopterModel.picture
+                                ? await Storage.get(
+                                    adopterModel.picture,
+                                    {
+                                        level: "public",
+                                        acl: "private",
+                                        contentType: "image/png",
+                                        expires: 60
+                                    }
+                                )
+                                : null
+                            if (adopterModelPictureUrl) {
+                                const toDataURL = async url => fetch(url)
+                                    .then(
+                                        response => response.blob()
+                                    )
+                                    .then(
+                                        blob => new Promise(
+                                            (resolve, reject) => {
+                                                const reader = new FileReader()
+                                                reader.onloadend = () => resolve(reader.result)
+                                                reader.onerror = reject
+                                                reader.readAsDataURL(blob)
+                                            }
+                                        )
+                                    )
+                                await toDataURL(adopterModelPictureUrl)
+                                    .then(
+                                        (dataUrl) => {
+                                            adopterModelPicture = dataUrl
+                                        }
+                                    )
+                            }
                             const adopterModelAddress = {}
                             try {
                                 const jsonParse = JSON.parse(adopterModel.address)
@@ -475,6 +558,9 @@ const View = React.memo(
                                     success: true
                                 },
                                 instanceAdopter: instanceAdopter,
+                                fieldPicture: {
+                                    value: adopterModelPicture
+                                },
                                 fieldAddress: {
                                     value: adopterModelAddress,
                                     valueList: []
@@ -547,6 +633,10 @@ const View = React.memo(
                                     id: paramAdopterId,
                                     itemList: [
                                         {
+                                            key: "picture",
+                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
+                                        },
+                                        {
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
@@ -581,6 +671,30 @@ const View = React.memo(
                         const adopterModel = dataAdopterModel.instance
 
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
+                            let storageResponsePicture = null
+                            try {
+                                if (data.picture.imageToDelete === true) {
+                                    await Storage.remove(
+                                        `${STORAGE_APP_ADOPTER}${adopterModel.id}/picture.png`,
+                                        {
+                                            level: "public"
+                                        }
+                                    )
+                                } else {
+                                    if (data.picture.imageCroppedFile) {
+                                        storageResponsePicture = await Storage.put(
+                                            `${STORAGE_APP_ADOPTER}${adopterModel.id}/picture.png`,
+                                            data.picture.imageCroppedFile,
+                                            {
+                                                level: "public",
+                                                acl: "private",
+                                                contentType: "image/png"
+                                            }
+                                        )
+                                    }
+                                }
+                            } catch (e) {
+                            }
                             const dataDictAddress = {}
                             try {
                                 const dataDict = data.address
@@ -601,6 +715,10 @@ const View = React.memo(
                                         name: "updateAdopter",
                                         id: adopterModel.id,
                                         itemList: [
+                                            {
+                                                key: "picture",
+                                                type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
+                                            },
                                             {
                                                 key: "name",
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -623,6 +741,7 @@ const View = React.memo(
                                             }
                                         ],
                                         input: {
+                                            picture: data.picture.imageToDelete === true ? "" : storageResponsePicture && storageResponsePicture.key ? storageResponsePicture.key : adopterModel.picture,
                                             name: data.name,
                                             email: data.email,
                                             phone: data.phone,
@@ -644,6 +763,40 @@ const View = React.memo(
                             const adopterUpdatedModel = dataAdopterUpdatedModel.instance
 
                             if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterUpdatedModel) {
+                                let adopterUpdatedModelPicture = null
+                                const adopterUpdatedModelPictureUrl = adopterUpdatedModel.picture
+                                    ? await Storage.get(
+                                        adopterUpdatedModel.picture,
+                                        {
+                                            level: "public",
+                                            acl: "private",
+                                            contentType: "image/png",
+                                            expires: 60
+                                        }
+                                    )
+                                    : null
+                                if (adopterUpdatedModelPictureUrl) {
+                                    const toDataURL = async url => fetch(url)
+                                        .then(
+                                            response => response.blob()
+                                        )
+                                        .then(
+                                            blob => new Promise(
+                                                (resolve, reject) => {
+                                                    const reader = new FileReader()
+                                                    reader.onloadend = () => resolve(reader.result)
+                                                    reader.onerror = reject
+                                                    reader.readAsDataURL(blob)
+                                                }
+                                            )
+                                        )
+                                    await toDataURL(adopterUpdatedModelPictureUrl)
+                                        .then(
+                                            (dataUrl) => {
+                                                adopterUpdatedModelPicture = dataUrl
+                                            }
+                                        )
+                                }
                                 const adopterUpdatedModelAddress = {}
                                 try {
                                     const jsonParse = JSON.parse(adopterUpdatedModel.address)
@@ -670,6 +823,9 @@ const View = React.memo(
                                         success: true
                                     },
                                     instanceAdopter: instanceAdopterUpdated,
+                                    fieldPicture: {
+                                        value: adopterUpdatedModelPicture
+                                    },
                                     fieldAddress: {
                                         value: adopterUpdatedModelAddress,
                                         valueList: []
@@ -818,6 +974,20 @@ const View = React.memo(
                                                             stepEffect: STEP_EFFECT_REFRESH_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
                                                             instanceAdopter: data.instanceAdopter,
+                                                            fieldPicture: {
+                                                                ...oldState.fieldPicture,
+                                                                value: data.fieldPicture.value,
+                                                                error: null,
+                                                                cropConfigInitial: CROP_CONFIG_INITIAL_PICTURE,
+                                                                cropConfig: CROP_CONFIG_INITIAL_PICTURE,
+                                                                imageToDelete: false,
+                                                                imageRef: null,
+                                                                imageFile: null,
+                                                                imageSrc: null,
+                                                                imageCroppedFile: null,
+                                                                imageCroppedSrc: null,
+                                                                text: data.instanceAdopter.name
+                                                            },
                                                             fieldName: {
                                                                 ...oldState.fieldName,
                                                                 value: data.instanceAdopter.name,
@@ -927,19 +1097,25 @@ const View = React.memo(
             async () => {
                 try {
                     if (stepEffect === STEP_EFFECT_SUBMIT) {
+                        const fieldPictureError = fieldPictureValidate(fieldPicture.imageCroppedFile)
                         const fieldNameError = fieldNameValidate(fieldName.value)
                         const fieldEmailError = fieldEmailValidate(fieldEmail.value)
                         const fieldPhoneError = fieldPhoneValidate(fieldPhone.value)
                         const fieldAddressError = fieldAddressValidate(fieldAddress.value)
                         const fieldLanguageError = fieldLanguageValidate(fieldLanguage.value)
 
-                        if (fieldNameError || fieldEmailError || fieldPhoneError || fieldAddressError || fieldLanguageError) {
+                        if (fieldPictureError || fieldNameError || fieldEmailError || fieldPhoneError || fieldAddressError || fieldLanguageError) {
                             if (isComponentMountedRef.current === true) {
                                 setState(
                                     (oldState) => (
                                         {
                                             ...oldState,
                                             stepEffect: STEP_EFFECT_SUBMIT_WARNING,
+                                            fieldPicture: {
+                                                ...oldState.fieldPicture,
+                                                value: oldState.fieldPicture.value,
+                                                error: fieldPictureError
+                                            },
                                             fieldName: {
                                                 ...oldState.fieldName,
                                                 error: fieldNameError
@@ -983,6 +1159,7 @@ const View = React.memo(
             },
             [
                 stepEffect,
+                fieldPicture.imageCroppedFile,
                 fieldName.value,
                 fieldEmail.value,
                 fieldPhone.value,
@@ -997,6 +1174,10 @@ const View = React.memo(
                     if (stepEffect === STEP_EFFECT_SUBMIT_IS_SUBMITTING && stepIsSubmitting === true && 0 === contextAlert.getAlertList().length) {
                         await submitData(
                             {
+                                picture: {
+                                    imageToDelete: fieldPicture.imageToDelete,
+                                    imageCroppedFile: fieldPicture.imageCroppedFile
+                                },
                                 name: fieldName.value,
                                 email: fieldEmail.value,
                                 phone: fieldPhone.value,
@@ -1016,6 +1197,20 @@ const View = React.memo(
                                                             stepEffect: STEP_EFFECT_SUBMIT_IS_SUBMITTING_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
                                                             instanceAdopter: data.instanceAdopter,
+                                                            fieldPicture: {
+                                                                ...oldState.fieldPicture,
+                                                                value: data.fieldPicture.value,
+                                                                error: null,
+                                                                cropConfigInitial: CROP_CONFIG_INITIAL_PICTURE,
+                                                                cropConfig: CROP_CONFIG_INITIAL_PICTURE,
+                                                                imageToDelete: false,
+                                                                imageRef: null,
+                                                                imageFile: null,
+                                                                imageSrc: null,
+                                                                imageCroppedFile: null,
+                                                                imageCroppedSrc: null,
+                                                                text: data.instanceAdopter.name
+                                                            },
                                                             fieldName: {
                                                                 ...oldState.fieldName,
                                                                 value: data.instanceAdopter.name,
@@ -1119,6 +1314,8 @@ const View = React.memo(
                 contextAlert,
                 stepEffect,
                 stepIsSubmitting,
+                fieldPicture.imageToDelete,
+                fieldPicture.imageCroppedFile,
                 fieldName.value,
                 fieldEmail.value,
                 fieldPhone.value,
@@ -1327,6 +1524,15 @@ const View = React.memo(
                                     <LayoutPaperContent>
                                         <LayoutPaperContentCenter maxWidth={"480px"}>
                                             <MuiBox component={"div"} p={1}>
+                                                <LayoutImageCropped
+                                                    disabled={stepIsSubmitting}
+                                                    variant={"circular"}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.update.field.picture.label"}/>}
+                                                    field={fieldPicture}
+                                                    handleOnChange={fieldPictureHandleOnChange}
+                                                />
+                                            </MuiBox>
+                                            <MuiBox component={"div"} p={1}>
                                                 <LayoutTextField
                                                     disabled={stepIsSubmitting}
                                                     required={true}
@@ -1395,7 +1601,7 @@ const View = React.memo(
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutButton
                                                     loading={stepIsSubmitting}
-                                                    disabled={stepIsSubmitting || Boolean(fieldName.error) || Boolean(fieldEmail.error) || Boolean(fieldPhone.error) || Boolean(fieldAddress.error) || Boolean(fieldLanguage.error)}
+                                                    disabled={stepIsSubmitting || Boolean(fieldPicture.error) || Boolean(fieldName.error) || Boolean(fieldEmail.error) || Boolean(fieldPhone.error) || Boolean(fieldAddress.error) || Boolean(fieldLanguage.error)}
                                                     variant={"contained"}
                                                     size={"small"}
                                                     iconFont={"save"}

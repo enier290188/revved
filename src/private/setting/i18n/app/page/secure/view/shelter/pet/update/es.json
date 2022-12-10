@@ -1,5 +1,5 @@
 {
-  "app.page.secure.view.shelter.pet.update": "Modificar Contacto",
+  "app.page.secure.view.shelter.pet.update": "Modificar Mascota",
   "app.page.secure.view.shelter.pet.update.field.user.label": "Dueño",
   "app.page.secure.view.shelter.pet.update.field.name.label": "Nombre",
   "app.page.secure.view.shelter.pet.update.field.email.label": "Correo",
@@ -15,7 +15,7 @@
   "app.page.secure.view.shelter.pet.update.alert.refresh.then.error": "Error al obtener datos.",
   "app.page.secure.view.shelter.pet.update.alert.refresh.then.warning": "Datos no encontrados.",
   "app.page.secure.view.shelter.pet.update.alert.refresh.error": "Error al obtener datos.",
-  "app.page.secure.view.shelter.pet.update.alert.submit.then.success": "Contacto \"{name}\" se actualizó correctamente.",
+  "app.page.secure.view.shelter.pet.update.alert.submit.then.success": "Mascota \"{name}\" se actualizó correctamente.",
   "app.page.secure.view.shelter.pet.update.alert.submit.then.error": "Error al actualizar datos.",
   "app.page.secure.view.shelter.pet.update.alert.submit.then.warning": "Datos no encontrados.",
   "app.page.secure.view.shelter.pet.update.alert.submit.error": "Error al actualizar datos."

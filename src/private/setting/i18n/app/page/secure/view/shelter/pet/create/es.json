@@ -1,5 +1,5 @@
 {
-  "app.page.secure.view.shelter.pet.create": "Crear Contacto",
+  "app.page.secure.view.shelter.pet.create": "Crear Mascota",
   "app.page.secure.view.shelter.pet.create.field.user.label": "Dueño",
   "app.page.secure.view.shelter.pet.create.field.name.label": "Nombre",
   "app.page.secure.view.shelter.pet.create.field.email.label": "Correo",
@@ -13,7 +13,7 @@
   "app.page.secure.view.shelter.pet.create.alert.refresh.then.error": "Error al obtener datos.",
   "app.page.secure.view.shelter.pet.create.alert.refresh.then.warning": "Datos no encontrados.",
   "app.page.secure.view.shelter.pet.create.alert.refresh.error": "Error al obtener datos.",
-  "app.page.secure.view.shelter.pet.create.alert.submit.then.success": "Contacto \"{name}\" se creó correctamente.",
+  "app.page.secure.view.shelter.pet.create.alert.submit.then.success": "Mascota \"{name}\" se creó correctamente.",
   "app.page.secure.view.shelter.pet.create.alert.submit.then.error": "Error al crear datos.",
   "app.page.secure.view.shelter.pet.create.alert.submit.then.warning": "Datos no encontrados.",
   "app.page.secure.view.shelter.pet.create.alert.submit.error": "Error al crear datos."

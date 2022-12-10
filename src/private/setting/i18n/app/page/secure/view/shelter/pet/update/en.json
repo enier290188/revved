@@ -1,5 +1,5 @@
 {
-  "app.page.secure.view.shelter.pet.update": "Update Contact",
+  "app.page.secure.view.shelter.pet.update": "Update Pet",
   "app.page.secure.view.shelter.pet.update.field.user.label": "Owner",
   "app.page.secure.view.shelter.pet.update.field.name.label": "Name",
   "app.page.secure.view.shelter.pet.update.field.email.label": "Email",
@@ -15,7 +15,7 @@
   "app.page.secure.view.shelter.pet.update.alert.refresh.then.error": "Error fetching data.",
   "app.page.secure.view.shelter.pet.update.alert.refresh.then.warning": "Data not found.",
   "app.page.secure.view.shelter.pet.update.alert.refresh.error": "Error fetching data.",
-  "app.page.secure.view.shelter.pet.update.alert.submit.then.success": "Contact \"{name}\" was updated successfully.",
+  "app.page.secure.view.shelter.pet.update.alert.submit.then.success": "Pet \"{name}\" was updated successfully.",
   "app.page.secure.view.shelter.pet.update.alert.submit.then.error": "Error updating data.",
   "app.page.secure.view.shelter.pet.update.alert.submit.then.warning": "Data not found.",
   "app.page.secure.view.shelter.pet.update.alert.submit.error": "Error updating data."

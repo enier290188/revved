@@ -435,7 +435,7 @@ const LayoutCommentUpdateOrDelete = React.memo(
                     <MuiBox component={"div"} sx={SxContentLeft}>
                         <MuiBox component={"div"} sx={SxContentLeftTop}>
                             <MuiBox component={"div"} p={0}>
-                                <LayoutAvatar disabled={stepIsSubmitting} src={comment.user.picture} sxContainer={{width: theme => theme.spacing(8), height: theme => theme.spacing(8)}}/>
+                                <LayoutAvatar disabled={stepIsSubmitting} src={comment.user.picture} text={comment.user.name} sxContainer={{width: theme => theme.spacing(8), height: theme => theme.spacing(8)}}/>
                             </MuiBox>
                             <MuiBox component={"div"} p={0} pl={2}>
                                 <LayoutTypography component={"p"} variant={"body2"} iconFont={null} text={comment.user.name} sxContainer={{fontWeight: "bold"}}/>

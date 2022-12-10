@@ -53,7 +53,7 @@ const STEP_EFFECT_DEFAULT = "step-effect-default"
 
 const View = React.memo(
     () => {
-        const {paramContactId} = useParams()
+        const {paramAdopterId} = useParams()
         const contextUser = React.useContext(ContextUser)
         const contextAlert = React.useContext(ContextAlert)
         const [
@@ -61,8 +61,8 @@ const View = React.memo(
                 stepReturn,
                 stepEffect,
                 stepIsSubmitting,
-                instanceContact,
-                actionOnInstanceContactCommentList
+                instanceAdopter,
+                actionOnInstanceAdopterCommentList
             },
             setState
         ] = React.useState(
@@ -70,8 +70,8 @@ const View = React.memo(
                 stepReturn: STEP_RETURN_INITIAL,
                 stepEffect: STEP_EFFECT_INITIAL,
                 stepIsSubmitting: false,
-                instanceContact: null,
-                actionOnInstanceContactCommentList: null
+                instanceAdopter: null,
+                actionOnInstanceAdopterCommentList: null
             }
         )
         const isComponentMountedRef = React.useRef(true)
@@ -81,8 +81,7 @@ const View = React.memo(
                 try {
                     const user = contextUser.getUser()
                     const userId = user && user.id ? user.id : null
-                    const userCompanyId = user && user.companyId ? user.companyId : null
-                    if (user && userId && userCompanyId) {
+                    if (user && userId) {
                         let ERROR_INTERNET_DISCONNECTED = false
                         let ERROR_UNAUTHORIZED = false
 
@@ -91,12 +90,7 @@ const View = React.memo(
                                 query: {
                                     name: "getUser",
                                     id: userId,
-                                    itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        }
-                                    ]
+                                    itemList: []
                                 }
                             }
                         )
@@ -110,39 +104,12 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataCompanyModel = await AppUtilGraphql.getModel(
+                        const dataAdopterModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getCompany",
-                                    id: userCompanyId,
-                                    itemList: []
-                                }
-                            }
-                        )
-                        if (dataCompanyModel._response.error && dataCompanyModel._response.errorType) {
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const companyModel = dataCompanyModel.instance
-
-                        const dataContactModel = await AppUtilGraphql.getModel(
-                            {
-                                query: {
-                                    name: "getContact",
-                                    id: paramContactId,
+                                    name: "getAdopter",
+                                    id: paramAdopterId,
                                     itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        },
-                                        {
-                                            key: "userId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        },
                                         {
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -155,15 +122,15 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataContactModel._response.error && dataContactModel._response.errorType) {
-                            if (dataContactModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
+                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataContactModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const contactModel = dataContactModel.instance
+                        const adopterModel = dataAdopterModel.instance
 
                         const dataUserModelList = await AppUtilGraphql.getModelList(
                             {
@@ -178,16 +145,7 @@ const View = React.memo(
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         }
-                                    ],
-                                    filter: {
-                                        and: [
-                                            {
-                                                companyId: {
-                                                    eq: userCompanyId
-                                                }
-                                            }
-                                        ]
-                                    }
+                                    ]
                                 }
                             }
                         )
@@ -201,13 +159,13 @@ const View = React.memo(
                         }
                         const userModelList = dataUserModelList.instanceList
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId && contactModel && companyModel.id === contactModel.companyId) {
-                            const instanceContact = {
-                                id: contactModel.id,
-                                name: contactModel.name,
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
+                            const instanceAdopter = {
+                                id: adopterModel.id,
+                                name: adopterModel.name,
                                 commentList: []
                             }
-                            if (0 < contactModel.commentList.length) {
+                            if (0 < adopterModel.commentList.length) {
                                 const userModelListDict = {}
                                 for (const userModelForOf of userModelList) {
                                     try {
@@ -253,9 +211,9 @@ const View = React.memo(
                                     } catch (e) {
                                     }
                                 }
-                                for (const contactModelCommentForOf of contactModel.commentList) {
+                                for (const adopterModelCommentForOf of adopterModel.commentList) {
                                     try {
-                                        const contactModelCommentForOfJSONParse = JSON.parse(contactModelCommentForOf)
+                                        const adopterModelCommentForOfJSONParse = JSON.parse(adopterModelCommentForOf)
                                         const user = {
                                             id: null,
                                             picture: null,
@@ -266,7 +224,7 @@ const View = React.memo(
                                             }
                                         }
                                         try {
-                                            const userModelDict = userModelListDict[contactModelCommentForOfJSONParse.userId]
+                                            const userModelDict = userModelListDict[adopterModelCommentForOfJSONParse.userId]
                                             user["id"] = userModelDict.id
                                             user["picture"] = userModelDict.picture
                                             user["name"] = userModelDict.name
@@ -276,11 +234,11 @@ const View = React.memo(
                                         }
                                         const comment = {
                                             user: user,
-                                            comment: contactModelCommentForOfJSONParse.comment,
-                                            createdAt: contactModelCommentForOfJSONParse.createdAt,
-                                            updatedAt: contactModelCommentForOfJSONParse.updatedAt
+                                            comment: adopterModelCommentForOfJSONParse.comment,
+                                            createdAt: adopterModelCommentForOfJSONParse.createdAt,
+                                            updatedAt: adopterModelCommentForOfJSONParse.updatedAt
                                         }
-                                        instanceContact.commentList.push(comment)
+                                        instanceAdopter.commentList.push(comment)
                                     } catch (e) {
                                     }
                                 }
@@ -290,7 +248,7 @@ const View = React.memo(
                                 _response: {
                                     success: true
                                 },
-                                instanceContact: instanceContact
+                                instanceAdopter: instanceAdopter
                             }
                         } else {
                             let warningType = null
@@ -319,7 +277,7 @@ const View = React.memo(
                 }
             },
             [
-                paramContactId,
+                paramAdopterId,
                 contextUser
             ]
         )
@@ -329,8 +287,7 @@ const View = React.memo(
                 try {
                     const user = contextUser.getUser()
                     const userId = user && user.id ? user.id : null
-                    const userCompanyId = user && user.companyId ? user.companyId : null
-                    if (user && userId && userCompanyId) {
+                    if (user && userId) {
                         let ERROR_INTERNET_DISCONNECTED = false
                         let ERROR_UNAUTHORIZED = false
 
@@ -339,12 +296,7 @@ const View = React.memo(
                                 query: {
                                     name: "getUser",
                                     id: userId,
-                                    itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        }
-                                    ]
+                                    itemList: []
                                 }
                             }
                         )
@@ -358,39 +310,12 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataCompanyModel = await AppUtilGraphql.getModel(
+                        const dataAdopterModel = await AppUtilGraphql.getModel(
                             {
                                 query: {
-                                    name: "getCompany",
-                                    id: userCompanyId,
-                                    itemList: []
-                                }
-                            }
-                        )
-                        if (dataCompanyModel._response.error && dataCompanyModel._response.errorType) {
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const companyModel = dataCompanyModel.instance
-
-                        const dataContactModel = await AppUtilGraphql.getModel(
-                            {
-                                query: {
-                                    name: "getContact",
-                                    id: paramContactId,
+                                    name: "getAdopter",
+                                    id: paramAdopterId,
                                     itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        },
-                                        {
-                                            key: "userId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        },
                                         {
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -403,15 +328,15 @@ const View = React.memo(
                                 }
                             }
                         )
-                        if (dataContactModel._response.error && dataContactModel._response.errorType) {
-                            if (dataContactModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataAdopterModel._response.error && dataAdopterModel._response.errorType) {
+                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataContactModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataAdopterModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const contactModel = dataContactModel.instance
+                        const adopterModel = dataAdopterModel.instance
 
                         const dataUserModelList = await AppUtilGraphql.getModelList(
                             {
@@ -426,16 +351,7 @@ const View = React.memo(
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         }
-                                    ],
-                                    filter: {
-                                        and: [
-                                            {
-                                                companyId: {
-                                                    eq: userCompanyId
-                                                }
-                                            }
-                                        ]
-                                    }
+                                    ]
                                 }
                             }
                         )
@@ -449,51 +365,51 @@ const View = React.memo(
                         }
                         const userModelList = dataUserModelList.instanceList
 
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId && contactModel && companyModel.id === contactModel.companyId) {
-                            const dataActionOnInstanceContactCommentList = {...data.actionOnInstanceContactCommentList}
-                            let contactUpdatedModel = null
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
+                            const dataActionOnInstanceAdopterCommentList = {...data.actionOnInstanceAdopterCommentList}
+                            let adopterUpdatedModel = null
                             if (
-                                (dataActionOnInstanceContactCommentList.type) &&
-                                (dataActionOnInstanceContactCommentList.type === "CREATE" || dataActionOnInstanceContactCommentList.type === "UPDATE" || dataActionOnInstanceContactCommentList.type === "DELETE") &&
-                                (dataActionOnInstanceContactCommentList.comment)
+                                (dataActionOnInstanceAdopterCommentList.type) &&
+                                (dataActionOnInstanceAdopterCommentList.type === "CREATE" || dataActionOnInstanceAdopterCommentList.type === "UPDATE" || dataActionOnInstanceAdopterCommentList.type === "DELETE") &&
+                                (dataActionOnInstanceAdopterCommentList.comment)
                             ) {
-                                let contactModelCommentList = contactModel.commentList
+                                let adopterModelCommentList = adopterModel.commentList
                                 const dateNow = Date.now()
                                 try {
-                                    switch (dataActionOnInstanceContactCommentList.type) {
+                                    switch (dataActionOnInstanceAdopterCommentList.type) {
                                         case "CREATE": {
                                             const commentJSONStringify = JSON.stringify(
                                                 {
                                                     userId: userId,
-                                                    comment: dataActionOnInstanceContactCommentList.comment.comment,
+                                                    comment: dataActionOnInstanceAdopterCommentList.comment.comment,
                                                     createdAt: dateNow,
                                                     updatedAt: dateNow
                                                 }
                                             )
-                                            contactModelCommentList.push(commentJSONStringify)
+                                            adopterModelCommentList.push(commentJSONStringify)
                                             break
                                         }
                                         case "UPDATE": {
-                                            const commentJSONParse = JSON.parse(contactModelCommentList[dataActionOnInstanceContactCommentList.index])
+                                            const commentJSONParse = JSON.parse(adopterModelCommentList[dataActionOnInstanceAdopterCommentList.index])
                                             if (
-                                                commentJSONParse.userId === dataActionOnInstanceContactCommentList.comment.user.id &&
-                                                // commentJSONParse.comment === dataActionOnInstanceContactCommentList.comment.comment &&
-                                                commentJSONParse.createdAt === dataActionOnInstanceContactCommentList.comment.createdAt &&
-                                                commentJSONParse.updatedAt === dataActionOnInstanceContactCommentList.comment.updatedAt
+                                                commentJSONParse.userId === dataActionOnInstanceAdopterCommentList.comment.user.id &&
+                                                // commentJSONParse.comment === dataActionOnInstanceAdopterCommentList.comment.comment &&
+                                                commentJSONParse.createdAt === dataActionOnInstanceAdopterCommentList.comment.createdAt &&
+                                                commentJSONParse.updatedAt === dataActionOnInstanceAdopterCommentList.comment.updatedAt
                                             ) {
-                                                contactModelCommentList = contactModelCommentList.map(
-                                                    (contactModelCommentMap, index) => {
-                                                        if ((index === dataActionOnInstanceContactCommentList.index)) {
+                                                adopterModelCommentList = adopterModelCommentList.map(
+                                                    (adopterModelCommentMap, index) => {
+                                                        if ((index === dataActionOnInstanceAdopterCommentList.index)) {
                                                             return JSON.stringify(
                                                                 {
                                                                     userId: userId,
-                                                                    comment: dataActionOnInstanceContactCommentList.comment.comment,
-                                                                    createdAt: dataActionOnInstanceContactCommentList.comment.createdAt,
+                                                                    comment: dataActionOnInstanceAdopterCommentList.comment.comment,
+                                                                    createdAt: dataActionOnInstanceAdopterCommentList.comment.createdAt,
                                                                     updatedAt: dateNow
                                                                 }
                                                             )
                                                         } else {
-                                                            return contactModelCommentMap
+                                                            return adopterModelCommentMap
                                                         }
                                                     }
                                                 )
@@ -501,14 +417,14 @@ const View = React.memo(
                                             break
                                         }
                                         case "DELETE": {
-                                            const commentJSONParse = JSON.parse(contactModelCommentList[dataActionOnInstanceContactCommentList.index])
+                                            const commentJSONParse = JSON.parse(adopterModelCommentList[dataActionOnInstanceAdopterCommentList.index])
                                             if (
-                                                commentJSONParse.userId === dataActionOnInstanceContactCommentList.comment.user.id &&
-                                                commentJSONParse.comment === dataActionOnInstanceContactCommentList.comment.comment &&
-                                                commentJSONParse.createdAt === dataActionOnInstanceContactCommentList.comment.createdAt &&
-                                                commentJSONParse.updatedAt === dataActionOnInstanceContactCommentList.comment.updatedAt
+                                                commentJSONParse.userId === dataActionOnInstanceAdopterCommentList.comment.user.id &&
+                                                commentJSONParse.comment === dataActionOnInstanceAdopterCommentList.comment.comment &&
+                                                commentJSONParse.createdAt === dataActionOnInstanceAdopterCommentList.comment.createdAt &&
+                                                commentJSONParse.updatedAt === dataActionOnInstanceAdopterCommentList.comment.updatedAt
                                             ) {
-                                                contactModelCommentList = contactModelCommentList.filter((contactModelCommentFilter, index) => (index !== dataActionOnInstanceContactCommentList.index))
+                                                adopterModelCommentList = adopterModelCommentList.filter((adopterModelCommentFilter, index) => (index !== dataActionOnInstanceAdopterCommentList.index))
                                             }
                                             break
                                         }
@@ -516,20 +432,12 @@ const View = React.memo(
                                             break
                                         }
                                     }
-                                    const dataContactUpdatedModel = await AppUtilGraphql.updateModel(
+                                    const dataAdopterUpdatedModel = await AppUtilGraphql.updateModel(
                                         {
                                             query: {
-                                                name: "updateContact",
-                                                id: contactModel.id,
+                                                name: "updateAdopter",
+                                                id: adopterModel.id,
                                                 itemList: [
-                                                    {
-                                                        key: "companyId",
-                                                        type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                                    },
-                                                    {
-                                                        key: "userId",
-                                                        type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                                    },
                                                     {
                                                         key: "name",
                                                         type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -540,35 +448,35 @@ const View = React.memo(
                                                     }
                                                 ],
                                                 input: {
-                                                    commentList: contactModelCommentList,
-                                                    _version: contactModel._version
+                                                    commentList: adopterModelCommentList,
+                                                    _version: adopterModel._version
                                                 }
                                             }
                                         }
                                     )
-                                    if (dataContactUpdatedModel._response.error && dataContactUpdatedModel._response.errorType) {
-                                        if (dataContactUpdatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                                    if (dataAdopterUpdatedModel._response.error && dataAdopterUpdatedModel._response.errorType) {
+                                        if (dataAdopterUpdatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                             ERROR_INTERNET_DISCONNECTED = true
                                         }
-                                        if (dataContactUpdatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                                        if (dataAdopterUpdatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                             ERROR_UNAUTHORIZED = true
                                         }
                                     }
-                                    contactUpdatedModel = dataContactUpdatedModel.instance
+                                    adopterUpdatedModel = dataAdopterUpdatedModel.instance
                                 } catch (e) {
-                                    contactUpdatedModel = contactModel
+                                    adopterUpdatedModel = adopterModel
                                 }
                             } else {
-                                contactUpdatedModel = contactModel
+                                adopterUpdatedModel = adopterModel
                             }
 
-                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId && contactUpdatedModel && companyModel.id === contactUpdatedModel.companyId) {
-                                const instanceContactUpdated = {
-                                    id: contactUpdatedModel.id,
-                                    name: contactUpdatedModel.name,
+                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterUpdatedModel) {
+                                const instanceAdopterUpdated = {
+                                    id: adopterUpdatedModel.id,
+                                    name: adopterUpdatedModel.name,
                                     commentList: []
                                 }
-                                if (0 < contactUpdatedModel.commentList.length) {
+                                if (0 < adopterUpdatedModel.commentList.length) {
                                     const userModelListDict = {}
                                     for (const userModelForOf of userModelList) {
                                         try {
@@ -614,9 +522,9 @@ const View = React.memo(
                                         } catch (e) {
                                         }
                                     }
-                                    for (const contactUpdatedModelCommentForOf of contactUpdatedModel.commentList) {
+                                    for (const adopterUpdatedModelCommentForOf of adopterUpdatedModel.commentList) {
                                         try {
-                                            const contactUpdatedModelCommentForOfJSONParse = JSON.parse(contactUpdatedModelCommentForOf)
+                                            const adopterUpdatedModelCommentForOfJSONParse = JSON.parse(adopterUpdatedModelCommentForOf)
                                             const user = {
                                                 id: null,
                                                 picture: null,
@@ -627,7 +535,7 @@ const View = React.memo(
                                                 }
                                             }
                                             try {
-                                                const userModelDict = userModelListDict[contactUpdatedModelCommentForOfJSONParse.userId]
+                                                const userModelDict = userModelListDict[adopterUpdatedModelCommentForOfJSONParse.userId]
                                                 user["id"] = userModelDict.id
                                                 user["picture"] = userModelDict.picture
                                                 user["name"] = userModelDict.name
@@ -637,11 +545,11 @@ const View = React.memo(
                                             }
                                             const comment = {
                                                 user: user,
-                                                comment: contactUpdatedModelCommentForOfJSONParse.comment,
-                                                createdAt: contactUpdatedModelCommentForOfJSONParse.createdAt,
-                                                updatedAt: contactUpdatedModelCommentForOfJSONParse.updatedAt
+                                                comment: adopterUpdatedModelCommentForOfJSONParse.comment,
+                                                createdAt: adopterUpdatedModelCommentForOfJSONParse.createdAt,
+                                                updatedAt: adopterUpdatedModelCommentForOfJSONParse.updatedAt
                                             }
-                                            instanceContactUpdated.commentList.push(comment)
+                                            instanceAdopterUpdated.commentList.push(comment)
                                         } catch (e) {
                                         }
                                     }
@@ -651,7 +559,7 @@ const View = React.memo(
                                     _response: {
                                         success: true
                                     },
-                                    instanceContact: instanceContactUpdated
+                                    instanceAdopter: instanceAdopterUpdated
                                 }
                             } else {
                                 let warningType = null
@@ -695,7 +603,7 @@ const View = React.memo(
                 }
             },
             [
-                paramContactId,
+                paramAdopterId,
                 contextUser
             ]
         )
@@ -739,8 +647,8 @@ const View = React.memo(
                                     {
                                         ...oldState,
                                         stepEffect: STEP_EFFECT_SUBMIT,
-                                        actionOnInstanceContactCommentList: {
-                                            ...oldState.actionOnInstanceContactCommentList,
+                                        actionOnInstanceAdopterCommentList: {
+                                            ...oldState.actionOnInstanceAdopterCommentList,
                                             type: "CREATE",
                                             index: null,
                                             comment: comment
@@ -770,8 +678,8 @@ const View = React.memo(
                                     {
                                         ...oldState,
                                         stepEffect: STEP_EFFECT_SUBMIT,
-                                        actionOnInstanceContactCommentList: {
-                                            ...oldState.actionOnInstanceContactCommentList,
+                                        actionOnInstanceAdopterCommentList: {
+                                            ...oldState.actionOnInstanceAdopterCommentList,
                                             type: "UPDATE",
                                             index: index,
                                             comment: comment
@@ -801,8 +709,8 @@ const View = React.memo(
                                     {
                                         ...oldState,
                                         stepEffect: STEP_EFFECT_SUBMIT,
-                                        actionOnInstanceContactCommentList: {
-                                            ...oldState.actionOnInstanceContactCommentList,
+                                        actionOnInstanceAdopterCommentList: {
+                                            ...oldState.actionOnInstanceAdopterCommentList,
                                             type: "DELETE",
                                             index: index,
                                             comment: comment
@@ -860,8 +768,8 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_REFRESH_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceContact: data.instanceContact,
-                                                            actionOnInstanceContactCommentList: null
+                                                            instanceAdopter: data.instanceAdopter,
+                                                            actionOnInstanceAdopterCommentList: null
                                                         }
                                                     )
                                                 )
@@ -980,7 +888,7 @@ const View = React.memo(
             async () => {
                 try {
                     if (stepEffect === STEP_EFFECT_SUBMIT_IS_SUBMITTING && stepIsSubmitting === true && 0 === contextAlert.getAlertList().length) {
-                        await submitData({actionOnInstanceContactCommentList: actionOnInstanceContactCommentList})
+                        await submitData({actionOnInstanceAdopterCommentList: actionOnInstanceAdopterCommentList})
                             .then(
                                 (data) => {
                                     if (data && data._response && (data._response.success || data._response.warning)) {
@@ -992,12 +900,12 @@ const View = React.memo(
                                                             ...oldState,
                                                             stepEffect: STEP_EFFECT_SUBMIT_IS_SUBMITTING_THEN_SUCCESS,
                                                             stepIsSubmitting: false,
-                                                            instanceContact: data.instanceContact,
-                                                            actionOnInstanceContactCommentList: null
+                                                            instanceAdopter: data.instanceAdopter,
+                                                            actionOnInstanceAdopterCommentList: null
                                                         }
                                                     )
                                                 )
-                                                // contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.then.success", values: {name: data.instanceContact.name}}})
+                                                // contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.then.success", values: {name: data.instanceAdopter.name}}})
                                             }
                                         } else {
                                             if (isComponentMountedRef.current === true) {
@@ -1067,7 +975,7 @@ const View = React.memo(
                 contextAlert,
                 stepEffect,
                 stepIsSubmitting,
-                actionOnInstanceContactCommentList,
+                actionOnInstanceAdopterCommentList,
                 submitData
             ]
         )
@@ -1271,7 +1179,7 @@ const View = React.memo(
                                     <LayoutPaperAction>
                                         <LayoutPaperActionLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutTypography component={"h6"} variant={"h6"} iconFont={"contact_page"} text={instanceContact.name}/>
+                                                <LayoutTypography component={"h6"} variant={"h6"} iconFont={"face"} text={instanceAdopter.name}/>
                                             </MuiBox>
                                         </LayoutPaperActionLeft>
                                         <LayoutPaperActionRight>
@@ -1287,7 +1195,7 @@ const View = React.memo(
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramContactId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
@@ -1297,7 +1205,7 @@ const View = React.memo(
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutNavLinkButton
-                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramContactId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE}`}
+                                                    url={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE}`}
                                                     loading={false}
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
@@ -1313,7 +1221,7 @@ const View = React.memo(
                                     <LayoutPaperContent>
                                         <LayoutPaperContentCenter maxWidth={"480px"}>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutCommentList stepIsSubmitting={stepIsSubmitting} commentList={instanceContact.commentList} handleCreate={handleCreate} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
+                                                <LayoutCommentList stepIsSubmitting={stepIsSubmitting} commentList={instanceAdopter.commentList} handleCreate={handleCreate} handleUpdate={handleUpdate} handleDelete={handleDelete}/>
                                             </MuiBox>
                                         </LayoutPaperContentCenter>
                                     </LayoutPaperContent>
@@ -1325,7 +1233,7 @@ const View = React.memo(
             case STEP_RETURN_SECURITY_NAVIGATE_TO_PATH_ERROR_404:
                 return <SecurityNavigateToPathError404/>
             case STEP_RETURN_SECURITY_NAVIGATE_TO_INDEX:
-                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramContactId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}/>
+                return <SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}${paramAdopterId}/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}`}/>
             default:
                 return null
         }

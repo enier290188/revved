@@ -1,15 +1,15 @@
 {
-  "app.page.secure.view.owner.crm.contact.delete": "Eliminar Contacto",
-  "app.page.secure.view.owner.crm.contact.delete.question": "¿Le gustaría eliminar Contacto \"{name}\"?",
-  "app.page.secure.view.owner.crm.contact.delete.action.submit": "Eliminar",
-  "app.page.secure.view.owner.crm.contact.delete.action.refresh": "Actualizar",
-  "app.page.secure.view.owner.crm.contact.delete.action.update": "Modificar",
-  "app.page.secure.view.owner.crm.contact.delete.action.comment": "Comentarios",
-  "app.page.secure.view.owner.crm.contact.delete.alert.refresh.then.error": "Error al obtener datos.",
-  "app.page.secure.view.owner.crm.contact.delete.alert.refresh.then.warning": "Datos no encontrados.",
-  "app.page.secure.view.owner.crm.contact.delete.alert.refresh.error": "Error al obtener datos.",
-  "app.page.secure.view.owner.crm.contact.delete.alert.submit.then.success": "Contacto \"{name}\" se eliminó correctamente.",
-  "app.page.secure.view.owner.crm.contact.delete.alert.submit.then.error": "Error al eliminar datos.",
-  "app.page.secure.view.owner.crm.contact.delete.alert.submit.then.warning": "Datos no encontrados.",
-  "app.page.secure.view.owner.crm.contact.delete.alert.submit.error": "Error al eliminarar datos."
+  "app.page.secure.view.shelter.pet.delete": "Eliminar Contacto",
+  "app.page.secure.view.shelter.pet.delete.question": "¿Le gustaría eliminar Contacto \"{name}\"?",
+  "app.page.secure.view.shelter.pet.delete.action.submit": "Eliminar",
+  "app.page.secure.view.shelter.pet.delete.action.refresh": "Actualizar",
+  "app.page.secure.view.shelter.pet.delete.action.update": "Modificar",
+  "app.page.secure.view.shelter.pet.delete.action.comment": "Comentarios",
+  "app.page.secure.view.shelter.pet.delete.alert.refresh.then.error": "Error al obtener datos.",
+  "app.page.secure.view.shelter.pet.delete.alert.refresh.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.shelter.pet.delete.alert.refresh.error": "Error al obtener datos.",
+  "app.page.secure.view.shelter.pet.delete.alert.submit.then.success": "Contacto \"{name}\" se eliminó correctamente.",
+  "app.page.secure.view.shelter.pet.delete.alert.submit.then.error": "Error al eliminar datos.",
+  "app.page.secure.view.shelter.pet.delete.alert.submit.then.warning": "Datos no encontrados.",
+  "app.page.secure.view.shelter.pet.delete.alert.submit.error": "Error al eliminarar datos."
 }

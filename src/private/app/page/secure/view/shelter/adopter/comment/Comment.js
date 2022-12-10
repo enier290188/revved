@@ -894,7 +894,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.comment.alert.refresh.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.refresh.then.warning"}})
                                                 }
                                             }
                                         }
@@ -909,7 +909,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.comment.alert.refresh.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.refresh.then.error"}})
                                         }
                                     }
                                 }
@@ -926,7 +926,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.comment.alert.refresh.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.refresh.error"}})
                     }
                 }
             },
@@ -997,7 +997,7 @@ const View = React.memo(
                                                         }
                                                     )
                                                 )
-                                                // contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.owner.crm.contact.comment.alert.submit.then.success", values: {name: data.instanceContact.name}}})
+                                                // contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.then.success", values: {name: data.instanceContact.name}}})
                                             }
                                         } else {
                                             if (isComponentMountedRef.current === true) {
@@ -1027,7 +1027,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.comment.alert.submit.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.then.warning"}})
                                                 }
                                             }
                                         }
@@ -1042,7 +1042,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.comment.alert.submit.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.then.error"}})
                                         }
                                     }
                                 }
@@ -1059,7 +1059,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.comment.alert.submit.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.comment.alert.submit.error"}})
                     }
                 }
             },
@@ -1219,7 +1219,7 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"comment"} text1={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.comment"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"comment"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                     </LayoutPaperTitle>
@@ -1248,7 +1248,7 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"comment"} text1={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.comment"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"comment"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                         <LayoutPaperTitleRight>
@@ -1281,7 +1281,7 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"update"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.comment.action.refresh"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment.action.refresh"}/>}
                                                     handleOnClick={handleRefresh}
                                                 />
                                             </MuiBox>
@@ -1292,7 +1292,7 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"edit"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.comment.action.update"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment.action.update"}/>}
                                                 />
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
@@ -1302,7 +1302,7 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"delete"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.comment.action.delete"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.comment.action.delete"}/>}
                                                 />
                                             </MuiBox>
                                         </LayoutPaperActionRight>

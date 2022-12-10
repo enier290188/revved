@@ -86,7 +86,7 @@ const ViewList = React.memo(
                     columnList: [
                         {
                             id: "name",
-                            label: <FormattedMessage id={"app.page.secure.view.owner.crm.contact.list.column.name"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.name"}/>,
                             type: TABLE_COLUMN_TYPE_STRING,
                             search: true,
                             sort: {order: TABLE_SORT_ORDER_ASC, active: true},
@@ -95,7 +95,7 @@ const ViewList = React.memo(
                         },
                         {
                             id: "email",
-                            label: <FormattedMessage id={"app.page.secure.view.owner.crm.contact.list.column.email"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.email"}/>,
                             type: TABLE_COLUMN_TYPE_STRING,
                             search: true,
                             sort: {order: TABLE_SORT_ORDER_ASC},
@@ -104,7 +104,7 @@ const ViewList = React.memo(
                         },
                         {
                             id: "phone",
-                            label: <FormattedMessage id={"app.page.secure.view.owner.crm.contact.list.column.phone"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.phone"}/>,
                             type: TABLE_COLUMN_TYPE_STRING,
                             search: true,
                             sort: null,
@@ -113,7 +113,7 @@ const ViewList = React.memo(
                         },
                         {
                             id: "address",
-                            label: <FormattedMessage id={"app.page.secure.view.owner.crm.contact.list.column.address"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.address"}/>,
                             type: TABLE_COLUMN_TYPE_STRING,
                             search: true,
                             sort: null,
@@ -124,21 +124,21 @@ const ViewList = React.memo(
                     columnExtraList: [
                         {
                             id: "language",
-                            label: <FormattedMessage id={"app.page.secure.view.owner.crm.contact.list.column.language"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.language"}/>,
                             type: TABLE_COLUMN_TYPE_STRING,
                             search: true,
                             action: null
                         },
                         {
                             id: "createdAt",
-                            label: <FormattedMessage id={"app.page.secure.view.owner.crm.contact.list.column.created-at"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.created-at"}/>,
                             type: TABLE_COLUMN_TYPE_DATETIME,
                             search: null,
                             action: null
                         },
                         {
                             id: "updatedAt",
-                            label: <FormattedMessage id={"app.page.secure.view.owner.crm.contact.list.column.updated-at"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.updated-at"}/>,
                             type: TABLE_COLUMN_TYPE_DATETIME,
                             search: null,
                             action: null
@@ -393,7 +393,7 @@ const ViewList = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.alert.refresh.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.alert.refresh.then.warning"}})
                                                 }
                                             }
                                         }
@@ -408,7 +408,7 @@ const ViewList = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.alert.refresh.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.alert.refresh.then.error"}})
                                         }
                                     }
                                 }
@@ -425,7 +425,7 @@ const ViewList = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.alert.refresh.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.alert.refresh.error"}})
                     }
                 }
             },
@@ -747,7 +747,7 @@ const ViewList = React.memo(
                         <LayoutPaperContentRightTitle>
                             <LayoutPaperContentRightTitleLeft>
                                 <MuiBox component={"div"} p={1}>
-                                    <LayoutPaperContentRightTitleLeftTypographyLevel2 iconFont={"people"} text1={<FormattedMessage id={"app.page.secure.view.owner.crm.contact"}/>}/>
+                                    <LayoutPaperContentRightTitleLeftTypographyLevel2 iconFont={"people"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter"}/>}/>
                                 </MuiBox>
                             </LayoutPaperContentRightTitleLeft>
                         </LayoutPaperContentRightTitle>
@@ -765,7 +765,7 @@ const ViewList = React.memo(
                         <LayoutPaperContentRightTitle>
                             <LayoutPaperContentRightTitleLeft>
                                 <MuiBox component={"div"} p={1}>
-                                    <LayoutPaperContentRightTitleLeftTypographyLevel2 iconFont={"people"} text1={<FormattedMessage id={"app.page.secure.view.owner.crm.contact"}/>}/>
+                                    <LayoutPaperContentRightTitleLeftTypographyLevel2 iconFont={"people"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter"}/>}/>
                                 </MuiBox>
                             </LayoutPaperContentRightTitleLeft>
                             <LayoutPaperContentRightTitleRight>
@@ -775,7 +775,7 @@ const ViewList = React.memo(
                                         disabled={stepIsSubmitting}
                                         size={"small"}
                                         iconFont={"update"}
-                                        text={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.action.refresh"}/>}
+                                        text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.action.refresh"}/>}
                                         handleOnClick={handleRefresh}
                                     />
                                 </MuiBox>

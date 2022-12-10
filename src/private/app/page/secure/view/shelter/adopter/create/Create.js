@@ -91,12 +91,12 @@ const View = React.memo(
                 fieldEmail: {
                     value: "",
                     error: null,
-                    help: [<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.field.email.help"}/>]
+                    help: [<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.field.email.help"}/>]
                 },
                 fieldPhone: {
                     value: "",
                     error: null,
-                    help: [<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.field.phone.help"}/>]
+                    help: [<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.field.phone.help"}/>]
                 },
                 fieldAddress: {
                     value: {},
@@ -1032,7 +1032,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.create.alert.refresh.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.create.alert.refresh.then.warning"}})
                                                 }
                                             }
                                         }
@@ -1047,7 +1047,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.create.alert.refresh.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.create.alert.refresh.then.error"}})
                                         }
                                     }
                                 }
@@ -1064,7 +1064,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.create.alert.refresh.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.create.alert.refresh.error"}})
                     }
                 }
             },
@@ -1214,7 +1214,7 @@ const View = React.memo(
                                                         }
                                                     )
                                                 )
-                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.owner.crm.contact.create.alert.submit.then.success", values: {name: data.instanceContact.name}}})
+                                                contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_SUCCESS, message: {id: "app.page.secure.view.shelter.adopter.create.alert.submit.then.success", values: {name: data.instanceContact.name}}})
                                             }
                                         } else {
                                             if (isComponentMountedRef.current === true) {
@@ -1244,7 +1244,7 @@ const View = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.create.alert.submit.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.create.alert.submit.then.warning"}})
                                                 }
                                             }
                                         }
@@ -1259,7 +1259,7 @@ const View = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.create.alert.submit.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.create.alert.submit.then.error"}})
                                         }
                                     }
                                 }
@@ -1276,7 +1276,7 @@ const View = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.owner.crm.contact.create.alert.submit.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.create.alert.submit.error"}})
                     }
                 }
             },
@@ -1441,7 +1441,7 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"add_circle"} text1={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"add_circle"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                     </LayoutPaperTitle>
@@ -1470,7 +1470,7 @@ const View = React.memo(
                                     <LayoutPaperTitle>
                                         <LayoutPaperTitleLeft>
                                             <MuiBox component={"div"} p={1}>
-                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"add_circle"} text1={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create"}/>}/>
+                                                <LayoutPaperTitleLeftTypographyLevel1 iconFont={"add_circle"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create"}/>}/>
                                             </MuiBox>
                                         </LayoutPaperTitleLeft>
                                         <LayoutPaperTitleRight>
@@ -1497,7 +1497,7 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     required={true}
                                                     iconFont={"person_pin"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.field.user.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.field.user.label"}/>}
                                                     field={fieldUser}
                                                     handleSearch={handleFieldUserSearch}
                                                     handleChanged={handleFieldUserChanged}
@@ -1509,7 +1509,7 @@ const View = React.memo(
                                                     required={true}
                                                     type={"text"}
                                                     iconFont={"description"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.field.name.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.field.name.label"}/>}
                                                     field={fieldName}
                                                     handleOnChange={fieldNameHandleOnChange}
                                                 />
@@ -1520,7 +1520,7 @@ const View = React.memo(
                                                     required={false}
                                                     type={"email"}
                                                     iconFont={"email"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.field.email.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.field.email.label"}/>}
                                                     field={fieldEmail}
                                                     handleOnChange={fieldEmailHandleOnChange}
                                                 />
@@ -1531,7 +1531,7 @@ const View = React.memo(
                                                     required={false}
                                                     type={"tel"}
                                                     iconFont={"phone"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.field.phone.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.field.phone.label"}/>}
                                                     field={fieldPhone}
                                                     handleOnChange={fieldPhoneHandleOnChange}
                                                 />
@@ -1541,7 +1541,7 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     required={true}
                                                     iconFont={"place"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.field.address.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.field.address.label"}/>}
                                                     field={fieldAddress}
                                                     handleSearch={handleFieldAddressSearch}
                                                     handleChanged={handleFieldAddressChanged}
@@ -1557,7 +1557,7 @@ const View = React.memo(
                                                     required={true}
                                                     type={"text"}
                                                     iconFont={"translate"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.field.language.label"}/>}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.field.language.label"}/>}
                                                     field={fieldLanguage}
                                                     handleOnChange={fieldLanguageHandleOnChange}
                                                 />
@@ -1576,7 +1576,7 @@ const View = React.memo(
                                                     variant={"contained"}
                                                     size={"small"}
                                                     iconFont={"save"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.action.submit"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.action.submit"}/>}
                                                     handleOnClick={handleSubmit}
                                                 />
                                             </MuiBox>
@@ -1586,7 +1586,7 @@ const View = React.memo(
                                                     disabled={stepIsSubmitting}
                                                     size={"small"}
                                                     iconFont={"update"}
-                                                    text={<FormattedMessage id={"app.page.secure.view.owner.crm.contact.create.action.refresh"}/>}
+                                                    text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.create.action.refresh"}/>}
                                                     handleOnClick={handleRefresh}
                                                 />
                                             </MuiBox>

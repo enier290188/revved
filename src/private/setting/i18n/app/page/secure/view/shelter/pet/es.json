@@ -6,7 +6,7 @@
   "app.page.secure.view.shelter.pet.list.column.owner-email": "DUEÑO CORREO",
   "app.page.secure.view.shelter.pet.list.column.owner-phone": "DUEÑO TELÉFONO",
   "app.page.secure.view.shelter.pet.list.column.owner-address": "DUEÑO DIRECCIÓN",
-  "app.page.secure.view.shelter.pet.list.column.owner-language": "OWNER IDIOMA",
+  "app.page.secure.view.shelter.pet.list.column.owner-language": "DUEÑO IDIOMA",
   "app.page.secure.view.shelter.pet.list.column.created-at": "CREADO",
   "app.page.secure.view.shelter.pet.list.column.updated-at": "MODIFICADO",
   "app.page.secure.view.shelter.pet.action.refresh": "Actualizar",

@@ -13,6 +13,9 @@ export const onCreateUser = /* GraphQL */ `
       cognitoUserStatus
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -28,6 +31,9 @@ export const onUpdateUser = /* GraphQL */ `
       cognitoUserStatus
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -43,6 +49,9 @@ export const onDeleteUser = /* GraphQL */ `
       cognitoUserStatus
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;

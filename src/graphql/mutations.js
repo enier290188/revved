@@ -72,3 +72,135 @@ export const deleteUser = /* GraphQL */ `
     }
   }
 `;
+export const createPet = /* GraphQL */ `
+  mutation CreatePet(
+    $input: CreatePetInput!
+    $condition: ModelPetConditionInput
+  ) {
+    createPet(input: $input, condition: $condition) {
+      id
+      picture
+      name
+      ownerName
+      ownerEmail
+      ownerPhone
+      ownerAddress
+      commentList
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updatePet = /* GraphQL */ `
+  mutation UpdatePet(
+    $input: UpdatePetInput!
+    $condition: ModelPetConditionInput
+  ) {
+    updatePet(input: $input, condition: $condition) {
+      id
+      picture
+      name
+      ownerName
+      ownerEmail
+      ownerPhone
+      ownerAddress
+      commentList
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deletePet = /* GraphQL */ `
+  mutation DeletePet(
+    $input: DeletePetInput!
+    $condition: ModelPetConditionInput
+  ) {
+    deletePet(input: $input, condition: $condition) {
+      id
+      picture
+      name
+      ownerName
+      ownerEmail
+      ownerPhone
+      ownerAddress
+      commentList
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createAdopter = /* GraphQL */ `
+  mutation CreateAdopter(
+    $input: CreateAdopterInput!
+    $condition: ModelAdopterConditionInput
+  ) {
+    createAdopter(input: $input, condition: $condition) {
+      id
+      picture
+      name
+      email
+      phone
+      address
+      language
+      commentList
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateAdopter = /* GraphQL */ `
+  mutation UpdateAdopter(
+    $input: UpdateAdopterInput!
+    $condition: ModelAdopterConditionInput
+  ) {
+    updateAdopter(input: $input, condition: $condition) {
+      id
+      picture
+      name
+      email
+      phone
+      address
+      language
+      commentList
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteAdopter = /* GraphQL */ `
+  mutation DeleteAdopter(
+    $input: DeleteAdopterInput!
+    $condition: ModelAdopterConditionInput
+  ) {
+    deleteAdopter(input: $input, condition: $condition) {
+      id
+      picture
+      name
+      email
+      phone
+      address
+      language
+      commentList
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;

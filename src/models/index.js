@@ -7,9 +7,11 @@ const UserGroup = {
   "SHELTER": "SHELTER"
 };
 
-const { User } = initSchema(schema);
+const { User, Pet, Adopter } = initSchema(schema);
 
 export {
   User,
+  Pet,
+  Adopter,
   UserGroup
 };

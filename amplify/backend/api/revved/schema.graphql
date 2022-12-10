@@ -24,6 +24,50 @@ type User
     updatedAt: AWSDateTime
 }
 
+type Pet
+@model
+@auth(
+    rules: [
+        {allow: groups, groups: ["Admin"], operations: [read, create, update, delete], provider: userPools},
+        {allow: groups, groups: ["Shelter"], operations: [read, create, update, delete], provider: userPools},
+        {allow: private, operations: [read], provider: userPools},
+        {allow: public, operations: [read], provider: iam}
+    ]
+) {
+    id: ID!
+    picture: String
+    name: String
+    ownerName: String
+    ownerEmail: String
+    ownerPhone: String
+    ownerAddress: String
+    commentList: [String]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
+type Adopter
+@model
+@auth(
+    rules: [
+        {allow: groups, groups: ["Admin"], operations: [read, create, update, delete], provider: userPools},
+        {allow: groups, groups: ["Shelter"], operations: [read, create, update, delete], provider: userPools},
+        {allow: private, operations: [read], provider: userPools},
+        {allow: public, operations: [read], provider: iam}
+    ]
+) {
+    id: ID!
+    picture: String
+    name: String
+    email: String
+    phone: String
+    address: String
+    language: String
+    commentList: [String]
+    createdAt: AWSDateTime
+    updatedAt: AWSDateTime
+}
+
 type Mutation {
     revvedCognitoUserUpdatePasswordChange(email: String, password: String): AWSJSON
         @function(name: "revvedCognitoUserUpdatePasswordChange-${env}")

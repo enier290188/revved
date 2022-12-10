@@ -180,6 +180,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "ownerLanguage": {
+                    "name": "ownerLanguage",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "commentList": {
                     "name": "commentList",
                     "isArray": true,
@@ -405,5 +412,5 @@ export const schema = {
         }
     },
     "nonModels": {},
-    "version": "0d8d4b7ae9faddf16e7e3695b635f503"
+    "version": "34d84e5cafb17c8ed7c21df20baa9b52"
 };

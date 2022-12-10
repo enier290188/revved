@@ -4,11 +4,11 @@ import React from "react"
 import {FormattedMessage} from "react-intl"
 import {Route, Routes, useLocation} from "react-router"
 import * as AmplifyGraphqlSubscription from "../../../../../../../graphql/subscriptions"
-import {PATH_APP_PAGE_SECURE_SHELTER_ADOPTER} from "../../../../../../setting/path/app/page/secure/shelter/adopter"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT} from "../../../../../../setting/path/app/page/secure/shelter/adopter/comment"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_CREATE} from "../../../../../../setting/path/app/page/secure/shelter/adopter/create"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE} from "../../../../../../setting/path/app/page/secure/shelter/adopter/delete"
-import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE} from "../../../../../../setting/path/app/page/secure/shelter/adopter/update"
+import {PATH_APP_PAGE_SECURE_SHELTER_PET} from "../../../../../../setting/path/app/page/secure/shelter/pet"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_COMMENT} from "../../../../../../setting/path/app/page/secure/shelter/pet/comment"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_CREATE} from "../../../../../../setting/path/app/page/secure/shelter/pet/create"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_DELETE} from "../../../../../../setting/path/app/page/secure/shelter/pet/delete"
+import {SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE} from "../../../../../../setting/path/app/page/secure/shelter/pet/update"
 import {Context as ContextAlert} from "../../../../../context/Alert"
 import {Context as ContextUser} from "../../../../../context/User"
 import * as AppUtilGraphql from "../../../../../util/graphql"
@@ -62,25 +62,25 @@ const ViewList = React.memo(
                 stepEffect: STEP_EFFECT_INITIAL,
                 stepIsSubmitting: false,
                 crud: {
-                    url: PATH_APP_PAGE_SECURE_SHELTER_ADOPTER,
+                    url: PATH_APP_PAGE_SECURE_SHELTER_PET,
                     action: {
                         headList: [
                             {
-                                slug: SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_CREATE,
+                                slug: SLUG_APP_PAGE_SECURE_SHELTER_PET_CREATE,
                                 iconFont: "add_circle"
                             }
                         ],
                         bodyList: [
                             {
-                                slug: SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE,
+                                slug: SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE,
                                 iconFont: "edit"
                             },
                             {
-                                slug: SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT,
+                                slug: SLUG_APP_PAGE_SECURE_SHELTER_PET_COMMENT,
                                 iconFont: "comment"
                             },
                             {
-                                slug: SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE,
+                                slug: SLUG_APP_PAGE_SECURE_SHELTER_PET_DELETE,
                                 iconFont: "delete"
                             }
                         ]
@@ -89,59 +89,60 @@ const ViewList = React.memo(
                     columnList: [
                         {
                             id: "name",
-                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.name"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.name"}/>,
                             type: TABLE_COLUMN_TYPE_STRING,
                             search: true,
                             sort: {order: TABLE_SORT_ORDER_ASC, active: true},
-                            action: null,
-                            width: null
-                        },
-                        {
-                            id: "email",
-                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.email"}/>,
-                            type: TABLE_COLUMN_TYPE_STRING,
-                            search: true,
-                            sort: {order: TABLE_SORT_ORDER_ASC},
-                            action: null,
-                            width: "220px"
-                        },
-                        {
-                            id: "phone",
-                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.phone"}/>,
-                            type: TABLE_COLUMN_TYPE_STRING,
-                            search: true,
-                            sort: null,
-                            action: null,
-                            width: "160px"
-                        },
-                        {
-                            id: "address",
-                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.address"}/>,
-                            type: TABLE_COLUMN_TYPE_STRING,
-                            search: true,
-                            sort: null,
                             action: null,
                             width: null
                         }
                     ],
                     columnExtraList: [
                         {
-                            id: "language",
-                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.language"}/>,
+                            id: "ownerName",
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.owner-name"}/>,
+                            type: TABLE_COLUMN_TYPE_STRING,
+                            search: true,
+                            action: null
+                        },
+                        {
+                            id: "ownerEmail",
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.owner-email"}/>,
+                            type: TABLE_COLUMN_TYPE_STRING,
+                            search: true,
+                            action: null
+                        },
+                        {
+                            id: "ownerPhone",
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.owner-phone"}/>,
+                            type: TABLE_COLUMN_TYPE_STRING,
+                            search: true,
+                            action: null
+                        },
+                        {
+                            id: "ownerAddress",
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.owner-address"}/>,
+                            type: TABLE_COLUMN_TYPE_STRING,
+                            search: true,
+                            action: null
+                        },
+                        {
+                            id: "ownerLanguage",
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.owner-language"}/>,
                             type: TABLE_COLUMN_TYPE_STRING,
                             search: true,
                             action: null
                         },
                         {
                             id: "createdAt",
-                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.created-at"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.created-at"}/>,
                             type: TABLE_COLUMN_TYPE_DATETIME,
                             search: null,
                             action: null
                         },
                         {
                             id: "updatedAt",
-                            label: <FormattedMessage id={"app.page.secure.view.shelter.adopter.list.column.updated-at"}/>,
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.updated-at"}/>,
                             type: TABLE_COLUMN_TYPE_DATETIME,
                             search: null,
                             action: null
@@ -152,9 +153,9 @@ const ViewList = React.memo(
             }
         )
         const isComponentMountedRef = React.useRef(true)
-        const subscriptionOnCreateAdopterModelRef = React.useRef(null)
-        const subscriptionOnUpdateAdopterModelRef = React.useRef(null)
-        const subscriptionOnDeleteAdopterModelRef = React.useRef(null)
+        const subscriptionOnCreatePetModelRef = React.useRef(null)
+        const subscriptionOnUpdatePetModelRef = React.useRef(null)
+        const subscriptionOnDeletePetModelRef = React.useRef(null)
 
         const fetchData = React.useCallback(
             async () => {
@@ -184,10 +185,10 @@ const ViewList = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataAdopterModelList = await AppUtilGraphql.getModelList(
+                        const dataPetModelList = await AppUtilGraphql.getModelList(
                             {
                                 query: {
-                                    name: "listAdopters",
+                                    name: "listPets",
                                     itemList: [
                                         {
                                             key: "name",
@@ -213,46 +214,46 @@ const ViewList = React.memo(
                                 }
                             }
                         )
-                        if (dataAdopterModelList._response.error && dataAdopterModelList._response.errorType) {
-                            if (dataAdopterModelList._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataPetModelList._response.error && dataPetModelList._response.errorType) {
+                            if (dataPetModelList._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataAdopterModelList._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataPetModelList._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const adopterModelList = dataAdopterModelList.instanceList
+                        const petModelList = dataPetModelList.instanceList
 
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel) {
-                            const adopterRowList = []
-                            for (const adopterModelForOf of adopterModelList) {
-                                const adopterModelForOfAddress = {
+                            const petRowList = []
+                            for (const petModelForOf of petModelList) {
+                                const petModelForOfAddress = {
                                     label: ""
                                 }
                                 try {
-                                    const jsonParse = JSON.parse(adopterModelForOf.address)
+                                    const jsonParse = JSON.parse(petModelForOf.address)
                                     if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                        adopterModelForOfAddress.id = jsonParse.id
-                                        adopterModelForOfAddress.lat = jsonParse.lat
-                                        adopterModelForOfAddress.lng = jsonParse.lng
-                                        adopterModelForOfAddress.zoom = jsonParse.zoom
-                                        adopterModelForOfAddress.label = jsonParse.label
-                                        adopterModelForOfAddress.mainText = jsonParse.mainText
-                                        adopterModelForOfAddress.secondaryText = jsonParse.secondaryText
+                                        petModelForOfAddress.id = jsonParse.id
+                                        petModelForOfAddress.lat = jsonParse.lat
+                                        petModelForOfAddress.lng = jsonParse.lng
+                                        petModelForOfAddress.zoom = jsonParse.zoom
+                                        petModelForOfAddress.label = jsonParse.label
+                                        petModelForOfAddress.mainText = jsonParse.mainText
+                                        petModelForOfAddress.secondaryText = jsonParse.secondaryText
                                     }
                                 } catch (e) {
                                 }
 
-                                adopterRowList.push(
+                                petRowList.push(
                                     {
-                                        id: adopterModelForOf.id,
-                                        name: adopterModelForOf.name,
-                                        email: adopterModelForOf.email,
-                                        phone: adopterModelForOf.phone,
-                                        address: adopterModelForOfAddress.label,
-                                        language: adopterModelForOf.language,
-                                        createdAt: adopterModelForOf.createdAt,
-                                        updatedAt: adopterModelForOf.updatedAt
+                                        id: petModelForOf.id,
+                                        name: petModelForOf.name,
+                                        email: petModelForOf.email,
+                                        phone: petModelForOf.phone,
+                                        address: petModelForOfAddress.label,
+                                        language: petModelForOf.language,
+                                        createdAt: petModelForOf.createdAt,
+                                        updatedAt: petModelForOf.updatedAt
                                     }
                                 )
                             }
@@ -260,7 +261,7 @@ const ViewList = React.memo(
                                 _response: {
                                     success: true
                                 },
-                                rowList: adopterRowList
+                                rowList: petRowList
                             }
                         } else {
                             let warningType = null
@@ -396,7 +397,7 @@ const ViewList = React.memo(
                                                             }
                                                         )
                                                     )
-                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.alert.refresh.then.warning"}})
+                                                    contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.alert.refresh.then.warning"}})
                                                 }
                                             }
                                         }
@@ -411,7 +412,7 @@ const ViewList = React.memo(
                                                     }
                                                 )
                                             )
-                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.alert.refresh.then.error"}})
+                                            contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.alert.refresh.then.error"}})
                                         }
                                     }
                                 }
@@ -428,7 +429,7 @@ const ViewList = React.memo(
                                 }
                             )
                         )
-                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.adopter.alert.refresh.error"}})
+                        contextAlert.addAlert({type: APP_PAGE_SECURE_LAYOUT_ALERT_ERROR, message: {id: "app.page.secure.view.shelter.pet.alert.refresh.error"}})
                     }
                 }
             },
@@ -449,9 +450,9 @@ const ViewList = React.memo(
                         authToken = null
                     }
 
-                    subscriptionOnCreateAdopterModelRef.current = API.graphql(
+                    subscriptionOnCreatePetModelRef.current = API.graphql(
                         {
-                            query: AmplifyGraphqlSubscription.onCreateAdopter,
+                            query: AmplifyGraphqlSubscription.onCreatePet,
                             authMode: "AWS_IAM",
                             authToken: authToken
                         }
@@ -460,35 +461,35 @@ const ViewList = React.memo(
                             {
                                 next: async (response) => {
                                     try {
-                                        if (response && response.value && response.value.data && response.value.data.onCreateAdopter) {
-                                            const adopterCreatedModel = response.value.data.onCreateAdopter
-                                            const adopterCreatedModelAddress = {
+                                        if (response && response.value && response.value.data && response.value.data.onCreatePet) {
+                                            const petCreatedModel = response.value.data.onCreatePet
+                                            const petCreatedModelAddress = {
                                                 label: ""
                                             }
                                             try {
-                                                const jsonParse = JSON.parse(adopterCreatedModel.address)
+                                                const jsonParse = JSON.parse(petCreatedModel.address)
                                                 if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                                    adopterCreatedModelAddress.id = jsonParse.id
-                                                    adopterCreatedModelAddress.lat = jsonParse.lat
-                                                    adopterCreatedModelAddress.lng = jsonParse.lng
-                                                    adopterCreatedModelAddress.zoom = jsonParse.zoom
-                                                    adopterCreatedModelAddress.label = jsonParse.label
-                                                    adopterCreatedModelAddress.mainText = jsonParse.mainText
-                                                    adopterCreatedModelAddress.secondaryText = jsonParse.secondaryText
+                                                    petCreatedModelAddress.id = jsonParse.id
+                                                    petCreatedModelAddress.lat = jsonParse.lat
+                                                    petCreatedModelAddress.lng = jsonParse.lng
+                                                    petCreatedModelAddress.zoom = jsonParse.zoom
+                                                    petCreatedModelAddress.label = jsonParse.label
+                                                    petCreatedModelAddress.mainText = jsonParse.mainText
+                                                    petCreatedModelAddress.secondaryText = jsonParse.secondaryText
                                                 }
                                             } catch (e) {
                                             }
                                             const crudRowList = [...crud.rowList]
                                             crudRowList.push(
                                                 {
-                                                    id: adopterCreatedModel.id,
-                                                    name: adopterCreatedModel.name,
-                                                    email: adopterCreatedModel.email,
-                                                    phone: adopterCreatedModel.phone,
-                                                    address: adopterCreatedModelAddress.label,
-                                                    language: adopterCreatedModel.language,
-                                                    createdAt: adopterCreatedModel.createdAt,
-                                                    updatedAt: adopterCreatedModel.updatedAt
+                                                    id: petCreatedModel.id,
+                                                    name: petCreatedModel.name,
+                                                    email: petCreatedModel.email,
+                                                    phone: petCreatedModel.phone,
+                                                    address: petCreatedModelAddress.label,
+                                                    language: petCreatedModel.language,
+                                                    createdAt: petCreatedModel.createdAt,
+                                                    updatedAt: petCreatedModel.updatedAt
                                                 }
                                             )
                                             if (isComponentMountedRef.current === true) {
@@ -511,9 +512,9 @@ const ViewList = React.memo(
                             }
                         )
 
-                    subscriptionOnUpdateAdopterModelRef.current = API.graphql(
+                    subscriptionOnUpdatePetModelRef.current = API.graphql(
                         {
-                            query: AmplifyGraphqlSubscription.onUpdateAdopter,
+                            query: AmplifyGraphqlSubscription.onUpdatePet,
                             authMode: "AWS_IAM",
                             authToken: authToken
                         }
@@ -522,37 +523,37 @@ const ViewList = React.memo(
                             {
                                 next: async (response) => {
                                     try {
-                                        if (response && response.value && response.value.data && response.value.data.onUpdateAdopter) {
-                                            const adopterUpdatedModel = response.value.data.onUpdateAdopter
-                                            const adopterUpdatedModelAddress = {
+                                        if (response && response.value && response.value.data && response.value.data.onUpdatePet) {
+                                            const petUpdatedModel = response.value.data.onUpdatePet
+                                            const petUpdatedModelAddress = {
                                                 label: ""
                                             }
                                             try {
-                                                const jsonParse = JSON.parse(adopterUpdatedModel.address)
+                                                const jsonParse = JSON.parse(petUpdatedModel.address)
                                                 if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                                    adopterUpdatedModelAddress.id = jsonParse.id
-                                                    adopterUpdatedModelAddress.lat = jsonParse.lat
-                                                    adopterUpdatedModelAddress.lng = jsonParse.lng
-                                                    adopterUpdatedModelAddress.zoom = jsonParse.zoom
-                                                    adopterUpdatedModelAddress.label = jsonParse.label
-                                                    adopterUpdatedModelAddress.mainText = jsonParse.mainText
-                                                    adopterUpdatedModelAddress.secondaryText = jsonParse.secondaryText
+                                                    petUpdatedModelAddress.id = jsonParse.id
+                                                    petUpdatedModelAddress.lat = jsonParse.lat
+                                                    petUpdatedModelAddress.lng = jsonParse.lng
+                                                    petUpdatedModelAddress.zoom = jsonParse.zoom
+                                                    petUpdatedModelAddress.label = jsonParse.label
+                                                    petUpdatedModelAddress.mainText = jsonParse.mainText
+                                                    petUpdatedModelAddress.secondaryText = jsonParse.secondaryText
                                                 }
                                             } catch (e) {
                                             }
                                             const crudRowList = [...crud.rowList]
                                             let index = 0
                                             for (const crudRowForOf of crudRowList) {
-                                                if (adopterUpdatedModel.id === crudRowForOf.id) {
+                                                if (petUpdatedModel.id === crudRowForOf.id) {
                                                     crudRowList[index] = {
                                                         ...crudRowList[index],
-                                                        name: adopterUpdatedModel.name,
-                                                        email: adopterUpdatedModel.email,
-                                                        phone: adopterUpdatedModel.phone,
-                                                        address: adopterUpdatedModelAddress.label,
-                                                        language: adopterUpdatedModel.language,
-                                                        createdAt: adopterUpdatedModel.createdAt,
-                                                        updatedAt: adopterUpdatedModel.updatedAt
+                                                        name: petUpdatedModel.name,
+                                                        email: petUpdatedModel.email,
+                                                        phone: petUpdatedModel.phone,
+                                                        address: petUpdatedModelAddress.label,
+                                                        language: petUpdatedModel.language,
+                                                        createdAt: petUpdatedModel.createdAt,
+                                                        updatedAt: petUpdatedModel.updatedAt
                                                     }
                                                     if (isComponentMountedRef.current === true) {
                                                         setState(
@@ -578,9 +579,9 @@ const ViewList = React.memo(
                             }
                         )
 
-                    subscriptionOnDeleteAdopterModelRef.current = API.graphql(
+                    subscriptionOnDeletePetModelRef.current = API.graphql(
                         {
-                            query: AmplifyGraphqlSubscription.onDeleteAdopter,
+                            query: AmplifyGraphqlSubscription.onDeletePet,
                             authMode: "AWS_IAM",
                             authToken: authToken
                         }
@@ -589,12 +590,12 @@ const ViewList = React.memo(
                             {
                                 next: async (response) => {
                                     try {
-                                        if (response && response.value && response.value.data && response.value.data.onDeleteAdopter) {
-                                            const adopterDeletedModel = response.value.data.onDeleteAdopter
+                                        if (response && response.value && response.value.data && response.value.data.onDeletePet) {
+                                            const petDeletedModel = response.value.data.onDeletePet
                                             const crudRowList = [...crud.rowList]
                                             const crudRowNewList = []
                                             for (const crudRowForOf of crudRowList) {
-                                                if (adopterDeletedModel.id !== crudRowForOf.id) {
+                                                if (petDeletedModel.id !== crudRowForOf.id) {
                                                     crudRowNewList.push(crudRowForOf)
                                                 }
                                             }
@@ -622,14 +623,14 @@ const ViewList = React.memo(
                 subscription().then().catch().finally()
 
                 return () => {
-                    if (subscriptionOnCreateAdopterModelRef.current) {
-                        subscriptionOnCreateAdopterModelRef.current.unsubscribe()
+                    if (subscriptionOnCreatePetModelRef.current) {
+                        subscriptionOnCreatePetModelRef.current.unsubscribe()
                     }
-                    if (subscriptionOnUpdateAdopterModelRef.current) {
-                        subscriptionOnUpdateAdopterModelRef.current.unsubscribe()
+                    if (subscriptionOnUpdatePetModelRef.current) {
+                        subscriptionOnUpdatePetModelRef.current.unsubscribe()
                     }
-                    if (subscriptionOnDeleteAdopterModelRef.current) {
-                        subscriptionOnDeleteAdopterModelRef.current.unsubscribe()
+                    if (subscriptionOnDeletePetModelRef.current) {
+                        subscriptionOnDeletePetModelRef.current.unsubscribe()
                     }
                 }
             },
@@ -719,7 +720,7 @@ const ViewList = React.memo(
                             <LayoutPaperTitle>
                                 <LayoutPaperTitleLeft>
                                     <MuiBox component={"div"} p={1}>
-                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"settings_accessibility"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter"}/>}/>
+                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"pets"} text1={<FormattedMessage id={"app.page.secure.view.shelter.pet"}/>}/>
                                     </MuiBox>
                                 </LayoutPaperTitleLeft>
                             </LayoutPaperTitle>
@@ -744,7 +745,7 @@ const ViewList = React.memo(
                             <LayoutPaperTitle>
                                 <LayoutPaperTitleLeft>
                                     <MuiBox component={"div"} p={1}>
-                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"settings_accessibility"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter"}/>}/>
+                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"pets"} text1={<FormattedMessage id={"app.page.secure.view.shelter.pet"}/>}/>
                                     </MuiBox>
                                 </LayoutPaperTitleLeft>
                                 <LayoutPaperTitleRight>
@@ -754,7 +755,7 @@ const ViewList = React.memo(
                                             disabled={stepIsSubmitting}
                                             size={"small"}
                                             iconFont={"update"}
-                                            text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.action.refresh"}/>}
+                                            text={<FormattedMessage id={"app.page.secure.view.shelter.pet.action.refresh"}/>}
                                             handleOnClick={handleRefresh}
                                         />
                                     </MuiBox>
@@ -778,7 +779,7 @@ const ViewList = React.memo(
             case STEP_RETURN_SECURITY_NAVIGATE_TO_PATH_ERROR_404:
                 return <SecurityNavigateToPathError404/>
             case STEP_RETURN_SECURITY_NAVIGATE_TO_INDEX:
-                return <SecurityNavigateToIndex pathFrom={PATH_APP_PAGE_SECURE_SHELTER_ADOPTER}/>
+                return <SecurityNavigateToIndex pathFrom={PATH_APP_PAGE_SECURE_SHELTER_PET}/>
             default:
                 return null
         }
@@ -793,10 +794,10 @@ export const Pet = React.memo(
         return (
             <Routes>
                 <Route path={`/`} element={<SecurityRouteCurrentUserShelter pathFrom={pathFrom}><ViewList/></SecurityRouteCurrentUserShelter>}/>
-                <Route path={`${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_CREATE}*`} element={<SecurityRouteCurrentUserShelter pathFrom={pathFrom}><ViewList><ViewCreate/></ViewList></SecurityRouteCurrentUserShelter>}/>
-                <Route path={`:paramAdopterId/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE}*`} element={<SecurityRouteCurrentUserShelter pathFrom={pathFrom}><ViewList><ViewUpdate/></ViewList></SecurityRouteCurrentUserShelter>}/>
-                <Route path={`:paramAdopterId/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT}*`} element={<SecurityRouteCurrentUserShelter pathFrom={pathFrom}><ViewList><ViewComment/></ViewList></SecurityRouteCurrentUserShelter>}/>
-                <Route path={`:paramAdopterId/${SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE}*`} element={<SecurityRouteCurrentUserShelter pathFrom={pathFrom}><ViewList><ViewDelete/></ViewList></SecurityRouteCurrentUserShelter>}/>
+                <Route path={`${SLUG_APP_PAGE_SECURE_SHELTER_PET_CREATE}*`} element={<SecurityRouteCurrentUserShelter pathFrom={pathFrom}><ViewList><ViewCreate/></ViewList></SecurityRouteCurrentUserShelter>}/>
+                <Route path={`:paramPetId/${SLUG_APP_PAGE_SECURE_SHELTER_PET_UPDATE}*`} element={<SecurityRouteCurrentUserShelter pathFrom={pathFrom}><ViewList><ViewUpdate/></ViewList></SecurityRouteCurrentUserShelter>}/>
+                <Route path={`:paramPetId/${SLUG_APP_PAGE_SECURE_SHELTER_PET_COMMENT}*`} element={<SecurityRouteCurrentUserShelter pathFrom={pathFrom}><ViewList><ViewComment/></ViewList></SecurityRouteCurrentUserShelter>}/>
+                <Route path={`:paramPetId/${SLUG_APP_PAGE_SECURE_SHELTER_PET_DELETE}*`} element={<SecurityRouteCurrentUserShelter pathFrom={pathFrom}><ViewList><ViewDelete/></ViewList></SecurityRouteCurrentUserShelter>}/>
                 <Route path={`*`} element={<SecurityNavigateToPathError404/>}/>
             </Routes>
         )

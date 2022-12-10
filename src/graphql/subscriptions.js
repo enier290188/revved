@@ -65,6 +65,7 @@ export const onCreatePet = /* GraphQL */ `
       ownerEmail
       ownerPhone
       ownerAddress
+      ownerLanguage
       commentList
       createdAt
       updatedAt
@@ -84,6 +85,7 @@ export const onUpdatePet = /* GraphQL */ `
       ownerEmail
       ownerPhone
       ownerAddress
+      ownerLanguage
       commentList
       createdAt
       updatedAt
@@ -103,6 +105,7 @@ export const onDeletePet = /* GraphQL */ `
       ownerEmail
       ownerPhone
       ownerAddress
+      ownerLanguage
       commentList
       createdAt
       updatedAt

@@ -41,6 +41,7 @@ type Pet
     ownerEmail: String
     ownerPhone: String
     ownerAddress: String
+    ownerLanguage: String
     commentList: [String]
     createdAt: AWSDateTime
     updatedAt: AWSDateTime

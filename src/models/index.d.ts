@@ -35,6 +35,7 @@ export declare class Pet {
   readonly ownerEmail?: string | null;
   readonly ownerPhone?: string | null;
   readonly ownerAddress?: string | null;
+  readonly ownerLanguage?: string | null;
   readonly commentList?: (string | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;

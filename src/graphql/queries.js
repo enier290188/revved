@@ -87,6 +87,7 @@ export const getPet = /* GraphQL */ `
       ownerEmail
       ownerPhone
       ownerAddress
+      ownerLanguage
       commentList
       createdAt
       updatedAt
@@ -111,6 +112,7 @@ export const listPets = /* GraphQL */ `
         ownerEmail
         ownerPhone
         ownerAddress
+        ownerLanguage
         commentList
         createdAt
         updatedAt
@@ -144,6 +146,7 @@ export const syncPets = /* GraphQL */ `
         ownerEmail
         ownerPhone
         ownerAddress
+        ownerLanguage
         commentList
         createdAt
         updatedAt

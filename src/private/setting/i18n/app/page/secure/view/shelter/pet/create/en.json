@@ -2,7 +2,7 @@
   "app.page.secure.view.shelter.pet.create": "Create Pet",
   "app.page.secure.view.shelter.pet.create.field.name.label": "Pet Name",
   "app.page.secure.view.shelter.pet.create.field.owner-name.label": "Owner Name",
-  "app.page.secure.view.shelter.pet.create.field.owner-email.label": "Email",
+  "app.page.secure.view.shelter.pet.create.field.owner-email.label": "Owner Email",
   "app.page.secure.view.shelter.pet.create.field.owner-email.help": "email@domain.com",
   "app.page.secure.view.shelter.pet.create.field.owner-phone.label": "Owner Phone",
   "app.page.secure.view.shelter.pet.create.field.owner-phone.help": "##########",

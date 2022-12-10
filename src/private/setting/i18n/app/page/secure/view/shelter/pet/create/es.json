@@ -1,6 +1,7 @@
 {
   "app.page.secure.view.shelter.pet.create": "Crear Mascota",
   "app.page.secure.view.shelter.pet.create.field.name.label": "Mascota Nombre",
+  "app.page.secure.view.shelter.pet.create.field.owner-name.label": "Dueño Nombre",
   "app.page.secure.view.shelter.pet.create.field.owner-email.label": "Dueño Correo",
   "app.page.secure.view.shelter.pet.create.field.owner-email.help": "correo@dominio.com",
   "app.page.secure.view.shelter.pet.create.field.owner-phone.label": "Dueño Teléfono",

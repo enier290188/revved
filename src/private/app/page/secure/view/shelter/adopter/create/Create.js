@@ -383,8 +383,7 @@ const View = React.memo(
                 try {
                     const user = contextUser.getUser()
                     const userId = user && user.id ? user.id : null
-                    const userCompanyId = user && user.companyId ? user.companyId : null
-                    if (user && userId && userCompanyId) {
+                    if (user && userId) {
                         let ERROR_INTERNET_DISCONNECTED = false
                         let ERROR_UNAUTHORIZED = false
 
@@ -393,12 +392,7 @@ const View = React.memo(
                                 query: {
                                     name: "getUser",
                                     id: userId,
-                                    itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        }
-                                    ]
+                                    itemList: []
                                 }
                             }
                         )
@@ -412,74 +406,7 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataCompanyModel = await AppUtilGraphql.getModel(
-                            {
-                                query: {
-                                    name: "getCompany",
-                                    id: userCompanyId,
-                                    itemList: []
-                                }
-                            }
-                        )
-                        if (dataCompanyModel._response.error && dataCompanyModel._response.errorType) {
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const companyModel = dataCompanyModel.instance
-
-                        const dataUserModelList = await AppUtilGraphql.getModelList(
-                            {
-                                query: {
-                                    name: "listUsers",
-                                    itemList: [
-                                        {
-                                            key: "name",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
-                                        }
-                                    ],
-                                    filter: {
-                                        and: [
-                                            {
-                                                companyId: {
-                                                    eq: userCompanyId
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-                        )
-                        if (dataUserModelList._response.error && dataUserModelList._response.errorType) {
-                            if (dataUserModelList._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataUserModelList._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const userModelList = dataUserModelList.instanceList
-
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId) {
-                            const adopterModelUser = {}
-                            const adopterModelUserList = []
-                            try {
-                                for (const userModelForOf of userModelList) {
-                                    const userModelForOfDict = {
-                                        id: userModelForOf.id,
-                                        label: userModelForOf.name
-                                    }
-                                    if (userModelForOf.id === userLoggedInModel.id) {
-                                        adopterModelUser["id"] = userModelForOfDict.id
-                                        adopterModelUser["label"] = userModelForOfDict.label
-                                    }
-                                    adopterModelUserList.push(userModelForOfDict)
-                                }
-                            } catch (e) {
-                            }
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel) {
                             const adopterModelAddress = {}
                             const instanceAdopter = {
                                 id: null,
@@ -493,10 +420,6 @@ const View = React.memo(
                                     success: true
                                 },
                                 instanceAdopter: instanceAdopter,
-                                fieldUser: {
-                                    value: adopterModelUser,
-                                    valueList: adopterModelUserList
-                                },
                                 fieldAddress: {
                                     value: adopterModelAddress,
                                     valueList: []
@@ -538,8 +461,7 @@ const View = React.memo(
                 try {
                     const user = contextUser.getUser()
                     const userId = user && user.id ? user.id : null
-                    const userCompanyId = user && user.companyId ? user.companyId : null
-                    if (user && userId && userCompanyId) {
+                    if (user && userId) {
                         let ERROR_INTERNET_DISCONNECTED = false
                         let ERROR_UNAUTHORIZED = false
 
@@ -548,12 +470,7 @@ const View = React.memo(
                                 query: {
                                     name: "getUser",
                                     id: userId,
-                                    itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        }
-                                    ]
+                                    itemList: []
                                 }
                             }
                         )
@@ -567,70 +484,7 @@ const View = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataCompanyModel = await AppUtilGraphql.getModel(
-                            {
-                                query: {
-                                    name: "getCompany",
-                                    id: userCompanyId,
-                                    itemList: []
-                                }
-                            }
-                        )
-                        if (dataCompanyModel._response.error && dataCompanyModel._response.errorType) {
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const companyModel = dataCompanyModel.instance
-
-                        const dataUserModelList = await AppUtilGraphql.getModelList(
-                            {
-                                query: {
-                                    name: "listUsers",
-                                    itemList: [
-                                        {
-                                            key: "name",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
-                                        }
-                                    ],
-                                    filter: {
-                                        and: [
-                                            {
-                                                companyId: {
-                                                    eq: userCompanyId
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-                        )
-                        if (dataUserModelList._response.error && dataUserModelList._response.errorType) {
-                            if (dataUserModelList._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataUserModelList._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const userModelList = dataUserModelList.instanceList
-
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId) {
-                            const dataDictUser = {
-                                id: userLoggedInModel.id
-                            }
-                            try {
-                                for (const userModelForOf of userModelList) {
-                                    if (userModelForOf.id === data.user.id) {
-                                        dataDictUser["id"] = userModelForOf.id
-                                        break
-                                    }
-                                }
-                            } catch (e) {
-                            }
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel) {
                             const dataDictAddress = {}
                             try {
                                 const dataDict = data.address
@@ -650,14 +504,6 @@ const View = React.memo(
                                     query: {
                                         name: "createAdopter",
                                         itemList: [
-                                            {
-                                                key: "companyId",
-                                                type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                            },
-                                            {
-                                                key: "userId",
-                                                type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                            },
                                             {
                                                 key: "name",
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -680,8 +526,6 @@ const View = React.memo(
                                             }
                                         ],
                                         input: {
-                                            companyId: companyModel.id,
-                                            userId: dataDictUser.id,
                                             name: data.name,
                                             email: data.email,
                                             phone: data.phone,
@@ -701,23 +545,7 @@ const View = React.memo(
                             }
                             const adopterCreatedModel = dataAdopterCreatedModel.instance
 
-                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId && adopterCreatedModel && companyModel.id === adopterCreatedModel.companyId) {
-                                const adopterCreatedModelUser = {}
-                                const adopterCreatedModelUserList = []
-                                try {
-                                    for (const userModelForOf of userModelList) {
-                                        const userModelForOfDict = {
-                                            id: userModelForOf.id,
-                                            label: userModelForOf.name
-                                        }
-                                        if (userModelForOf.id === adopterCreatedModel.userId) {
-                                            adopterCreatedModelUser["id"] = userModelForOfDict.id
-                                            adopterCreatedModelUser["label"] = userModelForOfDict.label
-                                        }
-                                        adopterCreatedModelUserList.push(userModelForOfDict)
-                                    }
-                                } catch (e) {
-                                }
+                            if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterCreatedModel) {
                                 const adopterUpdatedModelAddress = {}
                                 try {
                                     const jsonParse = JSON.parse(adopterCreatedModel.address)
@@ -744,10 +572,6 @@ const View = React.memo(
                                         success: true
                                     },
                                     instanceAdopter: instanceAdopterCreated,
-                                    fieldUser: {
-                                        value: adopterCreatedModelUser,
-                                        valueList: adopterCreatedModelUserList
-                                    },
                                     fieldAddress: {
                                         value: adopterUpdatedModelAddress,
                                         valueList: []

@@ -3,7 +3,7 @@ import React from "react"
 import {FormattedMessage} from "react-intl"
 import {NavLink} from "react-router-dom"
 import ImgLogo from "../../../../../asset/image/logo.png"
-import {PATH_APP} from "../../../../../setting/path/app"
+import {PATH_APP_PAGE_SECURE} from "../../../../../setting/path/app/page/secure"
 import {Context as ContextDrawer} from "../../../../context/Drawer"
 import {Context as ContextI18n} from "../../../../context/I18n"
 
@@ -305,7 +305,7 @@ export const Header = React.memo(
                         <MuiToolbar component={"div"} variant={"dense"} disableGutters={true} sx={SxToolbar}>
                             <MuiBox component={"div"} sx={SxToolbarLeft}>
                                 <LayoutHeaderAppbarToolbarLeftButtonDrawer/>
-                                <MuiLink component={NavLink} to={PATH_APP} sx={SxToolbarLeftBrandLink}>
+                                <MuiLink component={NavLink} to={PATH_APP_PAGE_SECURE} sx={SxToolbarLeftBrandLink}>
                                     <MuiBox component={"div"} sx={SxToolbarLeftBrandLinkLogo}>
                                         <img src={ImgLogo} alt={""} loading={"lazy"} width={"100%"} height={"100%"}/>
                                     </MuiBox>

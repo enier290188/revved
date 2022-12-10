@@ -66,7 +66,7 @@ const View = React.memo(
                 fieldName,
                 fieldOwnerName,
                 fieldOwnerEmail,
-                fieldPhone,
+                fieldOwnerPhone,
                 fieldAddress,
                 fieldAddressMap,
                 fieldLanguage
@@ -91,10 +91,10 @@ const View = React.memo(
                     error: null,
                     help: [<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.owner-email.help"}/>]
                 },
-                fieldPhone: {
+                fieldOwnerPhone: {
                     value: "",
                     error: null,
-                    help: [<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.phone.help"}/>]
+                    help: [<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.owner-phone.help"}/>]
                 },
                 fieldAddress: {
                     value: {},
@@ -134,7 +134,7 @@ const View = React.memo(
             return AppUtilForm.validateField(value, [["fieldTypeEmail"]])
         }
 
-        const fieldPhoneValidate = (value) => {
+        const fieldOwnerPhoneValidate = (value) => {
             return AppUtilForm.validateField(value, [["fieldTypePhone"]])
         }
 
@@ -215,7 +215,7 @@ const View = React.memo(
             []
         )
 
-        const fieldPhoneHandleOnChange = React.useCallback(
+        const fieldOwnerPhoneHandleOnChange = React.useCallback(
             ({target: {value}}) => {
                 try {
                     if (isComponentMountedRef.current === true) {
@@ -223,10 +223,10 @@ const View = React.memo(
                             (oldState) => (
                                 {
                                     ...oldState,
-                                    fieldPhone: {
-                                        ...oldState.fieldPhone,
+                                    fieldOwnerPhone: {
+                                        ...oldState.fieldOwnerPhone,
                                         value: value,
-                                        error: fieldPhoneValidate(value)
+                                        error: fieldOwnerPhoneValidate(value)
                                     }
                                 }
                             )
@@ -445,7 +445,7 @@ const View = React.memo(
                                 name: "",
                                 ownerName: "",
                                 ownerEmail: "",
-                                phone: "",
+                                ownerPhone: "",
                                 language: "ENGLISH"
                             }
                             return {
@@ -550,7 +550,7 @@ const View = React.memo(
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                             },
                                             {
-                                                key: "phone",
+                                                key: "ownerPhone",
                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                             },
                                             {
@@ -566,7 +566,7 @@ const View = React.memo(
                                             name: data.name,
                                             ownerName: data.ownerName,
                                             ownerEmail: data.ownerEmail,
-                                            phone: data.phone,
+                                            ownerPhone: data.ownerPhone,
                                             address: JSON.stringify(dataDictAddress),
                                             language: data.language
                                         }
@@ -603,7 +603,7 @@ const View = React.memo(
                                     name: petCreatedModel.name,
                                     ownerName: petCreatedModel.ownerName,
                                     ownerEmail: petCreatedModel.ownerEmail,
-                                    phone: petCreatedModel.phone,
+                                    ownerPhone: petCreatedModel.ownerPhone,
                                     language: petCreatedModel.language
                                 }
                                 return {
@@ -773,10 +773,10 @@ const View = React.memo(
                                                                 value: data.instancePet.ownerEmail,
                                                                 error: fieldOwnerEmailValidate(data.instancePet.ownerEmail)
                                                             },
-                                                            fieldPhone: {
-                                                                ...oldState.fieldPhone,
-                                                                value: data.instancePet.phone,
-                                                                error: fieldPhoneValidate(data.instancePet.phone)
+                                                            fieldOwnerPhone: {
+                                                                ...oldState.fieldOwnerPhone,
+                                                                value: data.instancePet.ownerPhone,
+                                                                error: fieldOwnerPhoneValidate(data.instancePet.ownerPhone)
                                                             },
                                                             fieldAddress: {
                                                                 ...oldState.fieldAddress,
@@ -875,11 +875,11 @@ const View = React.memo(
                         const fieldNameError = fieldNameValidate(fieldName.value)
                         const fieldOwnerNameError = fieldOwnerNameValidate(fieldOwnerName.value)
                         const fieldOwnerEmailError = fieldOwnerEmailValidate(fieldOwnerEmail.value)
-                        const fieldPhoneError = fieldPhoneValidate(fieldPhone.value)
+                        const fieldOwnerPhoneError = fieldOwnerPhoneValidate(fieldOwnerPhone.value)
                         const fieldAddressError = fieldAddressValidate(fieldAddress.value)
                         const fieldLanguageError = fieldLanguageValidate(fieldLanguage.value)
 
-                        if (fieldNameError || fieldOwnerNameError || fieldOwnerEmailError || fieldPhoneError || fieldAddressError || fieldLanguageError) {
+                        if (fieldNameError || fieldOwnerNameError || fieldOwnerEmailError || fieldOwnerPhoneError || fieldAddressError || fieldLanguageError) {
                             if (isComponentMountedRef.current === true) {
                                 setState(
                                     (oldState) => (
@@ -898,9 +898,9 @@ const View = React.memo(
                                                 ...oldState.fieldOwnerEmail,
                                                 error: fieldOwnerEmailError
                                             },
-                                            fieldPhone: {
-                                                ...oldState.fieldPhone,
-                                                error: fieldPhoneError
+                                            fieldOwnerPhone: {
+                                                ...oldState.fieldOwnerPhone,
+                                                error: fieldOwnerPhoneError
                                             },
                                             fieldAddress: {
                                                 ...oldState.fieldAddress,
@@ -936,7 +936,7 @@ const View = React.memo(
                 fieldName.value,
                 fieldOwnerName.value,
                 fieldOwnerEmail.value,
-                fieldPhone.value,
+                fieldOwnerPhone.value,
                 fieldAddress.value,
                 fieldLanguage.value
             ]
@@ -951,7 +951,7 @@ const View = React.memo(
                                 name: fieldName.value,
                                 ownerName: fieldOwnerName.value,
                                 ownerEmail: fieldOwnerEmail.value,
-                                phone: fieldPhone.value,
+                                ownerPhone: fieldOwnerPhone.value,
                                 address: fieldAddress.value,
                                 language: fieldLanguage.value
                             }
@@ -983,10 +983,10 @@ const View = React.memo(
                                                                 value: data.instancePet.ownerEmail,
                                                                 error: fieldOwnerEmailValidate(data.instancePet.ownerEmail)
                                                             },
-                                                            fieldPhone: {
-                                                                ...oldState.fieldPhone,
-                                                                value: data.instancePet.phone,
-                                                                error: fieldPhoneValidate(data.instancePet.phone)
+                                                            fieldOwnerPhone: {
+                                                                ...oldState.fieldOwnerPhone,
+                                                                value: data.instancePet.ownerPhone,
+                                                                error: fieldOwnerPhoneValidate(data.instancePet.ownerPhone)
                                                             },
                                                             fieldAddress: {
                                                                 ...oldState.fieldAddress,
@@ -1079,7 +1079,7 @@ const View = React.memo(
                 fieldName.value,
                 fieldOwnerName.value,
                 fieldOwnerEmail.value,
-                fieldPhone.value,
+                fieldOwnerPhone.value,
                 fieldAddress.value,
                 fieldLanguage.value,
                 submitData
@@ -1323,9 +1323,9 @@ const View = React.memo(
                                                     required={false}
                                                     type={"tel"}
                                                     iconFont={"phone"}
-                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.phone.label"}/>}
-                                                    field={fieldPhone}
-                                                    handleOnChange={fieldPhoneHandleOnChange}
+                                                    label={<FormattedMessage id={"app.page.secure.view.shelter.pet.create.field.owner-phone.label"}/>}
+                                                    field={fieldOwnerPhone}
+                                                    handleOnChange={fieldOwnerPhoneHandleOnChange}
                                                 />
                                             </MuiBox>
                                             <MuiBox component={"div"} p={1}>
@@ -1364,7 +1364,7 @@ const View = React.memo(
                                             <MuiBox component={"div"} p={1}>
                                                 <LayoutButton
                                                     loading={stepIsSubmitting}
-                                                    disabled={stepIsSubmitting || Boolean(fieldName.error) || Boolean(fieldOwnerName.error) || Boolean(fieldOwnerEmail.error) || Boolean(fieldPhone.error) || Boolean(fieldAddress.error) || Boolean(fieldLanguage.error)}
+                                                    disabled={stepIsSubmitting || Boolean(fieldName.error) || Boolean(fieldOwnerName.error) || Boolean(fieldOwnerEmail.error) || Boolean(fieldOwnerPhone.error) || Boolean(fieldAddress.error) || Boolean(fieldLanguage.error)}
                                                     variant={"contained"}
                                                     size={"small"}
                                                     iconFont={"save"}

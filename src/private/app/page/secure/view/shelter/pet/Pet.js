@@ -1,5 +1,5 @@
 import {Box as MuiBox, Divider as MuiDivider} from "@mui/material"
-import {API, Auth} from "aws-amplify"
+import {API, Auth, Storage} from "aws-amplify"
 import React from "react"
 import {FormattedMessage} from "react-intl"
 import {Route, Routes, useLocation} from "react-router"
@@ -24,7 +24,7 @@ import {PaperTitle as LayoutPaperTitle} from "../../../layout/main/paper/PaperTi
 import {PaperTitleLeft as LayoutPaperTitleLeft} from "../../../layout/main/paper/PaperTitleLeft"
 import {PaperTitleLeftTypographyLevel1 as LayoutPaperTitleLeftTypographyLevel1} from "../../../layout/main/paper/PaperTitleLeftTypographyLevel1"
 import {PaperTitleRight as LayoutPaperTitleRight} from "../../../layout/main/paper/PaperTitleRight"
-import {Table as LayoutTable, TABLE_COLUMN_TYPE_DATETIME, TABLE_COLUMN_TYPE_STRING, TABLE_SORT_ORDER_ASC} from "../../../layout/main/table/Table"
+import {Table as LayoutTable, TABLE_COLUMN_TYPE_AVATAR, TABLE_COLUMN_TYPE_AVATAR_NAME, TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW, TABLE_COLUMN_TYPE_AVATAR_STORAGE, TABLE_COLUMN_TYPE_DATETIME, TABLE_COLUMN_TYPE_STRING, TABLE_SORT_ORDER_ASC} from "../../../layout/main/table/Table"
 import {SecurityNavigateToIndex, SecurityNavigateToPathError404, SecurityRouteCurrentUserShelter} from "../../../security"
 import {Comment as ViewComment} from "./comment/Comment"
 import {Create as ViewCreate} from "./create/Create"
@@ -87,6 +87,15 @@ const ViewList = React.memo(
                     },
                     pagination: true,
                     columnList: [
+                        {
+                            id: "picture",
+                            label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.picture"}/>,
+                            type: TABLE_COLUMN_TYPE_AVATAR,
+                            search: null,
+                            sort: null,
+                            action: null,
+                            width: "48px"
+                        },
                         {
                             id: "name",
                             label: <FormattedMessage id={"app.page.secure.view.shelter.pet.list.column.name"}/>,
@@ -191,6 +200,10 @@ const ViewList = React.memo(
                                     name: "listPets",
                                     itemList: [
                                         {
+                                            key: "picture",
+                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
+                                        },
+                                        {
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         },
@@ -231,6 +244,44 @@ const ViewList = React.memo(
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel) {
                             const petRowList = []
                             for (const petModelForOf of petModelList) {
+                                let pictureData = null
+                                const pictureUrl = petModelForOf.picture
+                                    ? await Storage.get(
+                                        petModelForOf.picture,
+                                        {
+                                            level: "public",
+                                            acl: "private",
+                                            contentType: "image/png",
+                                            expires: 60
+                                        }
+                                    )
+                                    : null
+                                if (pictureUrl) {
+                                    const toDataURL = async url => fetch(url)
+                                        .then(
+                                            response => response.blob()
+                                        )
+                                        .then(
+                                            blob => new Promise(
+                                                (resolve, reject) => {
+                                                    const reader = new FileReader()
+                                                    reader.onloadend = () => resolve(reader.result)
+                                                    reader.onerror = reject
+                                                    reader.readAsDataURL(blob)
+                                                }
+                                            )
+                                        )
+                                    await toDataURL(pictureUrl)
+                                        .then(
+                                            (dataUrl) => {
+                                                pictureData = dataUrl
+                                            }
+                                        )
+                                }
+                                const picture = {}
+                                picture[TABLE_COLUMN_TYPE_AVATAR_NAME] = petModelForOf.name
+                                picture[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW] = false
+                                picture[TABLE_COLUMN_TYPE_AVATAR_STORAGE] = pictureData
                                 const petModelForOfOwnerAddress = {
                                     label: ""
                                 }
@@ -251,6 +302,7 @@ const ViewList = React.memo(
                                 petRowList.push(
                                     {
                                         id: petModelForOf.id,
+                                        picture: picture,
                                         name: petModelForOf.name,
                                         ownerName: petModelForOf.ownerName,
                                         ownerEmail: petModelForOf.ownerEmail,
@@ -287,6 +339,7 @@ const ViewList = React.memo(
                         throw new Error("ContextUser Required")
                     }
                 } catch (e) {
+                    console.log(e)
                     return {
                         _response: {
                             error: true

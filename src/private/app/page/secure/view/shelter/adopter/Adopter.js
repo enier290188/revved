@@ -1,5 +1,5 @@
 import {Box as MuiBox} from "@mui/material"
-import {API, Auth, Storage} from "aws-amplify"
+import {API, Auth} from "aws-amplify"
 import React from "react"
 import {FormattedMessage} from "react-intl"
 import {Route, Routes, useLocation} from "react-router"
@@ -21,7 +21,7 @@ import {PaperContentRightTitle as LayoutPaperContentRightTitle} from "../../../l
 import {PaperContentRightTitleLeft as LayoutPaperContentRightTitleLeft} from "../../../layout/main/paper/PaperContentRightTitleLeft"
 import {PaperContentRightTitleLeftTypographyLevel2 as LayoutPaperContentRightTitleLeftTypographyLevel2} from "../../../layout/main/paper/PaperContentRightTitleLeftTypographyLevel2"
 import {PaperContentRightTitleRight as LayoutPaperContentRightTitleRight} from "../../../layout/main/paper/PaperContentRightTitleRight"
-import {Table as LayoutTable, TABLE_COLUMN_TYPE_AVATAR, TABLE_COLUMN_TYPE_AVATAR_NAME, TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW, TABLE_COLUMN_TYPE_AVATAR_STORAGE, TABLE_COLUMN_TYPE_DATETIME, TABLE_COLUMN_TYPE_STRING, TABLE_SORT_ORDER_ASC} from "../../../../layout/main/table/Table"
+import {Table as LayoutTable, TABLE_COLUMN_TYPE_AVATAR_NAME, TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW, TABLE_COLUMN_TYPE_AVATAR_STORAGE, TABLE_COLUMN_TYPE_DATETIME, TABLE_COLUMN_TYPE_STRING, TABLE_SORT_ORDER_ASC} from "../../../layout/main/table/Table"
 import {SecurityNavigateToIndex, SecurityNavigateToPathError404, SecurityRouteCurrentUserShelter} from "../../../security"
 import {Comment as ViewComment} from "./comment/Comment"
 import {Create as ViewCreate} from "./create/Create"
@@ -130,13 +130,6 @@ const ViewList = React.memo(
                             action: null
                         },
                         {
-                            id: "user",
-                            label: <FormattedMessage id={"app.page.secure.view.owner.crm.contact.list.column.user"}/>,
-                            type: TABLE_COLUMN_TYPE_AVATAR,
-                            search: true,
-                            action: null
-                        },
-                        {
                             id: "createdAt",
                             label: <FormattedMessage id={"app.page.secure.view.owner.crm.contact.list.column.created-at"}/>,
                             type: TABLE_COLUMN_TYPE_DATETIME,
@@ -156,17 +149,16 @@ const ViewList = React.memo(
             }
         )
         const isComponentMountedRef = React.useRef(true)
-        const subscriptionOnCreateContactModelRef = React.useRef(null)
-        const subscriptionOnUpdateContactModelRef = React.useRef(null)
-        const subscriptionOnDeleteContactModelRef = React.useRef(null)
+        const subscriptionOnCreateAdopterModelRef = React.useRef(null)
+        const subscriptionOnUpdateAdopterModelRef = React.useRef(null)
+        const subscriptionOnDeleteAdopterModelRef = React.useRef(null)
 
         const fetchData = React.useCallback(
             async () => {
                 try {
                     const user = contextUser.getUser()
                     const userId = user && user.id ? user.id : null
-                    const userCompanyId = user && user.companyId ? user.companyId : null
-                    if (user && userId && userCompanyId) {
+                    if (user && userId) {
                         let ERROR_INTERNET_DISCONNECTED = false
                         let ERROR_UNAUTHORIZED = false
 
@@ -175,12 +167,7 @@ const ViewList = React.memo(
                                 query: {
                                     name: "getUser",
                                     id: userId,
-                                    itemList: [
-                                        {
-                                            key: "companyId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        }
-                                    ]
+                                    itemList: []
                                 }
                             }
                         )
@@ -194,34 +181,11 @@ const ViewList = React.memo(
                         }
                         const userLoggedInModel = dataUserLoggedInModel.instance
 
-                        const dataCompanyModel = await AppUtilGraphql.getModel(
+                        const dataAdopterModelList = await AppUtilGraphql.getModelList(
                             {
                                 query: {
-                                    name: "getCompany",
-                                    id: userCompanyId,
-                                    itemList: []
-                                }
-                            }
-                        )
-                        if (dataCompanyModel._response.error && dataCompanyModel._response.errorType) {
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataCompanyModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const companyModel = dataCompanyModel.instance
-
-                        const dataContactModelList = await AppUtilGraphql.getModelList(
-                            {
-                                query: {
-                                    name: "listContacts",
+                                    name: "listAdopters",
                                     itemList: [
-                                        {
-                                            key: "userId",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                        },
                                         {
                                             key: "name",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -242,154 +206,50 @@ const ViewList = React.memo(
                                             key: "language",
                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                         }
-                                    ],
-                                    filter: {
-                                        and: [
-                                            {
-                                                companyId: {
-                                                    eq: userCompanyId
-                                                }
-                                            }
-                                        ]
-                                    }
+                                    ]
                                 }
                             }
                         )
-                        if (dataContactModelList._response.error && dataContactModelList._response.errorType) {
-                            if (dataContactModelList._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                        if (dataAdopterModelList._response.error && dataAdopterModelList._response.errorType) {
+                            if (dataAdopterModelList._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                 ERROR_INTERNET_DISCONNECTED = true
                             }
-                            if (dataContactModelList._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                            if (dataAdopterModelList._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                 ERROR_UNAUTHORIZED = true
                             }
                         }
-                        const contactModelList = dataContactModelList.instanceList
+                        const adopterModelList = dataAdopterModelList.instanceList
 
-                        const dataUserModelList = await AppUtilGraphql.getModelList(
-                            {
-                                query: {
-                                    name: "listUsers",
-                                    itemList: [
-                                        {
-                                            key: "picture",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
-                                        },
-                                        {
-                                            key: "name",
-                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
-                                        }
-                                    ],
-                                    filter: {
-                                        and: [
-                                            {
-                                                companyId: {
-                                                    eq: userCompanyId
-                                                }
-                                            }
-                                        ]
-                                    }
-                                }
-                            }
-                        )
-                        if (dataUserModelList._response.error && dataUserModelList._response.errorType) {
-                            if (dataUserModelList._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
-                                ERROR_INTERNET_DISCONNECTED = true
-                            }
-                            if (dataUserModelList._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
-                                ERROR_UNAUTHORIZED = true
-                            }
-                        }
-                        const userModelList = dataUserModelList.instanceList
-
-                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && companyModel && userLoggedInModel && companyModel.id === userLoggedInModel.companyId) {
-                            const userModelListDict = {}
-                            for (const userModelForOf of userModelList) {
-                                let pictureData = null
-                                const pictureUrl = userModelForOf.picture
-                                    ? await Storage.get(
-                                        userModelForOf.picture,
-                                        {
-                                            level: "public",
-                                            acl: "private",
-                                            contentType: "image/png",
-                                            expires: 60
-                                        }
-                                    )
-                                    : null
-                                if (pictureUrl) {
-                                    const toDataURL = async url => fetch(url)
-                                        .then(
-                                            response => response.blob()
-                                        )
-                                        .then(
-                                            blob => new Promise(
-                                                (resolve, reject) => {
-                                                    const reader = new FileReader()
-                                                    reader.onloadend = () => resolve(reader.result)
-                                                    reader.onerror = reject
-                                                    reader.readAsDataURL(blob)
-                                                }
-                                            )
-                                        )
-                                    await toDataURL(pictureUrl)
-                                        .then(
-                                            (dataUrl) => {
-                                                pictureData = dataUrl
-                                            }
-                                        )
-                                }
-                                const picture = {}
-                                picture[TABLE_COLUMN_TYPE_AVATAR_NAME] = userModelForOf.name
-                                picture[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW] = true
-                                picture[TABLE_COLUMN_TYPE_AVATAR_STORAGE] = pictureData
-                                userModelListDict[userModelForOf.id] = {
-                                    picture: picture
-                                }
-                            }
-                            const contactRowList = []
-                            for (const contactModelForOf of contactModelList) {
-                                const contactModelForOfAddress = {
+                        if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel) {
+                            const adopterRowList = []
+                            for (const adopterModelForOf of adopterModelList) {
+                                const adopterModelForOfAddress = {
                                     label: ""
                                 }
                                 try {
-                                    const jsonParse = JSON.parse(contactModelForOf.address)
+                                    const jsonParse = JSON.parse(adopterModelForOf.address)
                                     if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                        contactModelForOfAddress.id = jsonParse.id
-                                        contactModelForOfAddress.lat = jsonParse.lat
-                                        contactModelForOfAddress.lng = jsonParse.lng
-                                        contactModelForOfAddress.zoom = jsonParse.zoom
-                                        contactModelForOfAddress.label = jsonParse.label
-                                        contactModelForOfAddress.mainText = jsonParse.mainText
-                                        contactModelForOfAddress.secondaryText = jsonParse.secondaryText
+                                        adopterModelForOfAddress.id = jsonParse.id
+                                        adopterModelForOfAddress.lat = jsonParse.lat
+                                        adopterModelForOfAddress.lng = jsonParse.lng
+                                        adopterModelForOfAddress.zoom = jsonParse.zoom
+                                        adopterModelForOfAddress.label = jsonParse.label
+                                        adopterModelForOfAddress.mainText = jsonParse.mainText
+                                        adopterModelForOfAddress.secondaryText = jsonParse.secondaryText
                                     }
                                 } catch (e) {
                                 }
-                                const contactModelForOfUser = {
-                                    id: null
-                                }
-                                contactModelForOfUser[TABLE_COLUMN_TYPE_AVATAR_NAME] = ""
-                                contactModelForOfUser[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW] = true
-                                contactModelForOfUser[TABLE_COLUMN_TYPE_AVATAR_STORAGE] = null
-                                try {
-                                    const picture = userModelListDict[contactModelForOf.userId].picture
-                                    contactModelForOfUser["id"] = contactModelForOf.userId
-                                    contactModelForOfUser[TABLE_COLUMN_TYPE_AVATAR_NAME] = picture[TABLE_COLUMN_TYPE_AVATAR_NAME]
-                                    contactModelForOfUser[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW] = picture[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW]
-                                    contactModelForOfUser[TABLE_COLUMN_TYPE_AVATAR_STORAGE] = picture[TABLE_COLUMN_TYPE_AVATAR_STORAGE]
-                                } catch (e) {
-                                }
 
-                                contactRowList.push(
+                                adopterRowList.push(
                                     {
-                                        id: contactModelForOf.id,
-                                        name: contactModelForOf.name,
-                                        email: contactModelForOf.email,
-                                        phone: contactModelForOf.phone,
-                                        address: contactModelForOfAddress.label,
-                                        language: contactModelForOf.language,
-                                        user: contactModelForOfUser,
-                                        createdAt: contactModelForOf.createdAt,
-                                        updatedAt: contactModelForOf.updatedAt
+                                        id: adopterModelForOf.id,
+                                        name: adopterModelForOf.name,
+                                        email: adopterModelForOf.email,
+                                        phone: adopterModelForOf.phone,
+                                        address: adopterModelForOfAddress.label,
+                                        language: adopterModelForOf.language,
+                                        createdAt: adopterModelForOf.createdAt,
+                                        updatedAt: adopterModelForOf.updatedAt
                                     }
                                 )
                             }
@@ -397,7 +257,7 @@ const ViewList = React.memo(
                                 _response: {
                                     success: true
                                 },
-                                rowList: contactRowList
+                                rowList: adopterRowList
                             }
                         } else {
                             let warningType = null
@@ -586,9 +446,9 @@ const ViewList = React.memo(
                         authToken = null
                     }
 
-                    subscriptionOnCreateContactModelRef.current = API.graphql(
+                    subscriptionOnCreateAdopterModelRef.current = API.graphql(
                         {
-                            query: AmplifyGraphqlSubscription.onCreateContact,
+                            query: AmplifyGraphqlSubscription.onCreateAdopter,
                             authMode: "AWS_IAM",
                             authToken: authToken
                         }
@@ -597,8 +457,8 @@ const ViewList = React.memo(
                             {
                                 next: async (response) => {
                                     try {
-                                        if (response && response.value && response.value.data && response.value.data.onCreateContact) {
-                                            const contactCreatedModel = response.value.data.onCreateContact
+                                        if (response && response.value && response.value.data && response.value.data.onCreateAdopter) {
+                                            const contactCreatedModel = response.value.data.onCreateAdopter
                                             const contactCreatedModelAddress = {
                                                 label: ""
                                             }
@@ -664,9 +524,9 @@ const ViewList = React.memo(
                             }
                         )
 
-                    subscriptionOnUpdateContactModelRef.current = API.graphql(
+                    subscriptionOnUpdateAdopterModelRef.current = API.graphql(
                         {
-                            query: AmplifyGraphqlSubscription.onUpdateContact,
+                            query: AmplifyGraphqlSubscription.onUpdateAdopter,
                             authMode: "AWS_IAM",
                             authToken: authToken
                         }
@@ -675,8 +535,8 @@ const ViewList = React.memo(
                             {
                                 next: async (response) => {
                                     try {
-                                        if (response && response.value && response.value.data && response.value.data.onUpdateContact) {
-                                            const contactUpdatedModel = response.value.data.onUpdateContact
+                                        if (response && response.value && response.value.data && response.value.data.onUpdateAdopter) {
+                                            const contactUpdatedModel = response.value.data.onUpdateAdopter
                                             const contactUpdatedModelAddress = {
                                                 label: ""
                                             }
@@ -747,9 +607,9 @@ const ViewList = React.memo(
                             }
                         )
 
-                    subscriptionOnDeleteContactModelRef.current = API.graphql(
+                    subscriptionOnDeleteAdopterModelRef.current = API.graphql(
                         {
-                            query: AmplifyGraphqlSubscription.onDeleteContact,
+                            query: AmplifyGraphqlSubscription.onDeleteAdopter,
                             authMode: "AWS_IAM",
                             authToken: authToken
                         }
@@ -758,8 +618,8 @@ const ViewList = React.memo(
                             {
                                 next: async (response) => {
                                     try {
-                                        if (response && response.value && response.value.data && response.value.data.onDeleteContact) {
-                                            const contactDeletedModel = response.value.data.onDeleteContact
+                                        if (response && response.value && response.value.data && response.value.data.onDeleteAdopter) {
+                                            const contactDeletedModel = response.value.data.onDeleteAdopter
                                             const crudRowList = [...crud.rowList]
                                             const crudRowNewList = []
                                             for (const crudRowForOf of crudRowList) {
@@ -791,14 +651,14 @@ const ViewList = React.memo(
                 subscription().then().catch().finally()
 
                 return () => {
-                    if (subscriptionOnCreateContactModelRef.current) {
-                        subscriptionOnCreateContactModelRef.current.unsubscribe()
+                    if (subscriptionOnCreateAdopterModelRef.current) {
+                        subscriptionOnCreateAdopterModelRef.current.unsubscribe()
                     }
-                    if (subscriptionOnUpdateContactModelRef.current) {
-                        subscriptionOnUpdateContactModelRef.current.unsubscribe()
+                    if (subscriptionOnUpdateAdopterModelRef.current) {
+                        subscriptionOnUpdateAdopterModelRef.current.unsubscribe()
                     }
-                    if (subscriptionOnDeleteContactModelRef.current) {
-                        subscriptionOnDeleteContactModelRef.current.unsubscribe()
+                    if (subscriptionOnDeleteAdopterModelRef.current) {
+                        subscriptionOnDeleteAdopterModelRef.current.unsubscribe()
                     }
                 }
             },

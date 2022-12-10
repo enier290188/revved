@@ -5,7 +5,6 @@
   "app.page.secure.view.shelter.adopter.list.column.phone": "PHONE",
   "app.page.secure.view.shelter.adopter.list.column.address": "ADDRESS",
   "app.page.secure.view.shelter.adopter.list.column.language": "LANGUAGE",
-  "app.page.secure.view.shelter.adopter.list.column.user": "OWNER",
   "app.page.secure.view.shelter.adopter.list.column.created-at": "CREATED AT",
   "app.page.secure.view.shelter.adopter.list.column.updated-at": "UPDATED AT",
   "app.page.secure.view.shelter.adopter.action.refresh": "Refresh",

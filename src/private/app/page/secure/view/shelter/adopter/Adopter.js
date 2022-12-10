@@ -1,4 +1,4 @@
-import {Box as MuiBox} from "@mui/material"
+import {Box as MuiBox, Divider as MuiDivider} from "@mui/material"
 import {API, Auth} from "aws-amplify"
 import React from "react"
 import {FormattedMessage} from "react-intl"
@@ -14,14 +14,17 @@ import {Context as ContextUser} from "../../../../../context/User"
 import * as AppUtilGraphql from "../../../../../util/graphql"
 import {APP_PAGE_SECURE_LAYOUT_ALERT_ERROR} from "../../../layout/alert/Alert"
 import {Button as LayoutButton} from "../../../layout/main/button/Button"
+import {Container as LayoutContainer} from "../../../layout/main/container/Container"
 import {LoadingSecurity as LayoutLoadingSecurity} from "../../../layout/main/loading/LoadingSecurity"
 import {LoadingText as LayoutLoadingText} from "../../../layout/main/loading/LoadingText"
-import {PaperContentRightCenter as LayoutPaperContentRightCenter} from "../../../layout/main/paper/PaperContentRightCenter"
-import {PaperContentRightTitle as LayoutPaperContentRightTitle} from "../../../layout/main/paper/PaperContentRightTitle"
-import {PaperContentRightTitleLeft as LayoutPaperContentRightTitleLeft} from "../../../layout/main/paper/PaperContentRightTitleLeft"
-import {PaperContentRightTitleLeftTypographyLevel2 as LayoutPaperContentRightTitleLeftTypographyLevel2} from "../../../layout/main/paper/PaperContentRightTitleLeftTypographyLevel2"
-import {PaperContentRightTitleRight as LayoutPaperContentRightTitleRight} from "../../../layout/main/paper/PaperContentRightTitleRight"
-import {Table as LayoutTable, TABLE_COLUMN_TYPE_AVATAR_NAME, TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW, TABLE_COLUMN_TYPE_AVATAR_STORAGE, TABLE_COLUMN_TYPE_DATETIME, TABLE_COLUMN_TYPE_STRING, TABLE_SORT_ORDER_ASC} from "../../../layout/main/table/Table"
+import {Paper as LayoutPaper} from "../../../layout/main/paper/Paper"
+import {PaperContent as LayoutPaperContent} from "../../../layout/main/paper/PaperContent"
+import {PaperContentCenter as LayoutPaperContentCenter} from "../../../layout/main/paper/PaperContentCenter"
+import {PaperTitle as LayoutPaperTitle} from "../../../layout/main/paper/PaperTitle"
+import {PaperTitleLeft as LayoutPaperTitleLeft} from "../../../layout/main/paper/PaperTitleLeft"
+import {PaperTitleLeftTypographyLevel1 as LayoutPaperTitleLeftTypographyLevel1} from "../../../layout/main/paper/PaperTitleLeftTypographyLevel1"
+import {PaperTitleRight as LayoutPaperTitleRight} from "../../../layout/main/paper/PaperTitleRight"
+import {Table as LayoutTable, TABLE_COLUMN_TYPE_DATETIME, TABLE_COLUMN_TYPE_STRING, TABLE_SORT_ORDER_ASC} from "../../../layout/main/table/Table"
 import {SecurityNavigateToIndex, SecurityNavigateToPathError404, SecurityRouteCurrentUserShelter} from "../../../security"
 import {Comment as ViewComment} from "./comment/Comment"
 import {Create as ViewCreate} from "./create/Create"
@@ -458,50 +461,34 @@ const ViewList = React.memo(
                                 next: async (response) => {
                                     try {
                                         if (response && response.value && response.value.data && response.value.data.onCreateAdopter) {
-                                            const contactCreatedModel = response.value.data.onCreateAdopter
-                                            const contactCreatedModelAddress = {
+                                            const adopterCreatedModel = response.value.data.onCreateAdopter
+                                            const adopterCreatedModelAddress = {
                                                 label: ""
                                             }
                                             try {
-                                                const jsonParse = JSON.parse(contactCreatedModel.address)
+                                                const jsonParse = JSON.parse(adopterCreatedModel.address)
                                                 if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                                    contactCreatedModelAddress.id = jsonParse.id
-                                                    contactCreatedModelAddress.lat = jsonParse.lat
-                                                    contactCreatedModelAddress.lng = jsonParse.lng
-                                                    contactCreatedModelAddress.zoom = jsonParse.zoom
-                                                    contactCreatedModelAddress.label = jsonParse.label
-                                                    contactCreatedModelAddress.mainText = jsonParse.mainText
-                                                    contactCreatedModelAddress.secondaryText = jsonParse.secondaryText
+                                                    adopterCreatedModelAddress.id = jsonParse.id
+                                                    adopterCreatedModelAddress.lat = jsonParse.lat
+                                                    adopterCreatedModelAddress.lng = jsonParse.lng
+                                                    adopterCreatedModelAddress.zoom = jsonParse.zoom
+                                                    adopterCreatedModelAddress.label = jsonParse.label
+                                                    adopterCreatedModelAddress.mainText = jsonParse.mainText
+                                                    adopterCreatedModelAddress.secondaryText = jsonParse.secondaryText
                                                 }
                                             } catch (e) {
                                             }
-                                            const contactCreatedModelUser = {
-                                                id: null
-                                            }
-                                            contactCreatedModelUser[TABLE_COLUMN_TYPE_AVATAR_NAME] = ""
-                                            contactCreatedModelUser[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW] = true
-                                            contactCreatedModelUser[TABLE_COLUMN_TYPE_AVATAR_STORAGE] = null
                                             const crudRowList = [...crud.rowList]
-                                            for (const crudRowForOf of crudRowList) {
-                                                if (contactCreatedModel.userId === crudRowForOf.user.id) {
-                                                    contactCreatedModelUser["id"] = crudRowForOf.user.id
-                                                    contactCreatedModelUser[TABLE_COLUMN_TYPE_AVATAR_NAME] = crudRowForOf.user[TABLE_COLUMN_TYPE_AVATAR_NAME]
-                                                    contactCreatedModelUser[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW] = crudRowForOf.user[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW]
-                                                    contactCreatedModelUser[TABLE_COLUMN_TYPE_AVATAR_STORAGE] = crudRowForOf.user[TABLE_COLUMN_TYPE_AVATAR_STORAGE]
-                                                    break
-                                                }
-                                            }
                                             crudRowList.push(
                                                 {
-                                                    id: contactCreatedModel.id,
-                                                    name: contactCreatedModel.name,
-                                                    email: contactCreatedModel.email,
-                                                    phone: contactCreatedModel.phone,
-                                                    address: contactCreatedModelAddress.label,
-                                                    user: contactCreatedModelUser,
-                                                    language: contactCreatedModel.language,
-                                                    createdAt: contactCreatedModel.createdAt,
-                                                    updatedAt: contactCreatedModel.updatedAt
+                                                    id: adopterCreatedModel.id,
+                                                    name: adopterCreatedModel.name,
+                                                    email: adopterCreatedModel.email,
+                                                    phone: adopterCreatedModel.phone,
+                                                    address: adopterCreatedModelAddress.label,
+                                                    language: adopterCreatedModel.language,
+                                                    createdAt: adopterCreatedModel.createdAt,
+                                                    updatedAt: adopterCreatedModel.updatedAt
                                                 }
                                             )
                                             if (isComponentMountedRef.current === true) {
@@ -536,52 +523,36 @@ const ViewList = React.memo(
                                 next: async (response) => {
                                     try {
                                         if (response && response.value && response.value.data && response.value.data.onUpdateAdopter) {
-                                            const contactUpdatedModel = response.value.data.onUpdateAdopter
-                                            const contactUpdatedModelAddress = {
+                                            const adopterUpdatedModel = response.value.data.onUpdateAdopter
+                                            const adopterUpdatedModelAddress = {
                                                 label: ""
                                             }
                                             try {
-                                                const jsonParse = JSON.parse(contactUpdatedModel.address)
+                                                const jsonParse = JSON.parse(adopterUpdatedModel.address)
                                                 if (jsonParse.id && jsonParse.lat && jsonParse.lng && jsonParse.zoom && jsonParse.label && jsonParse.mainText && jsonParse.secondaryText) {
-                                                    contactUpdatedModelAddress.id = jsonParse.id
-                                                    contactUpdatedModelAddress.lat = jsonParse.lat
-                                                    contactUpdatedModelAddress.lng = jsonParse.lng
-                                                    contactUpdatedModelAddress.zoom = jsonParse.zoom
-                                                    contactUpdatedModelAddress.label = jsonParse.label
-                                                    contactUpdatedModelAddress.mainText = jsonParse.mainText
-                                                    contactUpdatedModelAddress.secondaryText = jsonParse.secondaryText
+                                                    adopterUpdatedModelAddress.id = jsonParse.id
+                                                    adopterUpdatedModelAddress.lat = jsonParse.lat
+                                                    adopterUpdatedModelAddress.lng = jsonParse.lng
+                                                    adopterUpdatedModelAddress.zoom = jsonParse.zoom
+                                                    adopterUpdatedModelAddress.label = jsonParse.label
+                                                    adopterUpdatedModelAddress.mainText = jsonParse.mainText
+                                                    adopterUpdatedModelAddress.secondaryText = jsonParse.secondaryText
                                                 }
                                             } catch (e) {
                                             }
-                                            const contactUpdatedModelUser = {
-                                                id: null
-                                            }
-                                            contactUpdatedModelUser[TABLE_COLUMN_TYPE_AVATAR_NAME] = ""
-                                            contactUpdatedModelUser[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW] = true
-                                            contactUpdatedModelUser[TABLE_COLUMN_TYPE_AVATAR_STORAGE] = null
                                             const crudRowList = [...crud.rowList]
-                                            for (const crudRowForOf of crudRowList) {
-                                                if (contactUpdatedModel.userId === crudRowForOf.user.id) {
-                                                    contactUpdatedModelUser["id"] = crudRowForOf.user.id
-                                                    contactUpdatedModelUser[TABLE_COLUMN_TYPE_AVATAR_NAME] = crudRowForOf.user[TABLE_COLUMN_TYPE_AVATAR_NAME]
-                                                    contactUpdatedModelUser[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW] = crudRowForOf.user[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW]
-                                                    contactUpdatedModelUser[TABLE_COLUMN_TYPE_AVATAR_STORAGE] = crudRowForOf.user[TABLE_COLUMN_TYPE_AVATAR_STORAGE]
-                                                    break
-                                                }
-                                            }
                                             let index = 0
                                             for (const crudRowForOf of crudRowList) {
-                                                if (contactUpdatedModel.id === crudRowForOf.id) {
+                                                if (adopterUpdatedModel.id === crudRowForOf.id) {
                                                     crudRowList[index] = {
                                                         ...crudRowList[index],
-                                                        name: contactUpdatedModel.name,
-                                                        email: contactUpdatedModel.email,
-                                                        phone: contactUpdatedModel.phone,
-                                                        address: contactUpdatedModelAddress.label,
-                                                        user: contactUpdatedModelUser,
-                                                        language: contactUpdatedModel.language,
-                                                        createdAt: contactUpdatedModel.createdAt,
-                                                        updatedAt: contactUpdatedModel.updatedAt
+                                                        name: adopterUpdatedModel.name,
+                                                        email: adopterUpdatedModel.email,
+                                                        phone: adopterUpdatedModel.phone,
+                                                        address: adopterUpdatedModelAddress.label,
+                                                        language: adopterUpdatedModel.language,
+                                                        createdAt: adopterUpdatedModel.createdAt,
+                                                        updatedAt: adopterUpdatedModel.updatedAt
                                                     }
                                                     if (isComponentMountedRef.current === true) {
                                                         setState(
@@ -619,11 +590,11 @@ const ViewList = React.memo(
                                 next: async (response) => {
                                     try {
                                         if (response && response.value && response.value.data && response.value.data.onDeleteAdopter) {
-                                            const contactDeletedModel = response.value.data.onDeleteAdopter
+                                            const adopterDeletedModel = response.value.data.onDeleteAdopter
                                             const crudRowList = [...crud.rowList]
                                             const crudRowNewList = []
                                             for (const crudRowForOf of crudRowList) {
-                                                if (contactDeletedModel.id !== crudRowForOf.id) {
+                                                if (adopterDeletedModel.id !== crudRowForOf.id) {
                                                     crudRowNewList.push(crudRowForOf)
                                                 }
                                             }
@@ -743,52 +714,66 @@ const ViewList = React.memo(
         switch (stepReturn) {
             case STEP_RETURN_INITIAL:
                 return (
-                    <React.Fragment>
-                        <LayoutPaperContentRightTitle>
-                            <LayoutPaperContentRightTitleLeft>
-                                <MuiBox component={"div"} p={1}>
-                                    <LayoutPaperContentRightTitleLeftTypographyLevel2 iconFont={"people"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter"}/>}/>
-                                </MuiBox>
-                            </LayoutPaperContentRightTitleLeft>
-                        </LayoutPaperContentRightTitle>
-                        <LayoutPaperContentRightCenter maxWidth={true}>
-                            <LayoutLoadingSecurity/>
-                            <MuiBox component={"div"} p={1}>
-                                <LayoutLoadingText/>
+                    <LayoutContainer maxWidth={"lg"}>
+                        <LayoutPaper>
+                            <LayoutPaperTitle>
+                                <LayoutPaperTitleLeft>
+                                    <MuiBox component={"div"} p={1}>
+                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"settings_accessibility"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter"}/>}/>
+                                    </MuiBox>
+                                </LayoutPaperTitleLeft>
+                            </LayoutPaperTitle>
+                            <MuiBox component={"div"} p={0}>
+                                <MuiDivider component={"div"}/>
                             </MuiBox>
-                        </LayoutPaperContentRightCenter>
-                    </React.Fragment>
+                            <LayoutPaperContent>
+                                <LayoutPaperContentCenter maxWidth={true}>
+                                    <LayoutLoadingSecurity/>
+                                    <MuiBox component={"div"} p={1}>
+                                        <LayoutLoadingText/>
+                                    </MuiBox>
+                                </LayoutPaperContentCenter>
+                            </LayoutPaperContent>
+                        </LayoutPaper>
+                    </LayoutContainer>
                 )
             case STEP_RETURN_SUCCESS:
                 return (
-                    <React.Fragment>
-                        <LayoutPaperContentRightTitle>
-                            <LayoutPaperContentRightTitleLeft>
-                                <MuiBox component={"div"} p={1}>
-                                    <LayoutPaperContentRightTitleLeftTypographyLevel2 iconFont={"people"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter"}/>}/>
-                                </MuiBox>
-                            </LayoutPaperContentRightTitleLeft>
-                            <LayoutPaperContentRightTitleRight>
-                                <MuiBox component={"div"} p={1}>
-                                    <LayoutButton
-                                        loading={stepEffect === STEP_EFFECT_REFRESH}
-                                        disabled={stepIsSubmitting}
-                                        size={"small"}
-                                        iconFont={"update"}
-                                        text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.action.refresh"}/>}
-                                        handleOnClick={handleRefresh}
-                                    />
-                                </MuiBox>
-                            </LayoutPaperContentRightTitleRight>
-                        </LayoutPaperContentRightTitle>
-                        <LayoutPaperContentRightCenter maxWidth={true}>
-                            {stepIsSubmitting || stepEffect !== STEP_EFFECT_DEFAULT ? <LayoutLoadingSecurity/> : null}
-                            <MuiBox component={"div"} p={1}>
-                                <LayoutTable crud={crud}/>
+                    <LayoutContainer maxWidth={"lg"}>
+                        <LayoutPaper>
+                            <LayoutPaperTitle>
+                                <LayoutPaperTitleLeft>
+                                    <MuiBox component={"div"} p={1}>
+                                        <LayoutPaperTitleLeftTypographyLevel1 iconFont={"settings_accessibility"} text1={<FormattedMessage id={"app.page.secure.view.shelter.adopter"}/>}/>
+                                    </MuiBox>
+                                </LayoutPaperTitleLeft>
+                                <LayoutPaperTitleRight>
+                                    <MuiBox component={"div"} p={1}>
+                                        <LayoutButton
+                                            loading={stepEffect === STEP_EFFECT_REFRESH}
+                                            disabled={stepIsSubmitting}
+                                            size={"small"}
+                                            iconFont={"update"}
+                                            text={<FormattedMessage id={"app.page.secure.view.shelter.adopter.action.refresh"}/>}
+                                            handleOnClick={handleRefresh}
+                                        />
+                                    </MuiBox>
+                                </LayoutPaperTitleRight>
+                            </LayoutPaperTitle>
+                            <MuiBox component={"div"} p={0}>
+                                <MuiDivider component={"div"}/>
                             </MuiBox>
-                            {children}
-                        </LayoutPaperContentRightCenter>
-                    </React.Fragment>
+                            <LayoutPaperContent>
+                                <LayoutPaperContentCenter maxWidth={true}>
+                                    {stepIsSubmitting || stepEffect !== STEP_EFFECT_DEFAULT ? <LayoutLoadingSecurity/> : null}
+                                    <MuiBox component={"div"} p={1}>
+                                        <LayoutTable crud={crud}/>
+                                    </MuiBox>
+                                    {children}
+                                </LayoutPaperContentCenter>
+                            </LayoutPaperContent>
+                        </LayoutPaper>
+                    </LayoutContainer>
                 )
             case STEP_RETURN_SECURITY_NAVIGATE_TO_PATH_ERROR_404:
                 return <SecurityNavigateToPathError404/>

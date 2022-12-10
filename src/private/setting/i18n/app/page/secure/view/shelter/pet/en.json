@@ -1,0 +1,15 @@
+{
+  "app.page.secure.view.owner.crm.contact": "Contacts",
+  "app.page.secure.view.owner.crm.contact.list.column.name": "NAME",
+  "app.page.secure.view.owner.crm.contact.list.column.email": "EMAIL",
+  "app.page.secure.view.owner.crm.contact.list.column.phone": "PHONE",
+  "app.page.secure.view.owner.crm.contact.list.column.address": "ADDRESS",
+  "app.page.secure.view.owner.crm.contact.list.column.language": "LANGUAGE",
+  "app.page.secure.view.owner.crm.contact.list.column.user": "OWNER",
+  "app.page.secure.view.owner.crm.contact.list.column.created-at": "CREATED AT",
+  "app.page.secure.view.owner.crm.contact.list.column.updated-at": "UPDATED AT",
+  "app.page.secure.view.owner.crm.contact.action.refresh": "Refresh",
+  "app.page.secure.view.owner.crm.contact.alert.refresh.then.error": "Error fetching data.",
+  "app.page.secure.view.owner.crm.contact.alert.refresh.then.warning": "Data not found.",
+  "app.page.secure.view.owner.crm.contact.alert.refresh.error": "Error fetching data."
+}

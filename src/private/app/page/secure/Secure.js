@@ -5,6 +5,7 @@ import {Routes, Route} from "react-router"
 import {PATH_APP_PAGE_SECURE} from "../../../setting/path/app/page/secure"
 import {SLUG_APP_PAGE_SECURE_ACCOUNT} from "../../../setting/path/app/page/secure/account"
 import {SLUG_APP_PAGE_SECURE_ERROR} from "../../../setting/path/app/page/secure/error"
+import {SLUG_APP_PAGE_SECURE_SHELTER} from "../../../setting/path/app/page/secure/shelter"
 import {Theme} from "../../../setting/theme/app/page/secure"
 import {Alert as LayoutAlert} from "./layout/alert/Alert"
 import {Drawer as LayoutDrawer} from "./layout/drawer/Drawer"
@@ -13,6 +14,7 @@ import {Main as LayoutMain} from "./layout/main/Main"
 import {SecurityNavigateToIndex, SecurityNavigateToPathError404} from "./security"
 import {Account as ViewAccount} from "./view/account/Account"
 import {Error as ViewError} from "./view/error/Error"
+import {Shelter as ViewShelter} from "./view/shelter/Shelter"
 
 const STEP_RETURN_INITIAL = "step-return-initial"
 const STEP_RETURN_SUCCESS = "step-return-success"
@@ -228,6 +230,7 @@ export const Secure = React.memo(
                                     <Route path={`/`} element={<SecurityNavigateToIndex pathFrom={`${PATH_APP_PAGE_SECURE}`}/>}/>
                                     <Route path={`${SLUG_APP_PAGE_SECURE_ACCOUNT}*`} element={<LayoutMain><ViewAccount/></LayoutMain>}/>
                                     <Route path={`${SLUG_APP_PAGE_SECURE_ERROR}*`} element={<LayoutMain><ViewError/></LayoutMain>}/>
+                                    <Route path={`${SLUG_APP_PAGE_SECURE_SHELTER}*`} element={<LayoutMain><ViewShelter/></LayoutMain>}/>
                                     <Route path={`*`} element={<SecurityNavigateToPathError404/>}/>
                                 </Routes>
                             </MuiBox>

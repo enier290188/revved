@@ -1,4 +1,5 @@
 import {Alert as MuiAlert, AlertTitle as MuiAlertTitle, Box as MuiBox, Divider as MuiDivider, Typography as MuiTypography} from "@mui/material"
+import {Storage} from "aws-amplify"
 import React from "react"
 import {FormattedMessage} from "react-intl"
 import {Route, Routes, useParams} from "react-router"
@@ -6,6 +7,7 @@ import {PATH_APP_PAGE_SECURE_SHELTER_ADOPTER} from "../../../../../../../setting
 import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_COMMENT} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/comment"
 import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_DELETE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/delete"
 import {SLUG_APP_PAGE_SECURE_SHELTER_ADOPTER_UPDATE} from "../../../../../../../setting/path/app/page/secure/shelter/adopter/update"
+import {STORAGE_APP_ADOPTER} from "../../../../../../../setting/storage/app"
 import {Context as ContextAlert} from "../../../../../../context/Alert"
 import {Context as ContextUser} from "../../../../../../context/User"
 import * as AppUtilGraphql from "../../../../../../util/graphql"
@@ -221,6 +223,30 @@ const View = React.memo(
                         const adopterModel = dataAdopterModel.instance
 
                         if (ERROR_INTERNET_DISCONNECTED === false && ERROR_UNAUTHORIZED === false && userLoggedInModel && adopterModel) {
+                            try {
+                                const storageObjectList = await Storage.list(
+                                    `${STORAGE_APP_ADOPTER}${adopterModel.id}/`,
+                                    {
+                                        level: "public"
+                                    }
+                                )
+                                if (storageObjectList && storageObjectList.results) {
+                                    for (const storageObjectForOf of storageObjectList.results) {
+                                        if (storageObjectForOf && storageObjectForOf.key) {
+                                            try {
+                                                await Storage.remove(
+                                                    storageObjectForOf.key,
+                                                    {
+                                                        level: "public"
+                                                    }
+                                                )
+                                            } catch (e) {
+                                            }
+                                        }
+                                    }
+                                }
+                            } catch (e) {
+                            }
                             const dataAdopterDeletedModel = await AppUtilGraphql.deleteModel(
                                 {
                                     query: {

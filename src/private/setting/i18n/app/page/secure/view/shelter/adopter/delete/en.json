@@ -1,15 +1,15 @@
 {
-  "app.page.secure.view.shelter.pet.delete": "Delete Pet",
-  "app.page.secure.view.shelter.pet.delete.question": "Would you like to delete Pet \"{name}\"?",
-  "app.page.secure.view.shelter.pet.delete.action.submit": "Delete",
-  "app.page.secure.view.shelter.pet.delete.action.refresh": "Refresh",
-  "app.page.secure.view.shelter.pet.delete.action.update": "Update",
-  "app.page.secure.view.shelter.pet.delete.action.comment": "Comments",
-  "app.page.secure.view.shelter.pet.delete.alert.refresh.then.error": "Error fetching data.",
-  "app.page.secure.view.shelter.pet.delete.alert.refresh.then.warning": "Data not found.",
-  "app.page.secure.view.shelter.pet.delete.alert.refresh.error": "Error fetching data.",
-  "app.page.secure.view.shelter.pet.delete.alert.submit.then.success": "Pet \"{name}\" was deleted successfully.",
-  "app.page.secure.view.shelter.pet.delete.alert.submit.then.error": "Error deleting data.",
-  "app.page.secure.view.shelter.pet.delete.alert.submit.then.warning": "Data not found.",
-  "app.page.secure.view.shelter.pet.delete.alert.submit.error": "Error deleting data."
+  "app.page.secure.view.shelter.adopter.delete": "Delete Pet",
+  "app.page.secure.view.shelter.adopter.delete.question": "Would you like to delete Pet \"{name}\"?",
+  "app.page.secure.view.shelter.adopter.delete.action.submit": "Delete",
+  "app.page.secure.view.shelter.adopter.delete.action.refresh": "Refresh",
+  "app.page.secure.view.shelter.adopter.delete.action.update": "Update",
+  "app.page.secure.view.shelter.adopter.delete.action.comment": "Comments",
+  "app.page.secure.view.shelter.adopter.delete.alert.refresh.then.error": "Error fetching data.",
+  "app.page.secure.view.shelter.adopter.delete.alert.refresh.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.adopter.delete.alert.refresh.error": "Error fetching data.",
+  "app.page.secure.view.shelter.adopter.delete.alert.submit.then.success": "Pet \"{name}\" was deleted successfully.",
+  "app.page.secure.view.shelter.adopter.delete.alert.submit.then.error": "Error deleting data.",
+  "app.page.secure.view.shelter.adopter.delete.alert.submit.then.warning": "Data not found.",
+  "app.page.secure.view.shelter.adopter.delete.alert.submit.error": "Error deleting data."
 }

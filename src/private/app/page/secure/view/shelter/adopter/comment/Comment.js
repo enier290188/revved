@@ -228,8 +228,8 @@ const View = React.memo(
                                             user["id"] = userModelDict.id
                                             user["picture"] = userModelDict.picture
                                             user["name"] = userModelDict.name
-                                            user["permission"]["actionUpdate"] = true
-                                            user["permission"]["actionDelete"] = true
+                                            user["permission"]["actionUpdate"] = userModelDict.id === userId
+                                            user["permission"]["actionDelete"] = userModelDict.id === userId
                                         } catch (e) {
                                         }
                                         const comment = {
@@ -539,8 +539,8 @@ const View = React.memo(
                                                 user["id"] = userModelDict.id
                                                 user["picture"] = userModelDict.picture
                                                 user["name"] = userModelDict.name
-                                                user["permission"]["actionUpdate"] = true
-                                                user["permission"]["actionDelete"] = true
+                                                user["permission"]["actionUpdate"] = userModelDict.id === userId
+                                                user["permission"]["actionDelete"] = userModelDict.id === userId
                                             } catch (e) {
                                             }
                                             const comment = {

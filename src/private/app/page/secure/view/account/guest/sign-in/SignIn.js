@@ -473,10 +473,6 @@ const View = React.memo(
                                                     name: "listUsers",
                                                     itemList: [
                                                         {
-                                                            key: "companyId",
-                                                            type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                                        },
-                                                        {
                                                             key: "picture",
                                                             type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                                         },
@@ -523,7 +519,7 @@ const View = React.memo(
                                         }
                                         const userModelList = dataUserModelList.instanceList
                                         const userModel = 0 < userModelList.length ? {...userModelList[0]} : {}
-                                        if (userModel) {
+                                        if (userModel && userModel.id) {
                                             let itNeedsToBeUpdated = false
                                             if (userModel.cognitoUserStatus !== APP_PAGE_SECURE_SECURITY_COGNITO_USER_STATUS_CONFIRMED) {
                                                 itNeedsToBeUpdated = true
@@ -547,10 +543,6 @@ const View = React.memo(
                                                             name: "updateUser",
                                                             id: userModel.id,
                                                             itemList: [
-                                                                {
-                                                                    key: "companyId",
-                                                                    type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                                                },
                                                                 {
                                                                     key: "picture",
                                                                     type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -596,7 +588,6 @@ const View = React.memo(
                                                 const userUpdatedModel = dataUserUpdatedModel.instance
                                                 if (userUpdatedModel) {
                                                     userModel.id = userUpdatedModel.id
-                                                    userModel.companyId = userUpdatedModel.companyId
                                                     userModel.picture = userUpdatedModel.picture
                                                     userModel.name = userUpdatedModel.name
                                                     userModel.userGroupList = userUpdatedModel.userGroupList
@@ -608,16 +599,12 @@ const View = React.memo(
                                                 }
                                             }
                                         } else {
-                                            if (dynamodbUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN)) {
-                                                const dataUserAdminModel = await AppUtilGraphql.createModel(
+                                            if (dynamodbUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN) || dynamodbUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER)) {
+                                                const dataUserCreatedModel = await AppUtilGraphql.createModel(
                                                     {
                                                         query: {
                                                             name: "createUser",
                                                             itemList: [
-                                                                {
-                                                                    key: "companyId",
-                                                                    type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                                                },
                                                                 {
                                                                     key: "picture",
                                                                     type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -652,26 +639,25 @@ const View = React.memo(
                                                         }
                                                     }
                                                 )
-                                                if (dataUserAdminModel._response.error && dataUserAdminModel._response.errorType) {
-                                                    if (dataUserAdminModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                                                if (dataUserCreatedModel._response.error && dataUserCreatedModel._response.errorType) {
+                                                    if (dataUserCreatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                                         ERROR_INTERNET_DISCONNECTED = true
                                                     }
-                                                    if (dataUserAdminModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                                                    if (dataUserCreatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                                         ERROR_UNAUTHORIZED = true
                                                     }
                                                 }
-                                                const userAdminModel = dataUserAdminModel.instance
-                                                if (userAdminModel) {
-                                                    userModel.id = userAdminModel.id
-                                                    userModel.companyId = userAdminModel.companyId
-                                                    userModel.picture = userAdminModel.picture
-                                                    userModel.name = userAdminModel.name
-                                                    userModel.userGroupList = userAdminModel.userGroupList
-                                                    userModel.cognitoUsername = userAdminModel.cognitoUsername
-                                                    userModel.cognitoUserStatus = userAdminModel.cognitoUserStatus
-                                                    userModel.createdAt = userAdminModel.createdAt
-                                                    userModel.updatedAt = userAdminModel.updatedAt
-                                                    userModel._version = userAdminModel._version
+                                                const userCreatedModel = dataUserCreatedModel.instance
+                                                if (userCreatedModel) {
+                                                    userModel.id = userCreatedModel.id
+                                                    userModel.picture = userCreatedModel.picture
+                                                    userModel.name = userCreatedModel.name
+                                                    userModel.userGroupList = userCreatedModel.userGroupList
+                                                    userModel.cognitoUsername = userCreatedModel.cognitoUsername
+                                                    userModel.cognitoUserStatus = userCreatedModel.cognitoUserStatus
+                                                    userModel.createdAt = userCreatedModel.createdAt
+                                                    userModel.updatedAt = userCreatedModel.updatedAt
+                                                    userModel._version = userCreatedModel._version
                                                 }
                                             }
                                         }
@@ -690,7 +676,6 @@ const View = React.memo(
                                                 contextUser.changeUser(
                                                     {
                                                         id: userModel.id,
-                                                        companyId: userModel.companyId,
                                                         picture: userModel.picture,
                                                         email: userModel.email,
                                                         name: userModel.name,
@@ -852,10 +837,6 @@ const View = React.memo(
                                                 name: "listUsers",
                                                 itemList: [
                                                     {
-                                                        key: "companyId",
-                                                        type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                                    },
-                                                    {
                                                         key: "picture",
                                                         type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
                                                     },
@@ -902,7 +883,7 @@ const View = React.memo(
                                     }
                                     const userModelList = dataUserModelList.instanceList
                                     const userModel = 0 < userModelList.length ? {...userModelList[0]} : {}
-                                    if (userModel) {
+                                    if (userModel && userModel.id) {
                                         let itNeedsToBeUpdated = false
                                         if (userModel.cognitoUserStatus !== APP_PAGE_SECURE_SECURITY_COGNITO_USER_STATUS_CONFIRMED) {
                                             itNeedsToBeUpdated = true
@@ -926,10 +907,6 @@ const View = React.memo(
                                                         name: "updateUser",
                                                         id: userModel.id,
                                                         itemList: [
-                                                            {
-                                                                key: "companyId",
-                                                                type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                                            },
                                                             {
                                                                 key: "picture",
                                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -975,7 +952,6 @@ const View = React.memo(
                                             const userUpdatedModel = dataUserUpdatedModel.instance
                                             if (userUpdatedModel) {
                                                 userModel.id = userUpdatedModel.id
-                                                userModel.companyId = userUpdatedModel.companyId
                                                 userModel.picture = userUpdatedModel.picture
                                                 userModel.name = userUpdatedModel.name
                                                 userModel.userGroupList = userUpdatedModel.userGroupList
@@ -987,16 +963,12 @@ const View = React.memo(
                                             }
                                         }
                                     } else {
-                                        if (dynamodbUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN)) {
-                                            const dataUserAdminModel = await AppUtilGraphql.createModel(
+                                        if (dynamodbUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_ADMIN) || dynamodbUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER)) {
+                                            const dataUserCreatedModel = await AppUtilGraphql.createModel(
                                                 {
                                                     query: {
                                                         name: "createUser",
                                                         itemList: [
-                                                            {
-                                                                key: "companyId",
-                                                                type: AppUtilGraphql.QUERY_ITEM_TYPE_ID
-                                                            },
                                                             {
                                                                 key: "picture",
                                                                 type: AppUtilGraphql.QUERY_ITEM_TYPE_STRING
@@ -1031,26 +1003,25 @@ const View = React.memo(
                                                     }
                                                 }
                                             )
-                                            if (dataUserAdminModel._response.error && dataUserAdminModel._response.errorType) {
-                                                if (dataUserAdminModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
+                                            if (dataUserCreatedModel._response.error && dataUserCreatedModel._response.errorType) {
+                                                if (dataUserCreatedModel._response.errorType === AppUtilGraphql.ERROR_INTERNET_DISCONNECTED) {
                                                     ERROR_INTERNET_DISCONNECTED = true
                                                 }
-                                                if (dataUserAdminModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
+                                                if (dataUserCreatedModel._response.errorType === AppUtilGraphql.ERROR_UNAUTHORIZED) {
                                                     ERROR_UNAUTHORIZED = true
                                                 }
                                             }
-                                            const userAdminModel = dataUserAdminModel.instance
-                                            if (userAdminModel) {
-                                                userModel.id = userAdminModel.id
-                                                userModel.companyId = userAdminModel.companyId
-                                                userModel.picture = userAdminModel.picture
-                                                userModel.name = userAdminModel.name
-                                                userModel.userGroupList = userAdminModel.userGroupList
-                                                userModel.cognitoUsername = userAdminModel.cognitoUsername
-                                                userModel.cognitoUserStatus = userAdminModel.cognitoUserStatus
-                                                userModel.createdAt = userAdminModel.createdAt
-                                                userModel.updatedAt = userAdminModel.updatedAt
-                                                userModel._version = userAdminModel._version
+                                            const userCreatedModel = dataUserCreatedModel.instance
+                                            if (userCreatedModel) {
+                                                userModel.id = userCreatedModel.id
+                                                userModel.picture = userCreatedModel.picture
+                                                userModel.name = userCreatedModel.name
+                                                userModel.userGroupList = userCreatedModel.userGroupList
+                                                userModel.cognitoUsername = userCreatedModel.cognitoUsername
+                                                userModel.cognitoUserStatus = userCreatedModel.cognitoUserStatus
+                                                userModel.createdAt = userCreatedModel.createdAt
+                                                userModel.updatedAt = userCreatedModel.updatedAt
+                                                userModel._version = userCreatedModel._version
                                             }
                                         }
                                     }
@@ -1069,7 +1040,6 @@ const View = React.memo(
                                             contextUser.changeUser(
                                                 {
                                                     id: userModel.id,
-                                                    companyId: userModel.companyId,
                                                     picture: userModel.picture,
                                                     email: userModel.email,
                                                     name: userModel.name,

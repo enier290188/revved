@@ -77,7 +77,7 @@ export const SecurityNavigateToIndex = React.memo(
                 : userModelUserGroupList.includes(APP_PAGE_SECURE_SECURITY_DYNAMODB_USER_GROUP_SHELTER)
                     ? PATH_APP_PAGE_SECURE_SHELTER_DASHBOARD
                     : PATH_APP_PAGE_SECURE
-            : pathFrom === PATH_APP || pathFrom === PATH_APP_PAGE || pathFrom === PATH_APP_PAGE_SECURE || pathFrom === PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN || pathFrom === PATH_APP_PAGE_SECURE_ACCOUNT_CURRENT_SIGN_OUT
+            : pathFrom === "/" || pathFrom === PATH_APP || pathFrom === PATH_APP_PAGE || pathFrom === PATH_APP_PAGE_SECURE || pathFrom === PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN || pathFrom === PATH_APP_PAGE_SECURE_ACCOUNT_CURRENT_SIGN_OUT
                 ? `${PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN}`
                 : `${PATH_APP_PAGE_SECURE_ACCOUNT_GUEST_SIGN_IN}?${urlNextQuery}${pathFrom}`
 

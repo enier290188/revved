@@ -339,7 +339,6 @@ const ViewList = React.memo(
                         throw new Error("ContextUser Required")
                     }
                 } catch (e) {
-                    console.log(e)
                     return {
                         _response: {
                             error: true
@@ -521,6 +520,10 @@ const ViewList = React.memo(
                                     try {
                                         if (response && response.value && response.value.data && response.value.data.onCreatePet) {
                                             const petCreatedModel = response.value.data.onCreatePet
+                                            const picture = {}
+                                            picture[TABLE_COLUMN_TYPE_AVATAR_NAME] = petCreatedModel.name
+                                            picture[TABLE_COLUMN_TYPE_AVATAR_NAME_SHOW] = false
+                                            picture[TABLE_COLUMN_TYPE_AVATAR_STORAGE] = null
                                             const petCreatedModelOwnerAddress = {
                                                 label: ""
                                             }
@@ -541,6 +544,7 @@ const ViewList = React.memo(
                                             crudRowList.push(
                                                 {
                                                     id: petCreatedModel.id,
+                                                    picture: picture,
                                                     name: petCreatedModel.name,
                                                     ownerName: petCreatedModel.ownerName,
                                                     ownerEmail: petCreatedModel.ownerEmail,
@@ -604,8 +608,11 @@ const ViewList = React.memo(
                                             let index = 0
                                             for (const crudRowForOf of crudRowList) {
                                                 if (petUpdatedModel.id === crudRowForOf.id) {
+                                                    const picture = {...crudRowForOf.picture}
+                                                    picture[TABLE_COLUMN_TYPE_AVATAR_NAME] = petUpdatedModel.name
                                                     crudRowList[index] = {
                                                         ...crudRowList[index],
+                                                        picture: picture,
                                                         name: petUpdatedModel.name,
                                                         ownerName: petUpdatedModel.ownerName,
                                                         ownerEmail: petUpdatedModel.ownerEmail,
